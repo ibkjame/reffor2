@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>เปิดไพ่ดวงชะตา - ค้นพบไพ่ตัวตนของคุณ | REFFORTUNE</title>
+    <meta name="description" content="ใส่ข้อมูลวันเกิดของคุณเพื่อคำนวณไพ่ประจำราศีและไพ่จิตวิญญาณ พร้อมรับคำทำนายเชิงลึกเพื่อค้นพบตัวตนที่แท้จริง" />
+    <meta name="keywords" content="ไพ่ตัวตน, ไพ่จิตวิญญาณ, ไพ่ประจำราศี, คำนวณไพ่, ดูดวงจากวันเกิด, reffortune" />
+
+    <!-- Favicons & Meta Tags -->
+    <link rel="icon" type="image/png" href="icon/favicon-96x96.png" sizes="96x96" />
+    <link rel="apple-touch-icon" sizes="180x180" href="icon/apple-touch-icon.png" />
+    <link rel="manifest" href="icon/site.webmanifest" />
+
+    <!-- Tailwind CSS & Google Fonts -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@400;700&display=swap" rel="stylesheet">
+    
+    <!-- Tarot Card Data -->
+    <script src="tarot-data.js"></script>
+
+    <style>
+        body { font-family: 'Noto Sans Thai', sans-serif; background-color: #100a33; color: white; }
+        .space-bg { background: radial-gradient(ellipse at bottom, #0f0755 0%, #100a33 100%); position: fixed; inset: 0; z-index: -3; }
+        .stars { position: fixed; inset: 0; background: transparent url(https://s3-us-west-2.amazonaws.com/s.cdpn.io/1231630/stars.png) repeat top center; z-index: -2; }
+        .twinkling { position: fixed; inset: 0; background: transparent url(https://s3-us-west-2.amazonaws.com/s.cdpn.io/1231630/stars.png) repeat top center; z-index: -1; animation: move-twinkle-back 200s linear infinite; }
+        @keyframes move-twinkle-back { from { background-position: 0 0; } to { background-position: -10000px 5000px; } }
+        
+        .glass-box { background: rgba(30, 27, 75, 0.7); backdrop-filter: blur(10px); border: 1px solid rgba(167, 139, 250, 0.3); }
+        .text-glow { text-shadow: 0 0 8px rgba(192, 132, 252, 0.6); }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        .fade-in-item { opacity: 0; animation: fadeIn 1s ease-out forwards; }
+        
+        @keyframes fadeOut { to { opacity: 0; transform: scale(0.95); height: 0; padding: 0; margin: 0; border: 0; overflow: hidden; } }
+        .fade-out { animation: fadeOut 0.8s ease-out forwards; }
+
+
+        .form-input { background-color: rgba(0,0,0,0.3); border: 1px solid #4b5563; }
+        .form-input:focus { border-color: #a78bfa; box-shadow: 0 0 15px rgba(167, 139, 250, 0.3); }
+        
+        .result-card { transition: transform 0.5s ease, box-shadow 0.5s ease; }
+        .result-card:hover { transform: translateY(-10px) scale(1.05); box-shadow: 0 0 30px rgba(167, 139, 250, 0.5); }
+
+        .interpretation-section h4 {
+            font-size: 1.25rem;
+            font-weight: bold;
+            color: #6ee7b7; /* A bright, spiritual color */
+            margin-top: 1.5rem;
+            margin-bottom: 0.5rem;
+            padding-bottom: 0.25rem;
+            border-bottom: 1px solid rgba(110, 231, 183, 0.3);
+        }
+        .interpretation-section ul {
+            list-style-position: inside;
+            margin-left: 0.5rem;
+        }
+        .interpretation-section li::marker {
+            content: '✨ ';
+        }
+    </style>
+</head>
+<body class="antialiased">
+    <!-- Background -->
+    <div class="space-bg"></div>
+    <div class="stars"></div>
+    <div class="twinkling"></div>
+
+    <!-- Main Content -->
+    <div class="relative min-h-screen p-4 md:p-8 flex flex-col items-center">
+        <header class="text-center my-8 md:my-12 fade-in-item w-full max-w-4xl">
+            <h1 class="text-4xl md:text-5xl font-bold text-glow mb-4">เส้นทางแห่งตำนาน</h1>
+            <p class="text-white/80 max-w-2xl mx-auto">ค้นพบไพ่ตัวตนและไพ่จิตวิญญาณของคุณ ผ่านวันเดือนปีเกิด เพื่อเข้าใจแก่นแท้ของตนเอง</p>
+            <a href="index.html" class="text-purple-300 hover:text-white mt-6 inline-block">&larr; กลับสู่หน้าแรก</a>
+        </header>
+
+        <!-- Input Section -->
+        <section id="input-section" class="glass-box p-6 md:p-8 rounded-2xl fade-in-item w-full max-w-2xl" style="animation-delay: 0.2s;">
+            <form id="birthdate-form">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div>
+                        <label for="day" class="block mb-2 text-sm font-medium text-gray-300">วันเกิด</label>
+                        <input type="number" id="day" name="day" class="form-input w-full p-2.5 rounded-lg" placeholder="เช่น 28" min="1" max="31" required value="">
+                    </div>
+                    <div>
+                        <label for="month" class="block mb-2 text-sm font-medium text-gray-300">เดือน</label>
+                        <select id="month" name="month" class="form-input w-full p-2.5 rounded-lg" required>
+                            <option value="1">มกราคม</option>
+                            <option value="2">กุมภาพันธ์</option>
+                            <option value="3">มีนาคม</option>
+                            <option value="4">เมษายน</option>
+                            <option value="5">พฤษภาคม</option>
+                            <option value="6">มิถุนายน</option>
+                            <option value="7">กรกฎาคม</option>
+                            <option value="8">สิงหาคม</option>
+                            <option value="9">กันยายน</option>
+                            <option value="10">ตุลาคม</option>
+                            <option value="11">พฤศจิกายน</option>
+                            <option value="12">ธันวาคม</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="year" class="block mb-2 text-sm font-medium text-gray-300">ปีเกิด (ค.ศ.)</label>
+                        <input type="number" id="year" name="year" class="form-input w-full p-2.5 rounded-lg" placeholder="เช่น 1991" min="1900" max="2024" required value="">
+                    </div>
+                </div>
+                <div class="text-center mt-6">
+                    <button type="submit" id="submit-button" class="bg-purple-600 hover:bg-purple-700 text-white font-bold py-3 px-8 rounded-full transition-all duration-300 transform hover:scale-105">
+                        ค้นหาไพ่ตัวตน
+                    </button>
+                </div>
+            </form>
+        </section>
+
+        <!-- Result Section -->
+        <section id="result-section" class="hidden w-full max-w-5xl mt-8">
+             <div id="card-display-area" class="grid grid-cols-1 md:grid-cols-2 gap-8 justify-items-center">
+                <!-- Card containers will be injected here by JavaScript -->
+            </div>
+            <!-- AI Interpretation -->
+            <div id="interpretation-container" class="glass-box p-6 md:p-8 rounded-2xl mt-8 fade-in-item" style="animation-delay: 0.4s;">
+                 <h3 class="text-2xl font-bold text-purple-300 mb-4">เสียงสะท้อนจากจิตวิญญาณของคุณ</h3>
+                 <div id="interpretation-text" class="text-gray-300 space-y-4 interpretation-section"></div>
+            </div>
+        </section>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const form = document.getElementById('birthdate-form');
+            const submitButton = document.getElementById('submit-button');
+            const inputSection = document.getElementById('input-section');
+            const resultSection = document.getElementById('result-section');
+            const cardDisplayArea = document.getElementById('card-display-area');
+
+            form.addEventListener('submit', (e) => {
+                e.preventDefault();
+                
+                const day = parseInt(document.getElementById('day').value);
+                const month = parseInt(document.getElementById('month').value);
+                const year = parseInt(document.getElementById('year').value);
+
+                // --- Calculations ---
+                const zodiacCard = getZodiacCard(day, month);
+                const soulCard = calculateSoulCard(day, month, year);
+
+                displayResults(zodiacCard, soulCard);
+            });
+
+            function getZodiacCard(day, month) {
+                const date = month * 100 + day; // Combine month and day for easy comparison e.g., March 21 = 321
+                let cardName = '';
+                if (date >= 321 && date <= 419) cardName = 'The Emperor';
+                else if (date >= 420 && date <= 520) cardName = 'The Hierophant';
+                else if (date >= 521 && date <= 620) cardName = 'The Lovers';
+                else if (date >= 621 && date <= 722) cardName = 'The Chariot';
+                else if (date >= 723 && date <= 822) cardName = 'Strength';
+                else if (date >= 823 && date <= 922) cardName = 'The Hermit';
+                else if (date >= 923 && date <= 1022) cardName = 'Justice';
+                else if (date >= 1023 && date <= 1121) cardName = 'Death';
+                else if (date >= 1122 && date <= 1221) cardName = 'Temperance';
+                else if (date >= 1222 || date <= 119) cardName = 'The Devil'; // Capricorn
+                else if (date >= 120 && date <= 218) cardName = 'The Star'; // Aquarius
+                else if (date >= 219 && date <= 320) cardName = 'The Moon'; // Pisces
+                
+                return tarotDeck.find(card => card.name === cardName);
+            }
+
+            function calculateSoulCard(day, month, year) {
+                const fullNumber = `${day}${month}${year}`;
+                let sum = fullNumber.split('').reduce((acc, digit) => acc + parseInt(digit), 0);
+                while (sum > 21) {
+                     sum = sum.toString().split('').reduce((acc, digit) => acc + parseInt(digit), 0);
+                }
+                if (sum === 0) sum = 21; // Special case if sum is 0
+                const cardId = 'maj' + sum.toString().padStart(2, '0');
+                return tarotDeck.find(card => card.id === cardId);
+            }
+
+            function displayResults(zodiacCard, soulCard) {
+                cardDisplayArea.innerHTML = ''; // Clear previous results
+                
+                // Zodiac Card Display
+                const zodiacContainer = document.createElement('div');
+                zodiacContainer.className = `text-center fade-in-item`;
+                zodiacContainer.style.animationDelay = `0s`;
+                zodiacContainer.innerHTML = `
+                    <h3 class="text-2xl font-bold text-cyan-300 mb-4">ไพ่ประจำราศี</h3>
+                    <img src="${zodiacCard.img}" alt="${zodiacCard.name}" class="result-card w-48 mx-auto rounded-lg shadow-lg">
+                    <p class="mt-4 text-xl font-semibold">${zodiacCard.name}</p>
+                `;
+                cardDisplayArea.appendChild(zodiacContainer);
+
+                // Soul Card Display
+                const soulContainer = document.createElement('div');
+                soulContainer.className = `text-center fade-in-item`;
+                soulContainer.style.animationDelay = `0.2s`;
+                soulContainer.innerHTML = `
+                    <h3 class="text-2xl font-bold text-cyan-300 mb-4">ไพ่จิตวิญญาณ</h3>
+                    <img src="${soulCard.img}" alt="${soulCard.name}" class="result-card w-48 mx-auto rounded-lg shadow-lg">
+                    <p class="mt-4 text-xl font-semibold">${soulCard.name}</p>
+                `;
+                cardDisplayArea.appendChild(soulContainer);
+
+                generateInterpretation(zodiacCard, soulCard);
+                
+                inputSection.classList.add('fade-out');
+                setTimeout(() => {
+                    inputSection.style.display = 'none';
+                    resultSection.classList.remove('hidden');
+                    resultSection.scrollIntoView({ behavior: 'smooth' });
+                }, 800);
+            }
+
+            async function generateInterpretation(zodiacCard, soulCard) {
+                const interpretationDiv = document.getElementById('interpretation-text');
+                interpretationDiv.innerHTML = '<p>กำลังอ่านไพ่ดวงชะตา</p>';
+                submitButton.disabled = true;
+
+                const userProfile = { goal: "อิสระจากหนี้สิน", personality: "ทำงานหนัก ไม่มีวินัยแต่พลังสูง" };
+
+                // Construct a detailed prompt for the AI
+                const prompt = `
+                    คุณคือโหราจารย์ผู้เชี่ยวชาญด้านการอ่านไพ่ทาโรต์และจิตวิญญาณ จงสร้างคำทำนายส่วนบุคคลในภาษาไทยให้กับผู้ใช้โดยใช้ข้อมูลต่อไปนี้:
+
+                    1.  **ไพ่ประจำราศี (Zodiac Card):** ${zodiacCard.name} - ไพ่ใบนี้สะท้อนถึงบุคลิกภาพภายนอก, การแสดงออก, และพลังงานที่คนอื่นรับรู้จากตัวผู้ใช้
+                    2.  **ไพ่จิตวิญญาณ (Soul Card):** ${soulCard.name} - ไพ่ใบนี้สะท้อนถึงแก่นแท้ภายใน, พรสวรรค์ที่ซ่อนอยู่, และภารกิจของจิตวิญญาณในชีวิตนี้
+                    3.  **ข้อมูลส่วนตัวของผู้ใช้ (Core Memory):**
+                        * เป้าหมาย: ${userProfile.goal}
+                        * บุคลิก: ${userProfile.personality}
+
+                    **คำสั่ง:**
+                    จงสังเคราะห์ข้อมูลทั้งหมดนี้ แล้วเขียนคำทำนายที่มีโครงสร้างดังนี้ โดยใช้ภาษาที่ลึกซึ้งและเข้าถึงจิตวิญญาณ:
+                    
+                    <h4>ภาพรวมและความสัมพันธ์ของไพ่</h4>
+                    <p>[วิเคราะห์ความสัมพันธ์ของไพ่ประจำราศีและไพ่จิตวิญญาณ ว่าส่งเสริมหรือขัดแย้งกันอย่างไร? เช่น บุคลิกภายนอกที่แสดงออก (Zodiac Card) สอดคล้องกับแก่นแท้ภายใน (Soul Card) หรือไม่? พลังงานทั้งสองทำงานร่วมกันอย่างไรในชีวิตของผู้ใช้]</p>
+                    
+                    <h4>การแสดงออกและตัวตนภายใน</h4>
+                    <p><strong>บุคลิกภาพภายนอก (ไพ่ ${zodiacCard.name}):</strong> [อธิบายว่าไพ่ใบนี้ส่งผลต่อการแสดงออกและวิธีที่คนอื่นมองผู้ใช้อย่างไร โดยเชื่อมโยงกับบุคลิกที่ระบุใน Core Memory]</p>
+                    <p><strong>แก่นแท้แห่งจิตวิญญาณ (ไพ่ ${soulCard.name}):</strong> [อธิบายว่าไพ่ใบนี้คือพลังงานที่ขับเคลื่อนผู้ใช้จากภายในอย่างไร มันคือพรสวรรค์หรือบทเรียนสำคัญอะไร]</p>
+
+                    <h4>เส้นทางสู่เป้าหมาย</h4>
+                    <p>[วิเคราะห์ว่าพลังงานจากไพ่ทั้งสองใบจะช่วยให้ผู้ใช้บรรลุเป้าหมาย ('${userProfile.goal}') ได้อย่างไร? มีความท้าทายอะไรที่ต้องระวัง และควรใช้จุดแข็งของไพ่ใบไหนมาสนับสนุน]</p>
+
+                    <h4>คำแนะนำจากจิตวิญญาณ</h4>
+                    <p>[ให้คำแนะนำที่เฉพาะเจาะจง โดยอิงจากไพ่ทั้งสองใบ เพื่อให้ผู้ใช้สามารถผสานพลังงานภายนอกและภายในให้เป็นหนึ่งเดียวและเติบโตได้อย่างเต็มศักยภาพ]</p>
+                `;
+
+                try {
+                    let chatHistory = [];
+                    chatHistory.push({ role: "user", parts: [{ text: prompt }] });
+                    const payload = { contents: chatHistory };
+                    const apiKey = "AIzaSyDpyxfkrwLy4G5Lh5em-LCi3EYmUUv6zSc"; // API key will be provided by the environment
+                    const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
+                    
+                    const response = await fetch(apiUrl, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(payload)
+                    });
+                    
+                    const result = await response.json();
+
+                    if (result.candidates && result.candidates.length > 0 &&
+                        result.candidates[0].content && result.candidates[0].content.parts &&
+                        result.candidates[0].content.parts.length > 0) {
+                        const text = result.candidates[0].content.parts[0].text;
+                        interpretationDiv.innerHTML = text;
+                    } else {
+                        interpretationDiv.innerHTML = `<p>ขออภัย AI ไม่สามารถสร้างคำทำนายได้ในขณะนี้ โปรดลองอีกครั้ง</p>`;
+                    }
+                } catch (error) {
+                    console.error("Error calling AI API:", error);
+                    interpretationDiv.innerHTML = `<p>เกิดข้อผิดพลาดในการเชื่อมต่อกับ AI โปรดตรวจสอบการเชื่อมต่ออินเทอร์เน็ตแล้วลองอีกครั้ง</p>`;
+                } finally {
+                    submitButton.disabled = false;
+                }
+            }
+        });
+    </script>
+</body>
+</html>
