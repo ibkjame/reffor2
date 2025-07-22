@@ -1,262 +1,418 @@
 <!DOCTYPE html>
 <html lang="th">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-    <title>เสียงจากภายใน | REFFORTUNE</title>
-    <meta name="description" content="พื้นที่ปลอดภัยสำหรับการรับฟังเสียงจากจิตวิญญาณของคุณเอง ผ่านไพ่ทาโรต์และการชี้แนะ เพื่อการเติบโตและค้นพบเส้นทางของตนเอง" />
-    <meta name="keywords" content="จิตวิญญาณ, เสียงภายใน, ดูดวง, ไพ่ทาโรต์, พัฒนาตนเอง, reffortune" />
-
-    <!-- Open Graph / Facebook -->
-    <meta property="og:type" content="website" />
-    <meta property="og:url" content="https://reffortune.com/" />
-    <meta property="og:title" content="เสียงจากภายใน | REFFORTUNE" />
-    <meta property="og:description" content="พื้นที่ปลอดภัยสำหรับการรับฟังเสียงจากจิตวิญญาณของคุณเอง" />
-    <meta property="og:image" content="https://i.imgur.com/8a5g6aD.png" />
-
-    <!-- Twitter -->
-    <meta property="twitter:card" content="summary_large_image" />
-    <meta property="twitter:url" content="https://reffortune.com/" />
-    <meta property="twitter:title" content="เสียงจากภายใน | REFFORTUNE" />
-    <meta property="twitter:description" content="พื้นที่ปลอดภัยสำหรับการรับฟังเสียงจากจิตวิญญาณของคุณเอง" />
-    <meta property="twitter:image" content="https://i.imgur.com/8a5g6aD.png" />
-    
-    <!-- Favicons -->
-    <link rel="icon" type="image/png" href="icon/favicon-96x96.png" sizes="96x96" />
-    <link rel="icon" type="image/svg+xml" href="icon/favicon.svg" />
-    <link rel="shortcut icon" href="icon/favicon.ico" />
-    <link rel="apple-touch-icon" sizes="180x180" href="icon/apple-touch-icon.png" />
-    <link rel="manifest" href="icon/site.webmanifest" />
-
-    <!-- Google Fonts & Tailwind CSS -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>เสียงกระซิบจากภายใน - REFFORTUNE</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@400;700&display=swap" rel="stylesheet">
-    
-    <!-- SweetAlert2 for popups -->
+    <link rel="stylesheet" href="pick.css">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+    <link rel="icon" type="image/png" href="/icon/favicon-96x96.png" sizes="96x96" />
+    <link rel="icon" type="image/svg+xml" href="/icon/favicon.svg" />
+    <link rel="shortcut icon" href="/icon/favicon.ico" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/icon/apple-touch-icon.png" />
+    <link rel="manifest" href="/icon/site.webmanifest" />
+    
+    <!-- Data for the tarot cards -->
+    <script src="tarot-data.js"></script>
 
     <style>
-        /* --- Base Theme & Animated Background --- */
-        body {
-            font-family: 'Noto Sans Thai', sans-serif;
-            background-color: #100a33;
-            color: white;
-            overflow-x: hidden;
+        /* --- NEW: Immersive Animation Styles --- */
+        @keyframes deal-card {
+            from { opacity: 0; transform: translateY(100px) scale(0.8); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
         }
-        .space-bg {
-            background: radial-gradient(ellipse at bottom, #0f0755 0%, #100a33 100%);
-            position: fixed;
-            inset: 0;
-            z-index: -3;
+        .card-container {
+            /* Apply the animation here */
+            animation: deal-card 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+            opacity: 0; /* Start as invisible */
         }
-        .stars {
-            position: fixed; inset: 0;
-            background: transparent url(https://s3-us-west-2.amazonaws.com/s.cdpn.io/1231630/stars.png) repeat top center;
-            z-index: -2;
+        
+        @keyframes flip-card {
+            from { transform: rotateY(0deg); }
+            to { transform: rotateY(180deg); }
         }
-        .twinkling {
-            position: fixed; inset: 0;
-            background: transparent url(https://s3-us-west-2.amazonaws.com/s.cdpn.io/1231630/stars.png) repeat top center;
-            z-index: -1;
-            animation: move-twinkle-back 200s linear infinite;
+        .result-card-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            transition: transform 0.8s;
+            transform-style: preserve-3d;
         }
-        @keyframes move-twinkle-back { from { background-position: 0 0; } to { background-position: -10000px 5000px; } }
-
-        /* --- Spiritual Symbol & Interface Styles --- */
-        .spirit-symbol-container {
-            transition: transform 0.5s ease-in-out, filter 1s ease;
+        .result-card.is-flipped .result-card-inner {
+            transform: rotateY(180deg);
         }
-        .spirit-symbol-container:hover {
-            transform: scale(1.05);
-            filter: drop-shadow(0 0 20px rgba(196, 181, 253, 0.7));
+        .result-card-face {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
+            border-radius: 8px;
         }
-        .spirit-symbol {
-            animation: pulse-glow 6s ease-in-out infinite;
+        .result-card-front {
+            transform: rotateY(180deg);
         }
-        @keyframes pulse-glow {
-            0%, 100% { filter: drop-shadow(0 0 15px rgba(167, 139, 250, 0.4)); }
-            50% { filter: drop-shadow(0 0 30px rgba(167, 139, 250, 0.8)); }
-        }
-
-        .welcome-bubble {
-            background: rgba(30, 27, 75, 0.7);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(167, 139, 250, 0.3);
-            animation: fadeIn 1s ease-out 0.5s both;
+        .result-card-back {
+            background-image: url(https://z262998-h64m7.ls01.zwhhosting.com/card/Sp.png);
+            background-size: cover;
         }
 
-        /* --- Action Buttons --- */
-        .action-btn {
-            background: rgba(141, 133, 172, 0.2);
-            backdrop-filter: blur(5px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            transition: all 0.3s ease;
-            transform: perspective(1000px);
-        }
-        .action-btn:hover {
-            background: rgba(167, 139, 250, 0.3);
-            border-color: rgba(196, 181, 253, 0.7);
-            transform: translateY(-8px) rotateX(10deg);
-            box-shadow: 0 15px 25px rgba(71, 8, 187, 0.4);
-        }
-        .action-btn-icon {
-            filter: drop-shadow(0 0 5px rgba(196, 181, 253, 0.7));
-        }
-
-        /* --- General Animations --- */
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
+        @keyframes fadeInParagraph {
+            from { opacity: 0; transform: translateY(10px); }
             to { opacity: 1; transform: translateY(0); }
         }
-        .fade-in-item {
-            animation: fadeIn 1s ease-out both;
+        #interpretation-text p {
+            opacity: 0;
+            animation: fadeInParagraph 0.8s ease-out forwards;
         }
 
-        /* --- SweetAlert Customization --- */
-        .swal2-popup {
-            background-color: #111111 !important;
-            border: 2px solid #FBBF24 !important;
-            border-radius: 1rem !important;
+        /* --- Interpretation Section Styles --- */
+        #interpretation-container {
+            background: rgba(17, 24, 39, 0.5);
+            border: 1px solid rgba(167, 139, 250, 0.3);
+            border-radius: 1rem;
+            padding: 1.5rem;
+            margin-top: 2rem;
+            text-align: left;
         }
-        .swal2-title { color: #FBBF24 !important; }
-        .swal2-html-container { color: #D1D5DB !important; }
-        .swal-card-option {
-            display: block; width: 100%; padding: 1rem; margin-bottom: 0.75rem;
-            border: 1px solid #FBBF24; border-radius: 0.5rem; text-align: center;
-            font-weight: bold; color: #FBBF24; text-decoration: none; transition: all 0.3s ease;
+        #interpretation-container h3 {
+            color: #a78bfa;
+            border-bottom: 2px solid #a78bfa;
+            padding-bottom: 0.5rem;
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+            font-weight: bold;
         }
-        .swal-card-option:hover { background-color: #FBBF24; color: #111111; }
-
+        #interpretation-text {
+            color: #E5E7EB;
+            line-height: 1.8;
+            white-space: pre-wrap;
+        }
+        .loader-sm { 
+            width: 24px; 
+            height: 24px; 
+            border: 3px solid rgba(255,255,255,0.3); 
+            border-top-color: #a78bfa; 
+            border-radius: 50%; 
+            display: inline-block; 
+            animation: spin 1s linear infinite; 
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
     </style>
 </head>
-<body class="antialiased">
-    <!-- Animated Background -->
-    <div class="space-bg"></div>
+<body class="space-bg">
     <div class="stars"></div>
     <div class="twinkling"></div>
+    <div class="planet"></div>
 
-    <!-- Main Content -->
-    <div class="relative min-h-screen flex items-center justify-center p-4">
-        <main class="w-full max-w-4xl mx-auto text-center">
-            
-            <!-- Spiritual Symbol -->
-            <div class="spirit-symbol-container mb-6 fade-in-item" style="animation-delay: 0.2s;">
-                <img src="https://img.icons8.com/external-tal-revivo-duo-tal-revivo/96/external-glowing-aura-around-a-calm-human-head-and-soul-zen-duo-tal-revivo.png" alt="Spiritual Symbol" class="spirit-symbol w-32 h-32 mx-auto">
+    <div id="selection-screen" class="main-container">
+        <header class="text-center mb-4">
+            <a href="index.html" class="text-purple-300 hover:text-white mb-4 inline-block">&larr; กลับสู่หน้าแรก</a>
+            <h1 id="page-title" class="text-3xl md:text-4xl font-bold text-glow">กำลังเตรียมพื้นที่...</h1>
+            <p id="instruction-text" class="text-white/80 mt-2 h-12"></p>
+        </header>
+
+        <div id="controls" class="controls-container glass-box">
+            <div id="selection-tray" class="selection-tray-container"></div>
+            <div class="flex items-center gap-4">
+                <button id="shuffle-button" class="shuffle-btn" title="สับไพ่">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M0 3.5A.5.5 0 0 1 .5 3H1c2.202 0 3.827 1.24 4.874 2.418C6.92 6.588 8 7.582 8 9.5s-1.08 2.912-2.126 4.082C4.827 14.76 3.202 16 1 16H.5a.5.5 0 0 1-.5-.5v-12zm2.291 1.672c.626-.956 1.6-1.587 2.755-1.587H6.5a.5.5 0 0 1 .5.5v12a.5.5 0 0 1-.5-.5H5.045c-1.155 0-2.129-.631-2.755-1.587C1.69 11.231 1 10.12 1 8.5c0-1.62.69-2.73 1.291-3.828z"/><path d="M16 3.5a.5.5 0 0 1-.5.5h-.793c-1.155 0-2.129.631-2.755 1.587C11.31 6.769 11 7.88 11 9.5c0 1.62.69 2.73 1.291 3.828.626.956 1.6 1.587 2.755 1.587h.793a.5.5 0 0 1 .5.5v-12a.5.5 0 0 1-.5-.5zM15 5.172c-.626.956-1.6 1.587-2.755-1.587h-.793c-1.155 0-2.129-.631-2.755-1.587C8.08 4.231 7.5 3.12 7.5 1.5a.5.5 0 0 1 .5-.5h6.5a.5.5 0 0 1 .5.5v3.672z"/></svg>
+                </button>
+                <div id="counter" class="counter-text">เลือกแล้ว 0/10 ใบ</div>
+                <button id="confirm-button" class="confirm-btn" disabled>รับฟังคำชี้แนะ</button>
             </div>
+        </div>
+        <div id="card-grid" class="card-grid-container"></div>
+    </div>
 
-            <!-- Welcome Message Bubble -->
-            <div class="welcome-bubble rounded-2xl p-6 mb-8 max-w-2xl mx-auto">
-                <h1 id="greeting" class="text-3xl md:text-4xl font-bold text-violet-300" style="text-shadow: 0 0 8px rgba(192, 132, 252, 0.6);">
-                    ...
-                </h1>
-                <p id="status" class="text-white/70 mt-2">กำลังเชื่อมต่อกับจิตวิญญาณของคุณ...</p>
-            </div>
+    <div id="results-screen" class="main-container hidden">
+        <header class="text-center mb-6">
+            <h1 id="result-title" class="text-3xl md:text-4xl font-bold text-glow">ไพ่ที่จิตวิญญาณของคุณเลือก</h1>
+            <p class="text-white/80 mt-2">นี่คือภาพสะท้อนจากจิตวิญญาณของคุณในตอนนี้</p>
+        </header>
+        <div id="results-grid" class="results-grid-container"></div>
+        
+        <div id="interpretation-container" class="hidden">
+            <h3>เสียงจากส่วนลึกบอกว่า...</h3>
+            <div id="interpretation-text">กำลังจูนคลื่นสู่จิตวิญญาณของคุณ...</div>
+        </div>
 
-            <!-- Main Action Buttons -->
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                
-                <!-- Pick a Card -->
-                <div class="fade-in-item" style="animation-delay: 0.8s;">
-                    <button onclick="openCardSelection()" class="action-btn w-full h-full p-6 rounded-2xl flex flex-col items-center justify-center">
-                        <img src="/card/raw.png" class="action-btn-icon w-16 h-16 mb-3" alt="ไอคอนไพ่ทาโรต์"/>
-                        <h2 class="text-xl font-bold">เปิดไพ่ทาโรต์</h2>
-                        <p class="text-white/60 text-sm">รับฟังเสียงสะท้อนจากภายใน</p>
-                    </button>
-                </div>
+        <div class="text-center mt-8 flex flex-col sm:flex-row gap-4 justify-center">
+            <button id="save-image-btn" class="save-btn">บันทึกผลเป็นรูปภาพ</button>
+            <button id="reset-button" class="confirm-btn">เลือกใหม่อีกครั้ง</button>
+        </div>
+    </div>
 
-                <!-- View Packages -->
-                <div class="fade-in-item" style="animation-delay: 1.0s;">
-                    <a href="packages.html" class="action-btn w-full h-full p-6 rounded-2xl flex flex-col items-center justify-center">
-                         <img src="/card/raw.png" class="action-btn-icon w-16 h-16 mb-3" alt="ไอคอนแพ็กเกจ"/>
-                        <h2 class="text-xl font-bold">แพ็กเกจดูดวง</h2>
-                        <p class="text-white/60 text-sm">"ชัด เคลียร์ ใช้ได้จริง"</p>
-                    </a>
-                </div>
-
-              <div class="fade-in-item" style="animation-delay: 1.0s;">
-                    <a href="legendary-path.html" class="action-btn w-full h-full p-6 rounded-2xl flex flex-col items-center justify-center">
-                         <img src="https://img.icons8.com/external-flaticons-flat-flat-icons/64/000000/external-diamond-achievement-and-awards-flaticons-flat-flat-icons.png" class="action-btn-icon w-16 h-16 mb-3" alt="ไอคอนแพ็กเกจ"/>
-                        <h2 class="text-xl font-bold">ไพ่วิญญาณประจำตัว”</h2>
-                        <p class="text-white/60 text-sm">ค้นพบไพ่ตัวตนของคุณ</p>
-                    </a>
-                </div>
-
-
-
-                <!-- Inner Conversation (Coming Soon) -->
-                    <div class="fade-in-item" style="animation-delay: 1.4s;">
-                        <button onclick="comingSoonAlert()" class="action-btn w-full h-full p-6 rounded-2xl flex flex-col items-center justify-center opacity-60 cursor-not-allowed">
-                        <img src="https://img.icons8.com/external-flaticons-flat-flat-icons/64/000000/external-ai-robotics-flaticons-flat-flat-icons.png" class="action-btn-icon w-16 h-16 mb-3" alt="ไอคอนแชทกับ AI"/>
-                        <h2 class="text-xl font-bold">สนทนาภายใน</h2>
-                        <p class="text-white/60 text-sm">(Coming Soon)</p>
-                    </button>
-                </div>
-            </div>
-
-        </main>
+    <div id="card-modal-container" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black bg-opacity-80 backdrop-blur-sm opacity-0 pointer-events-none transition-opacity duration-300">
+        <div id="card-modal-panel" class="w-full max-w-xs md:max-w-sm transform scale-95 transition-transform duration-300 text-center">
+            <img id="modal-card-img" src="" alt="" class="w-full rounded-2xl shadow-2xl shadow-purple-500/50">
+            <h2 id="modal-card-name" class="text-2xl font-bold text-white mt-4 text-glow"></h2>
+            <button id="modal-close-btn" class="mt-4 text-gray-300 hover:text-white transition-colors">ปิด</button>
+        </div>
     </div>
 
     <script>
-        // --- Inner Voice Logic ---
         document.addEventListener('DOMContentLoaded', () => {
-            const greetingElement = document.getElementById('greeting');
-            const statusElement = document.getElementById('status');
+            // --- DOM Elements ---
+            const selectionScreen = document.getElementById('selection-screen');
+            const resultsScreen = document.getElementById('results-screen');
+            const resultsGrid = document.getElementById('results-grid');
+            const cardGrid = document.getElementById('card-grid');
+            const counterDiv = document.getElementById('counter');
+            const confirmButton = document.getElementById('confirm-button');
+            const resetButton = document.getElementById('reset-button');
+            const selectionTray = document.getElementById('selection-tray');
+            const saveImageBtn = document.getElementById('save-image-btn');
+            const pageTitle = document.getElementById('page-title');
+            const resultTitle = document.getElementById('result-title');
+            const shuffleButton = document.getElementById('shuffle-button');
+            const cardModalContainer = document.getElementById('card-modal-container');
+            const modalCloseBtn = document.getElementById('modal-close-btn');
+            const instructionText = document.getElementById('instruction-text');
+            const interpretationContainer = document.getElementById('interpretation-container');
+            const interpretationText = document.getElementById('interpretation-text');
 
-            // Simulate connecting to the user's spirit
-            setTimeout(() => {
-                // Array of possible greetings from an inner voice
-                const greetings = [
-                    "ยินดีต้อนรับสู่พื้นที่ของตัวตนที่แท้จริง",
-                    "วันนี้... จิตวิญญาณของคุณต้องการบอกอะไร?",
-                    "ความเงียบคือเสียงที่ดังที่สุด... ลองฟังดูสิ",
-                    "ทุกคำตอบ... อยู่ในตัวคุณเสมอ",
-                    "ถึงเวลาสำรวจโลกภายในแล้ว"
-                ];
-                // Select a random greeting
-                const randomGreeting = greetings[Math.floor(Math.random() * greetings.length)];
+            // --- State Variables ---
+            let selectedCards = [];
+            let maxSelections = 10;
+            let renderTimeout;
+
+            function initializePage() {
+                const urlParams = new URLSearchParams(window.location.search);
+                const countFromUrl = parseInt(urlParams.get('count'));
+                if (countFromUrl && [1, 3, 4, 10].includes(countFromUrl)) maxSelections = countFromUrl;
+                pageTitle.textContent = `เลือกไพ่ ${maxSelections} ใบ`;
+                resultTitle.textContent = `ไพ่ ${maxSelections} ใบที่ถูกเลือก`;
                 
-                greetingElement.textContent = randomGreeting;
-                statusElement.textContent = "สถานะ: เชื่อมต่อแล้ว | คลื่นความถี่: สงบ";
-            }, 2000); // 2-second delay to simulate connection
-        });
+                const instructions = "หยุดนิ่ง... ฟังเสียงหัวใจ... แล้วปล่อยให้จิตวิญญาณนำทางไปสู่ไพ่ที่เป็นของคุณ";
+                let i = 0;
+                instructionText.innerHTML = "";
+                function typeWriter() {
+                    if (i < instructions.length) {
+                        instructionText.innerHTML += instructions.charAt(i);
+                        i++;
+                        setTimeout(typeWriter, 50);
+                    }
+                }
+                typeWriter();
+                renderDeck();
+                updateUI();
+            }
 
-        // --- Navigation & Alerts ---
-        function openCardSelection() {
-            Swal.fire({
-                title: 'เลือกจำนวนไพ่',
-                html: `
-                    <p class="mb-4 text-gray-300">คุณต้องการรับฟังเสียงสะท้อนในรูปแบบใด?</p>
-                    <div class="flex flex-col">
-                        <a href="pick.html?count=1" class="swal-card-option">1 ใบ (เสียงกระซิบ)</a>
-                        <a href="pick.html?count=3" class="swal-card-option">3 ใบ (อดีต-ปัจจุบัน-อนาคต)</a>
-                        <a href="pick.html?count=4" class="swal-card-option">4 ใบ (ปัญหา-ทางออก)</a>
-                        <a href="pick.html?count=10" class="swal-card-option">10 ใบ (ภาพสะท้อนทั้งหมด)</a>
-                    </div>
-                `,
-                showConfirmButton: false,
-                showCloseButton: true,
-                background: '#1a1a2e',
-                customClass: {
-                    popup: 'welcome-bubble !border-amber-400',
-                    title: '!text-amber-400',
-                    closeButton: '!text-white'
+            function getInnerVoiceInterpretation() {
+                interpretationContainer.classList.remove('hidden');
+                interpretationText.innerHTML = '<div class="loader-sm mx-auto"></div>'; // Show loader
+
+                const userProfile = {
+                    personality: "เป็นคนทำงานหนักแต่บางทีก็ไม่มีวินัย",
+                    goal: "อยากมีอิสรภาพทางการเงิน",
+                    status: "กำลังค้นหาเส้นทาง"
+                };
+                const cardKeywords = {
+                    'maj10': ['โชคชะตา', 'การเปลี่ยนแปลง'], 'maj01': ['พลัง', 'การเริ่มต้น'],
+                    'wan10': ['ภาระ', 'ความรับผิดชอบ'], 'cup10': ['ความสุข', 'ความสมบูรณ์'],
+                    'swo03': ['ความเจ็บปวด', 'การปลดปล่อย'], 'pen08': ['การทำงานหนัก', 'การพัฒนาฝีมือ']
+                };
+
+                let reading = `เมื่อมองลึกลงไปในไพ่เหล่านี้... เสียงในใจของฉันกำลังบอกว่า...\n\n`;
+                selectedCards.forEach(cardId => {
+                    const cardData = tarotDeck.find(c => c.id === cardId);
+                    if (cardData && cardKeywords[cardId]) {
+                        reading += `ไพ่ '${cardData.name}' กำลังสะท้อนถึง '${cardKeywords[cardId].join(" และ ")}' ที่ฉันกำลังเผชิญอยู่\n`;
+                    }
+                });
+                reading += `\nฉันรู้ดีว่าตัวฉัน '${userProfile.personality}'...\n`;
+                if (selectedCards.some(id => ['pen08', 'wan10'].includes(id))) {
+                    reading += `ความเหนื่อยล้าที่แบกรับอยู่ตอนนี้ แท้จริงแล้วคือบทพิสูจน์ความแข็งแกร่งของฉันเอง จิตวิญญาณของฉันบอกให้เชื่อมั่นว่าปลายทางนั้นคุ้มค่า\n`;
+                }
+                if (selectedCards.some(id => ['maj10', 'maj01'].includes(id))) {
+                    reading += `และดูเหมือนว่าจักรวาลกำลังส่งสัญญาณให้ฉันกล้าที่จะเริ่มต้นสิ่งใหม่ พลังในการสร้างสรรค์อยู่ในมือของฉันแล้ว\n`;
+                }
+                reading += `\nสำหรับเป้าหมายลึกๆ ที่ฉันต้องการ '${userProfile.goal}'...\n`;
+                if (selectedCards.some(id => ['pen08', 'maj01'].includes(id))) {
+                    reading += `ไพ่ยืนยันว่าฉันมาถูกทางแล้ว พลังแห่งการสร้างสรรค์และการลงมือทำอย่างสม่ำเสมอ คือกุญแจสำคัญที่จะนำพาฉันไปสู่อิสรภาพนั้น\n`;
+                } else {
+                    reading += `อาจถึงเวลาที่ต้องทบทวนเส้นทาง แต่ความหวังยังคงส่องสว่างอยู่เสมอ จิตใจของฉันยังคงมุ่งมั่นไม่เปลี่ยนแปลง\n`;
+                }
+                reading += `\nโดยสรุปแล้ว... ฉันรู้ดีว่าสิ่งที่ทำอยู่ตอนนี้ ('${userProfile.status}') คือสิ่งที่ถูกต้อง ขอเพียงแค่ฉันเชื่อมั่นในเสียงจากข้างในและก้าวเดินต่อไปอย่างกล้าหาญ`;
+
+                setTimeout(() => {
+                    interpretationText.innerHTML = '';
+                    const paragraphs = reading.split('\n');
+                    paragraphs.forEach((p, index) => {
+                        const pElement = document.createElement('p');
+                        pElement.textContent = p || '\u00A0'; // Use non-breaking space for empty lines
+                        pElement.style.animationDelay = `${index * 0.5}s`;
+                        interpretationText.appendChild(pElement);
+                    });
+                }, 2500);
+            }
+
+            function renderDeck() {
+                if (typeof tarotDeck === 'undefined') {
+                    cardGrid.innerHTML = `<p class="text-red-500 text-center col-span-full">เกิดข้อผิดพลาด: ไม่สามารถโหลดข้อมูลไพ่ได้</p>`;
+                    return;
+                }
+                cardGrid.innerHTML = '';
+                const shuffledDeck = [...tarotDeck].sort(() => Math.random() - 0.5);
+                const containerWidth = cardGrid.offsetWidth;
+                const cardsPerRow = containerWidth < 768 ? 10 : 19;
+                const cardWidth = containerWidth < 768 ? containerWidth / 8 : 90;
+                const overlapX = cardWidth * 0.45;
+                const rowHeight = cardWidth * (3/2) * 0.6;
+                const totalRowWidth = (cardsPerRow - 1) * overlapX + cardWidth;
+                const startOffset = (containerWidth - totalRowWidth) / 2;
+                shuffledDeck.forEach((card, index) => {
+                    const cardContainer = document.createElement('div');
+                    cardContainer.className = 'card-container';
+                    cardContainer.dataset.id = card.id;
+                    const row = Math.floor(index / cardsPerRow);
+                    const col = index % cardsPerRow;
+                    cardContainer.style.cssText = `
+                        width: ${cardWidth}px; top: ${row * rowHeight}px; left: ${startOffset + (col * overlapX)}px;
+                        z-index: ${col}; animation-delay: ${500 + index * 50}ms;
+                    `;
+                    cardContainer.innerHTML = `<div class="card-back"></div>`;
+                    cardContainer.addEventListener('click', () => toggleSelection(card.id));
+                    cardGrid.appendChild(cardContainer);
+                });
+            }
+            
+            function toggleSelection(cardId) {
+                const cardInGrid = document.querySelector(`.card-container[data-id="${cardId}"]`);
+                if (selectedCards.includes(cardId)) {
+                    selectedCards = selectedCards.filter(id => id !== cardId);
+                    if(cardInGrid) cardInGrid.classList.remove('selected');
+                } else {
+                    if (selectedCards.length < maxSelections) {
+                        selectedCards.push(cardId);
+                        if(cardInGrid) cardInGrid.classList.add('selected');
+                    } else {
+                        Swal.fire('ครบจำนวนแล้ว', `ไพ่ได้ถูกเลือกครบ ${maxSelections} ใบแล้ว`, 'info');
+                    }
+                }
+                updateUI();
+            }
+
+            function updateUI() {
+                counterDiv.textContent = `เลือกแล้ว ${selectedCards.length}/${maxSelections} ใบ`;
+                const isReady = selectedCards.length === maxSelections;
+                confirmButton.disabled = !isReady;
+                isReady ? confirmButton.classList.add('ready') : confirmButton.classList.remove('ready');
+                selectionTray.innerHTML = '';
+                selectedCards.forEach((cardId, index) => {
+                    const trayCard = document.createElement('div');
+                    trayCard.className = 'tray-card in-tray';
+                    trayCard.dataset.id = cardId;
+                    trayCard.style.left = `${index * 35}px`;
+                    trayCard.style.zIndex = index;
+                    trayCard.addEventListener('click', (e) => { e.stopPropagation(); toggleSelection(cardId); });
+                    selectionTray.appendChild(trayCard);
+                });
+            }
+
+            function renderResults() {
+                resultsGrid.innerHTML = '';
+                resultsGrid.style.gridTemplateColumns = `repeat(${Math.min(maxSelections, 5)}, 1fr)`;
+                selectedCards.forEach((cardDataId, index) => {
+                    const cardData = tarotDeck.find(c => c.id === cardDataId);
+                    const resultCard = document.createElement('div');
+                    resultCard.className = 'result-card';
+                    resultCard.style.perspective = '1000px';
+                    resultCard.innerHTML = `
+                        <div class="result-card-inner">
+                            <div class="result-card-face result-card-back"></div>
+                            <div class="result-card-face result-card-front">
+                                <img src="${cardData.img}" alt="${cardData.name}" class="w-full h-full object-cover rounded-lg">
+                            </div>
+                        </div>
+                        <p class="text-white/80 mt-2 opacity-0 transition-opacity duration-500">${cardData.name}</p>
+                    `;
+                    resultsGrid.appendChild(resultCard);
+                    
+                    // Staggered flip animation
+                    setTimeout(() => {
+                        resultCard.classList.add('is-flipped');
+                        resultCard.querySelector('p').style.opacity = '1';
+                    }, 500 + index * 400); // Start after 0.5s, each card flips 0.4s after the previous
+                });
+            }
+            
+            confirmButton.addEventListener('click', () => {
+                if (selectedCards.length === maxSelections) {
+                    Swal.fire({
+                        title: 'กำลังดำดิ่งสู่จิตวิญญาณ',
+                        text: 'โปรดทำสมาธิและรอสักครู่...',
+                        timer: 2000,
+                        allowOutsideClick: false,
+                        didOpen: () => { Swal.showLoading(); },
+                        showConfirmButton: false
+                    }).then(() => {
+                        selectionScreen.classList.add('hidden');
+                        resultsScreen.classList.remove('hidden');
+                        renderResults();
+                        getInnerVoiceInterpretation();
+                    });
                 }
             });
-        }
 
-        function comingSoonAlert() {
-            Swal.fire({
-                icon: 'info',
-                title: 'เร็วๆ นี้',
-                text: 'ฟังก์ชันนี้กำลังถูกขัดเกลา เพื่อให้คุณได้เชื่อมต่อกับจิตวิญญาณของตนเองได้อย่างลึกซึ้งที่สุด',
-                background: '#1a1a2e',
-                color: '#ffffff',
-                confirmButtonColor: '#a78bfa'
+            resetButton.addEventListener('click', () => window.location.reload());
+            shuffleButton.addEventListener('click', () => {
+                shuffleButton.disabled = true;
+                selectedCards = [];
+                updateUI();
+                cardGrid.style.transition = 'opacity 0.5s ease-out';
+                cardGrid.style.opacity = '0';
+                setTimeout(() => {
+                    renderDeck();
+                    cardGrid.style.opacity = '1';
+                    shuffleButton.disabled = false;
+                }, 500);
             });
-        }
-    </script>
+            saveImageBtn.addEventListener('click', async () => { 
+                Swal.fire({ title: 'กำลังสร้างรูปภาพ...', text: 'โปรดรอสักครู่', allowOutsideClick: false, didOpen: () => Swal.showLoading() });
+                try {
+                    const canvas = await html2canvas(document.getElementById('results-screen'), { useCORS: true, backgroundColor: null, scale: 2 });
+                    const dataUrl = canvas.toDataURL('image/png');
+                    Swal.close();
+                    const result = await Swal.fire({
+                        title: 'รูปภาพเสร็จสมบูรณ์!', text: 'บันทึกภาพสะท้อนจากจิตวิญญาณของคุณ', imageUrl: dataUrl, imageHeight: 200,
+                        showCancelButton: true, confirmButtonColor: '#10B981', cancelButtonColor: '#6B7280',
+                        confirmButtonText: 'บันทึก', cancelButtonText: 'ยกเลิก'
+                    });
+                    if (result.isConfirmed) {
+                        const link = document.createElement('a');
+                        link.href = dataUrl;
+                        link.download = `ผลคำทำนาย-จากภายใน-${Date.now()}.png`;
+                        link.click();
+                    }
+                } catch (error) {
+                    Swal.fire({ icon: 'error', title: 'เกิดข้อผิดพลาด', text: 'ไม่สามารถสร้างรูปภาพได้' });
+                }
+             });
+            
+            function openCardModal(cardId) {
+                const cardData = tarotDeck.find(c => c.id === cardId);
+                if (!cardData) return;
+                document.getElementById('modal-card-img').src = cardData.img;
+                document.getElementById('modal-card-name').textContent = cardData.name;
+                cardModalContainer.classList.add('visible');
+            }
+            function closeCardModal() {
+                cardModalContainer.classList.remove('visible');
+            }
+            modalCloseBtn.addEventListener('click', closeCardModal);
+            cardModalContainer.addEventListener('click', e => e.target === cardModalContainer && closeCardModal());
+            document.addEventListener('keydown', e => e.key === 'Escape' && closeCardModal());
 
+            initializePage();
+            window.addEventListener('resize', () => {
+                clearTimeout(renderTimeout);
+                renderTimeout = setTimeout(renderDeck, 250);
+            });
+        });
+    </script>
 </body>
 </html>
