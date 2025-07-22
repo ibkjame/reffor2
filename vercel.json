@@ -3,6 +3,11 @@
     {
       "source": "/:path((?!.*\\.).*)",
       "destination": "/:path.html"
+    },
+ {
+      "source": "/spirit",
+      "destination": "/spiritcard.html"
     }
+
   ]
 }
