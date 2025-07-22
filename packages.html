@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title> REFFORTUNE</title>
+    <meta name="description" content="สำรวจบริการต่างๆ ที่ออกแบบมาเพื่อสนับสนุนเส้นทางการเติบโตทางจิตวิญญาณของคุณ" />
+    <meta name="keywords" content="แพ็กเกจดูดวง, บริการ, โหราศาสตร์, ไพ่ทาโรต์, reffortune" />
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://reffortune.com/packages.html" />
+    <meta property="og:title" content="บริการเพื่อการเติบโต | REFFORTUNE" />
+    <meta property="og:description" content="สำรวจบริการต่างๆ ที่ออกแบบมาเพื่อสนับสนุนเส้นทางการเติบโตทางจิตวิญญาณของคุณ" />
+    <meta property="og:image" content="https://i.imgur.com/8a5g6aD.png" />
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:url" content="https://reffortune.com/packages.html" />
+    <meta property="twitter:title" content="บริการเพื่อการเติบโต | REFFORTUNE" />
+    <meta property="twitter:description" content="สำรวจบริการต่างๆ ที่ออกแบบมาเพื่อสนับสนุนเส้นทางการเติบโตทางจิตวิญญาณของคุณ" />
+    <meta property="twitter:image" content="https://i.imgur.com/8a5g6aD.png" />
+    
+    <!-- Favicons -->
+    <link rel="icon" type="image/png" href="icon/favicon-96x96.png" sizes="96x96" />
+    <link rel="icon" type="image/svg+xml" href="icon/favicon.svg" />
+    <link rel="shortcut icon" href="icon/favicon.ico" />
+    <link rel="apple-touch-icon" sizes="180x180" href="icon/apple-touch-icon.png" />
+    <link rel="manifest" href="icon/site.webmanifest" />
+
+    <!-- Google Fonts & Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@400;700&display=swap" rel="stylesheet">
+    
+    <style>
+        /* --- Base Theme & Animated Background (from index.html) --- */
+        body {
+            font-family: 'Noto Sans Thai', sans-serif;
+            background-color: #100a33;
+            color: white;
+            overflow-x: hidden;
+        }
+        .space-bg {
+            background: radial-gradient(ellipse at bottom, #0f0755 0%, #100a33 100%);
+            position: fixed;
+            inset: 0;
+            z-index: -3;
+        }
+        .stars {
+            position: fixed; inset: 0;
+            background: transparent url(https://s3-us-west-2.amazonaws.com/s.cdpn.io/1231630/stars.png) repeat top center;
+            z-index: -2;
+        }
+        .twinkling {
+            position: fixed; inset: 0;
+            background: transparent url(https://s3-us-west-2.amazonaws.com/s.cdpn.io/1231630/stars.png) repeat top center;
+            z-index: -1;
+            animation: move-twinkle-back 200s linear infinite;
+        }
+        @keyframes move-twinkle-back { from { background-position: 0 0; } to { background-position: -10000px 5000px; } }
+        
+        /* --- Glass Box & Glow Effects --- */
+        .glass-box {
+            background: rgba(30, 27, 75, 0.7);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(167, 139, 250, 0.3);
+            transition: all 0.3s ease;
+        }
+        .text-glow {
+            text-shadow: 0 0 8px rgba(192, 132, 252, 0.6);
+        }
+
+        /* --- Animations --- */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .fade-in-item {
+            opacity: 0;
+            animation: fadeIn 1s ease-out forwards;
+        }
+    </style>
+</head>
+<body class="antialiased">
+    <!-- Animated Background -->
+    <div class="space-bg"></div>
+    <div class="stars"></div>
+    <div class="twinkling"></div>
+
+    <!-- Main Content -->
+
+
+        <main class="w-full max-w-4xl mx-auto">
+            
+            <header class="text-center my-8 md:my-12 fade-in-item">
+                <h1 class="text-4xl md:text-5xl font-bold text-glow mb-4">แพ็กเกจดูดวงกับเรฟ</h1>
+                <p class="text-white/80 max-w-2xl mx-auto">ทุกแพ็กเกจเลือกใช้ไพ่ยิปซีและศาสตร์เสริมที่เหมาะกับคำถาม พร้อมคำแนะนำที่ชัดเจน ใช้ได้กับชีวิตจริง
+     </p>
+                 <a href="index.html" class="text-purple-300 hover:text-white mt-6 inline-block">&larr; กลับสู่หน้าแรก</a>
+            </header>
+
+            <div class="space-y-8 text-left">
+                <!-- Main Packages -->
+                <div class="glass-box p-6 md:p-8 rounded-2xl fade-in-item" style="animation-delay: 0.2s;">
+                    <h3 class="text-2xl font-bold text-purple-300 mb-4">แพ็กเกจหลัก</h3>
+                    <div id="main-packages-container" class="space-y-6">
+                        <div class="border-t border-white/10 pt-6">
+                            <h4 class="font-bold text-lg text-white">แพ็ก A — ภาพรวมชีวิต (พื้นดวง + รายปี)</h4>
+                            <p class="text-amber-400 font-semibold">749 บาท | สนทนา 1 ชม.</p>
+                            <p class="text-sm text-gray-300 mt-1">ใช้ไพ่ยิปซี 10 ใบ ร่วมกับโหราศาสตร์ไทย เพื่อวิเคราะห์พื้นฐานดวงชะตาและแนวโน้มตลอดทั้งปี เหมาะสำหรับการวางแผนชีวิตในระยะยาว หรือผู้ที่ต้องการความเข้าใจในตนเองอย่างลึกซึ้ง</p>
+                        </div>
+                        <div class="border-t border-white/10 pt-6">
+                            <h4 class="font-bold text-lg text-white">แพ็ก B — เข็มทิศนำทาง (ราย 3 เดือน)</h4>
+                            <p class="text-amber-400 font-semibold">389 บาท | สนทนา 30 นาที หรือ บันทึกเสียง</p>
+                            <p class="text-sm text-gray-300 mt-1">ใช้ไพ่ยิปซี 10 ใบ เพื่อสำรวจพลังงานและทิศทางในช่วง 3 เดือนข้างหน้า เหมาะสำหรับผู้ที่ต้องการตรวจสอบเส้นทางและปรับแผนการเดินทางของชีวิต</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Call & Text Packages -->
+                <div class="grid md:grid-cols-2 gap-8">
+                    <div id="call-packages-container" class="glass-box p-6 md:p-8 rounded-2xl fade-in-item" style="animation-delay: 0.4s;">
+                        <h3 class="text-xl font-bold text-cyan-300 mb-2">คำถามผ่านการสนทนา</h3>
+                        <p class="text-sm text-gray-300 mb-3">เหมาะสำหรับผู้ที่มีหลายคำถาม หรือต้องการพื้นที่ปลอดภัยในการพูดคุยและปลดปล่อย</p>
+                        <p class="font-semibold text-white">15 นาที : <span class="text-amber-400">189 บาท</span></p>
+                        <p class="font-semibold text-white">30 นาที : <span class="text-amber-400">359 บาท</span></p>
+                    </div>
+                    <div id="text-packages-container" class="glass-box p-6 md:p-8 rounded-2xl fade-in-item" style="animation-delay: 0.6s;">
+                        <h3 class="text-xl font-bold text-cyan-300 mb-2">คำถามผ่านการพิมพ์</h3>
+                        <p class="text-sm text-gray-300 mb-3">รับคำตอบที่ละเอียดและตรงประเด็น สามารถกลับมาทบทวนได้ทุกเมื่อ</p>
+                        <p class="font-semibold text-white">คำถามเฉพาะเจาะจง : <span class="text-amber-400">45 บาท/คำถาม</span></p>
+                        <p class="text-sm text-green-400">พิเศษ: 3 คำถาม 125.- | 5 คำถาม 195.-</p>
+                        <p class="font-semibold text-white mt-2">คำถามเปรียบเทียบ : <span class="text-amber-400">85 บาท</span></p>
+                        <p class="text-xs text-gray-400 mt-1">เช่น "เส้นทาง A กับ B จะนำพาฉันไปสู่อะไร?"</p>
+                    </div>
+                </div>
+
+                <!-- Add-on Packages -->
+                <div class="glass-box p-6 md:p-8 rounded-2xl fade-in-item" style="animation-delay: 0.8s;">
+                    <h3 class="text-2xl font-bold text-cyan-300 mb-4">บริการเสริม</h3>
+                    <div id="addon-packages-container" class="space-y-6">
+                        <div class="border-t border-white/10 pt-6">
+                            <h4 class="font-bold text-lg text-white">ภาพรวมรายเดือน</h4>
+                            <p class="text-amber-400 font-semibold">259 บาท | ข้อความ หรือ บันทึกเสียง</p>
+                            <p class="text-sm text-gray-300 mt-1">สำรวจภาพรวมพลังงานในด้านต่างๆ (การงาน การเงิน ความรัก สุขภาพ) พร้อมคำแนะนำและการเสริมพลังงานในแต่ละเดือน</p>
+                        </div>
+                        <div class="border-t border-white/10 pt-6">
+                            <h4 class="font-bold text-lg text-white">🔮 ดวงรายปี (มหาสัตตเลข)</h4>
+                            <p class="text-amber-400 font-semibold">489 บาท | เอกสาร PDF</p>
+                            <p class="text-sm text-gray-300 mt-1">วิเคราะห์แนวโน้มชะตาตลอดทั้งปี (นับจากวันเกิดปัจจุบันถึงวันเกิดปีถัดไป) เพื่อให้คุณเตรียมพร้อมรับมือกับทุกการเปลี่ยนแปลง</p>
+                        </div>
+                        <div class="border-t border-white/10 pt-6">
+                            <h4 class="font-bold text-lg text-white">🔮 พื้นดวง + ดวงรายปี (มหาสัตตเลข)</h4>
+                            <p class="text-amber-400 font-semibold">649 บาท | เอกสาร PDF</p>
+                            <p class="text-sm text-gray-300 mt-1">เหมาะสำหรับผู้ที่ต้องการเข้าใจรากฐานของตนเองอย่างลึกซึ้ง ควบคู่ไปกับแนวโน้มของปีปัจจุบัน เพื่อการเติบโตอย่างเต็มศักยภาพ</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <footer class="text-center my-8 md:my-12 fade-in-item" style="animation-delay: 1s;">
+                 <p class="text-lg text-green-300">รายได้ 10% จากทุกบริการ จะถูกนำไปทำบุญเพื่อส่งต่อพลังงานดีๆ กลับคืนสู่จักรวาล</p>
+            </footer>
+
+        </main>
+    </div>
+</body>
+</html>

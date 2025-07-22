@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>เสียงจากภายใน | REFFORTUNE</title>
+    <meta name="description" content="พื้นที่ปลอดภัยสำหรับการรับฟังเสียงจากจิตวิญญาณของคุณเอง ผ่านไพ่ทาโรต์และการชี้แนะ เพื่อการเติบโตและค้นพบเส้นทางของตนเอง" />
+    <meta name="keywords" content="จิตวิญญาณ, เสียงภายใน, ดูดวง, ไพ่ทาโรต์, พัฒนาตนเอง, reffortune" />
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://reffortune.com/" />
+    <meta property="og:title" content="เสียงจากภายใน | REFFORTUNE" />
+    <meta property="og:description" content="พื้นที่ปลอดภัยสำหรับการรับฟังเสียงจากจิตวิญญาณของคุณเอง" />
+    <meta property="og:image" content="https://i.imgur.com/8a5g6aD.png" />
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:url" content="https://reffortune.com/" />
+    <meta property="twitter:title" content="เสียงจากภายใน | REFFORTUNE" />
+    <meta property="twitter:description" content="พื้นที่ปลอดภัยสำหรับการรับฟังเสียงจากจิตวิญญาณของคุณเอง" />
+    <meta property="twitter:image" content="https://i.imgur.com/8a5g6aD.png" />
+    
+    <!-- Favicons -->
+    <link rel="icon" type="image/png" href="icon/favicon-96x96.png" sizes="96x96" />
+    <link rel="icon" type="image/svg+xml" href="icon/favicon.svg" />
+    <link rel="shortcut icon" href="icon/favicon.ico" />
+    <link rel="apple-touch-icon" sizes="180x180" href="icon/apple-touch-icon.png" />
+    <link rel="manifest" href="icon/site.webmanifest" />
+
+    <!-- Google Fonts & Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@400;700&display=swap" rel="stylesheet">
+    
+    <!-- SweetAlert2 for popups -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <style>
+        /* --- Base Theme & Animated Background --- */
+        body {
+            font-family: 'Noto Sans Thai', sans-serif;
+            background-color: #100a33;
+            color: white;
+            overflow-x: hidden;
+        }
+        .space-bg {
+            background: radial-gradient(ellipse at bottom, #0f0755 0%, #100a33 100%);
+            position: fixed;
+            inset: 0;
+            z-index: -3;
+        }
+        .stars {
+            position: fixed; inset: 0;
+            background: transparent url(https://s3-us-west-2.amazonaws.com/s.cdpn.io/1231630/stars.png) repeat top center;
+            z-index: -2;
+        }
+        .twinkling {
+            position: fixed; inset: 0;
+            background: transparent url(https://s3-us-west-2.amazonaws.com/s.cdpn.io/1231630/stars.png) repeat top center;
+            z-index: -1;
+            animation: move-twinkle-back 200s linear infinite;
+        }
+        @keyframes move-twinkle-back { from { background-position: 0 0; } to { background-position: -10000px 5000px; } }
+
+        /* --- Spiritual Symbol & Interface Styles --- */
+        .spirit-symbol-container {
+            transition: transform 0.5s ease-in-out, filter 1s ease;
+        }
+        .spirit-symbol-container:hover {
+            transform: scale(1.05);
+            filter: drop-shadow(0 0 20px rgba(196, 181, 253, 0.7));
+        }
+        .spirit-symbol {
+            animation: pulse-glow 6s ease-in-out infinite;
+        }
+        @keyframes pulse-glow {
+            0%, 100% { filter: drop-shadow(0 0 15px rgba(167, 139, 250, 0.4)); }
+            50% { filter: drop-shadow(0 0 30px rgba(167, 139, 250, 0.8)); }
+        }
+
+        .welcome-bubble {
+            background: rgba(30, 27, 75, 0.7);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(167, 139, 250, 0.3);
+            animation: fadeIn 1s ease-out 0.5s both;
+        }
+
+        /* --- Action Buttons --- */
+        .action-btn {
+            background: rgba(141, 133, 172, 0.2);
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+            transform: perspective(1000px);
+        }
+        .action-btn:hover {
+            background: rgba(167, 139, 250, 0.3);
+            border-color: rgba(196, 181, 253, 0.7);
+            transform: translateY(-8px) rotateX(10deg);
+            box-shadow: 0 15px 25px rgba(71, 8, 187, 0.4);
+        }
+        .action-btn-icon {
+            filter: drop-shadow(0 0 5px rgba(196, 181, 253, 0.7));
+        }
+
+        /* --- General Animations --- */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .fade-in-item {
+            animation: fadeIn 1s ease-out both;
+        }
+
+        /* --- SweetAlert Customization --- */
+        .swal2-popup {
+            background-color: #111111 !important;
+            border: 2px solid #FBBF24 !important;
+            border-radius: 1rem !important;
+        }
+        .swal2-title { color: #FBBF24 !important; }
+        .swal2-html-container { color: #D1D5DB !important; }
+        .swal-card-option {
+            display: block; width: 100%; padding: 1rem; margin-bottom: 0.75rem;
+            border: 1px solid #FBBF24; border-radius: 0.5rem; text-align: center;
+            font-weight: bold; color: #FBBF24; text-decoration: none; transition: all 0.3s ease;
+        }
+        .swal-card-option:hover { background-color: #FBBF24; color: #111111; }
+
+    </style>
+</head>
+<body class="antialiased">
+    <!-- Animated Background -->
+    <div class="space-bg"></div>
+    <div class="stars"></div>
+    <div class="twinkling"></div>
+
+    <!-- Main Content -->
+    <div class="relative min-h-screen flex items-center justify-center p-4">
+        <main class="w-full max-w-4xl mx-auto text-center">
+            
+            <!-- Spiritual Symbol -->
+            <div class="spirit-symbol-container mb-6 fade-in-item" style="animation-delay: 0.2s;">
+                <img src="https://img.icons8.com/external-tal-revivo-duo-tal-revivo/96/external-glowing-aura-around-a-calm-human-head-and-soul-zen-duo-tal-revivo.png" alt="Spiritual Symbol" class="spirit-symbol w-32 h-32 mx-auto">
+            </div>
+
+            <!-- Welcome Message Bubble -->
+            <div class="welcome-bubble rounded-2xl p-6 mb-8 max-w-2xl mx-auto">
+                <h1 id="greeting" class="text-3xl md:text-4xl font-bold text-violet-300" style="text-shadow: 0 0 8px rgba(192, 132, 252, 0.6);">
+                    ...
+                </h1>
+                <p id="status" class="text-white/70 mt-2">กำลังเชื่อมต่อกับจิตวิญญาณของคุณ...</p>
+            </div>
+
+            <!-- Main Action Buttons -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                
+                <!-- Pick a Card -->
+                <div class="fade-in-item" style="animation-delay: 0.8s;">
+                    <button onclick="openCardSelection()" class="action-btn w-full h-full p-6 rounded-2xl flex flex-col items-center justify-center">
+                        <img src="/card/raw.png" class="action-btn-icon w-16 h-16 mb-3" alt="ไอคอนไพ่ทาโรต์"/>
+                        <h2 class="text-xl font-bold">เปิดไพ่ทาโรต์</h2>
+                        <p class="text-white/60 text-sm">รับฟังเสียงสะท้อนจากภายใน</p>
+                    </button>
+                </div>
+
+                <!-- View Packages -->
+                <div class="fade-in-item" style="animation-delay: 1.0s;">
+                    <a href="packages.html" class="action-btn w-full h-full p-6 rounded-2xl flex flex-col items-center justify-center">
+                         <img src="/card/raw.png" class="action-btn-icon w-16 h-16 mb-3" alt="ไอคอนแพ็กเกจ"/>
+                        <h2 class="text-xl font-bold">แพ็กเกจดูดวง</h2>
+                        <p class="text-white/60 text-sm">"ชัด เคลียร์ ใช้ได้จริง"</p>
+                    </a>
+                </div>
+
+              <div class="fade-in-item" style="animation-delay: 1.0s;">
+                    <a href="legendary-path.html" class="action-btn w-full h-full p-6 rounded-2xl flex flex-col items-center justify-center">
+                         <img src="https://img.icons8.com/external-flaticons-flat-flat-icons/64/000000/external-diamond-achievement-and-awards-flaticons-flat-flat-icons.png" class="action-btn-icon w-16 h-16 mb-3" alt="ไอคอนแพ็กเกจ"/>
+                        <h2 class="text-xl font-bold">ไพ่วิญญาณประจำตัว”</h2>
+                        <p class="text-white/60 text-sm">ค้นพบไพ่ตัวตนของคุณ</p>
+                    </a>
+                </div>
+
+
+
+                <!-- Inner Conversation (Coming Soon) -->
+                    <div class="fade-in-item" style="animation-delay: 1.4s;">
+                        <button onclick="comingSoonAlert()" class="action-btn w-full h-full p-6 rounded-2xl flex flex-col items-center justify-center opacity-60 cursor-not-allowed">
+                        <img src="https://img.icons8.com/external-flaticons-flat-flat-icons/64/000000/external-ai-robotics-flaticons-flat-flat-icons.png" class="action-btn-icon w-16 h-16 mb-3" alt="ไอคอนแชทกับ AI"/>
+                        <h2 class="text-xl font-bold">สนทนาภายใน</h2>
+                        <p class="text-white/60 text-sm">(Coming Soon)</p>
+                    </button>
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+    <script>
+        // --- Inner Voice Logic ---
+        document.addEventListener('DOMContentLoaded', () => {
+            const greetingElement = document.getElementById('greeting');
+            const statusElement = document.getElementById('status');
+
+            // Simulate connecting to the user's spirit
+            setTimeout(() => {
+                // Array of possible greetings from an inner voice
+                const greetings = [
+                    "ยินดีต้อนรับสู่พื้นที่ของตัวตนที่แท้จริง",
+                    "วันนี้... จิตวิญญาณของคุณต้องการบอกอะไร?",
+                    "ความเงียบคือเสียงที่ดังที่สุด... ลองฟังดูสิ",
+                    "ทุกคำตอบ... อยู่ในตัวคุณเสมอ",
+                    "ถึงเวลาสำรวจโลกภายในแล้ว"
+                ];
+                // Select a random greeting
+                const randomGreeting = greetings[Math.floor(Math.random() * greetings.length)];
+                
+                greetingElement.textContent = randomGreeting;
+                statusElement.textContent = "สถานะ: เชื่อมต่อแล้ว | คลื่นความถี่: สงบ";
+            }, 2000); // 2-second delay to simulate connection
+        });
+
+        // --- Navigation & Alerts ---
+        function openCardSelection() {
+            Swal.fire({
+                title: 'เลือกจำนวนไพ่',
+                html: `
+                    <p class="mb-4 text-gray-300">คุณต้องการรับฟังเสียงสะท้อนในรูปแบบใด?</p>
+                    <div class="flex flex-col">
+                        <a href="pick.html?count=1" class="swal-card-option">1 ใบ (เสียงกระซิบ)</a>
+                        <a href="pick.html?count=3" class="swal-card-option">3 ใบ (อดีต-ปัจจุบัน-อนาคต)</a>
+                        <a href="pick.html?count=4" class="swal-card-option">4 ใบ (ปัญหา-ทางออก)</a>
+                        <a href="pick.html?count=10" class="swal-card-option">10 ใบ (ภาพสะท้อนทั้งหมด)</a>
+                    </div>
+                `,
+                showConfirmButton: false,
+                showCloseButton: true,
+                background: '#1a1a2e',
+                customClass: {
+                    popup: 'welcome-bubble !border-amber-400',
+                    title: '!text-amber-400',
+                    closeButton: '!text-white'
+                }
+            });
+        }
+
+        function comingSoonAlert() {
+            Swal.fire({
+                icon: 'info',
+                title: 'เร็วๆ นี้',
+                text: 'ฟังก์ชันนี้กำลังถูกขัดเกลา เพื่อให้คุณได้เชื่อมต่อกับจิตวิญญาณของตนเองได้อย่างลึกซึ้งที่สุด',
+                background: '#1a1a2e',
+                color: '#ffffff',
+                confirmButtonColor: '#a78bfa'
+            });
+        }
+    </script>
+
+</body>
+</html>
