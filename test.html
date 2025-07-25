@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>ดูดวงกับเรฟ - REFFORTUNE</title>
+    <meta name="description" content="ดูดวงกับเรฟ บริการดูดวงไพ่ทาโรต์ ไพ่ออราเคิล โหราศาสตร์ และมหาสัตตเลข พร้อมแพ็กเกจที่เหมาะกับคุณ เช็คดวงชะตา วางแผนชีวิต และรับคำแนะนำที่ชัดเจน ใช้ได้จริง" />
+    <meta name="keywords" content="ดูดวง, ไพ่ทาโรต์, ไพ่ออราเคิล, โหราศาสตร์, มหาสัตตเลข, ดูดวงออนไลน์, เรฟฟอร์จูน, ดูดวงความรัก, ดูดวงการงาน, ดูดวงการเงิน" />
+    <meta property="og:image" content="https://i.imgur.com/8a5g6aD.png" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@400;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <style>
+        /* --- NEW THEME & COLOR PALETTE --- */
+        :root {
+            --bg-deep-purple: #3c2e44;
+            --bg-dusky-plum: #725c6a;
+            --accent-muted-rose: #ce9884;
+            --text-light-tan: #e4b6a0;
+            --text-pale-peach: #ead4b4;
+            --black: #000000;
+        }
+
+        /* --- BASE & BACKGROUND --- */
+        body {
+            font-family: 'Noto Sans Thai', sans-serif;
+            background-color: var(--bg-deep-purple);
+            color: var(--text-pale-peach);
+            overflow-x: hidden;
+        }
+
+        .main-background {
+            position: fixed;
+            inset: 0;
+            background: radial-gradient(ellipse at bottom, var(--bg-dusky-plum) 0%, var(--bg-deep-purple) 70%);
+            z-index: -3; /* Pushed back */
+        }
+        
+        /* --- STARFIELD BACKGROUND --- */
+        .stars {
+            position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+            width: 100%; height: 100%; display: block;
+            background: transparent url(https://s3-us-west-2.amazonaws.com/s.cdpn.io/1231630/stars.png) repeat top center;
+            z-index: -2;
+        }
+        .twinkling {
+            position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+            background: transparent url(https://s3-us-west-2.amazonaws.com/s.cdpn.io/1231630/stars.png) repeat top center;
+            z-index: -1;
+            animation: move-twinkle-back 200s linear infinite;
+        }
+        @keyframes move-twinkle-back { from { background-position: 0 0; } to { background-position: -10000px 5000px; } }
+
+
+        /* --- GENERAL STYLES & ANIMATIONS --- */
+        .fade-in-item {
+            animation: fadeIn 1s ease-out both;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* --- ACTION BUTTONS --- */
+        .action-btn {
+            background: rgba(114, 92, 106, 0.25); /* --bg-dusky-plum with alpha */
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
+            border: 1px solid rgba(206, 152, 132, 0.4); /* --accent-muted-rose with alpha */
+            border-radius: 1rem;
+            transition: all 0.3s ease-in-out;
+            text-align: left;
+            display: flex;
+            flex-direction: column;
+            padding: 1.5rem;
+        }
+
+        .action-btn:hover {
+            background: rgba(114, 92, 106, 0.5);
+            border-color: var(--accent-muted-rose);
+            transform: translateY(-8px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+        }
+        
+        .action-btn-title {
+            color: var(--text-light-tan);
+            font-weight: bold;
+        }
+
+        .action-btn-desc {
+            color: var(--text-pale-peach);
+        }
+
+        /* --- CARD SELECTION MENU --- */
+        .menu-theme-container {
+            background-color: rgba(0,0,0, 0.2);
+            border: 2px solid var(--accent-muted-rose);
+            border-radius: 1rem;
+            padding: 2rem;
+            box-shadow: 0 0 25px rgba(206, 152, 132, 0.2);
+        }
+
+        .menu-card-item {
+            background-color: rgba(114, 92, 106, 0.4); /* --bg-dusky-plum with alpha */
+            border: 1px solid var(--accent-muted-rose);
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            text-align: center;
+            transition: all 0.3s ease-in-out;
+            cursor: pointer;
+        }
+
+        .menu-card-item:hover {
+            transform: translateY(-10px);
+            background-color: var(--bg-dusky-plum);
+            box-shadow: 0 0 20px rgba(206, 152, 132, 0.3);
+        }
+
+        .menu-card-item h4 {
+            color: var(--text-light-tan);
+            font-size: 1.25rem;
+            font-weight: bold;
+        }
+
+        .menu-card-item p {
+            color: var(--text-pale-peach);
+            font-size: 0.875rem;
+        }
+        
+        /* --- MODAL STYLES --- */
+        .modal-bg {
+            position: fixed;
+            inset: 0;
+            background: rgba(60, 46, 68, 0.9); /* --bg-deep-purple with alpha */
+            backdrop-filter: blur(4px);
+            z-index: 99;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: opacity 0.3s;
+        }
+
+        .modal-panel {
+            background: linear-gradient(135deg, var(--bg-deep-purple) 0%, var(--black) 100%);
+            padding: 2.5rem 2rem;
+            border-radius: 1.5rem;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.5);
+            max-width: 420px;
+            width: 95vw;
+            position: relative;
+            border: 1.5px solid var(--accent-muted-rose);
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 1.5rem;
+            right: 1.5rem;
+            font-size: 2rem;
+            color: var(--accent-muted-rose);
+            cursor: pointer;
+            transition: .2s;
+        }
+
+        .modal-close:hover {
+            color: var(--text-pale-peach);
+            transform: rotate(90deg);
+        }
+
+        .modal-img {
+            border-radius: .75rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 0 16px rgba(206, 152, 132, 0.5);
+            max-height: 180px;
+            width:100%;
+            object-fit: cover;
+        }
+
+        .modal-title {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: var(--text-light-tan);
+            margin-bottom: .75rem;
+            text-align: left;
+        }
+
+        .modal-desc {
+            font-size: 1rem;
+            color: var(--text-pale-peach);
+            text-align: left;
+        }
+
+        /* --- SWEETALERT2 (MODAL) CUSTOM STYLES --- */
+        .swal2-popup {
+            background-color: var(--bg-deep-purple) !important;
+            border: 2px solid var(--accent-muted-rose) !important;
+            border-radius: 1rem !important;
+        }
+
+        .swal2-title {
+            color: var(--text-light-tan) !important;
+        }
+
+        .swal2-html-container {
+            color: var(--text-pale-peach) !important;
+        }
+        
+        .swal2-close:focus {
+            box-shadow: none !important;
+        }
+
+        .swal-card-option {
+            display: block;
+            width: 100%;
+            padding: 1rem;
+            margin-bottom: 0.75rem;
+            border: 1px solid var(--accent-muted-rose);
+            border-radius: 0.5rem;
+            text-align: center;
+            font-weight: bold;
+            color: var(--text-light-tan);
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .swal-card-option:hover {
+            background-color: var(--accent-muted-rose);
+            color: var(--bg-deep-purple);
+        }
+
+        /* --- FOOTER --- */
+        .footer-text {
+            color: var(--bg-dusky-plum);
+            text-shadow: 0 0 5px rgba(206,152,132,0.3);
+        }
+    </style>
+</head>
+<body class="antialiased">
+    <div class="main-background"></div>
+    <div class="stars"></div>
+    <div class="twinkling"></div>
+    
+    <div class="relative min-h-screen flex items-center justify-center p-4">
+        <main class="w-full max-w-4xl mx-auto text-center">
+            
+            <h1 class="text-4xl md:text-5xl font-bold mb-10 fade-in-item" style="color: var(--text-pale-peach); text-shadow: 0 0 15px var(--accent-muted-rose);">ดูดวงกับเรฟ REFFORTUNE</h1>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-12">
+                <button class="action-btn gap-2 fade-in-item" style="animation-delay: 0.2s;" onclick="openServiceModal('tarot')">
+                    <span class="text-2xl action-btn-title">ไพ่ทาโรต์ (Tarot Card)</span>
+                    <span class="text-base action-btn-desc">ศาสตร์แห่งการทำนายอนาคตด้วยไพ่ 78 ใบ เพื่อเป็นแนวทางในการตัดสินใจ</span>
+                </button>
+                <button class="action-btn gap-2 fade-in-item" style="animation-delay: 0.4s;" onclick="openServiceModal('oracle')">
+                    <span class="text-2xl action-btn-title">ไพ่ออราเคิล (Oracle Card)</span>
+                    <span class="text-base action-btn-desc">เครื่องมือที่ให้คำแนะนำและแรงบันดาลใจ เพื่อฮีลใจและค้นพบศักยภาพ</span>
+                </button>
+                <button class="action-btn gap-2 fade-in-item" style="animation-delay: 0.6s;" onclick="openServiceModal('astrology')">
+                    <span class="text-2xl action-btn-title">โหราศาสตร์ (Astrology)</span>
+                    <span class="text-base action-btn-desc">ศึกษาการเคลื่อนที่ของดวงดาว เพื่อเข้าใจพื้นฐานดวงชะตาและวางแผนชีวิต</span>
+                </button>
+                <button class="action-btn gap-2 fade-in-item" style="animation-delay: 0.8s;" onclick="openServiceModal('numerology')">
+                    <span class="text-2xl action-btn-title">มหาสัตตเลข (Numerology)</span>
+                    <span class="text-base action-btn-desc">ศาสตร์แห่งตัวเลขจากวันเกิดและชื่อ เพื่อค้นพบเส้นทางชีวิตที่เหมาะสม</span>
+                </button>
+            </div>
+
+            <!-- Card Selection Menu -->
+            <section class="mb-12 fade-in-item" style="animation-delay: 1s;">
+                <div class="menu-theme-container">
+                    <h3 class="text-3xl font-bold mb-2 text-center" style="color: var(--accent-muted-rose); text-shadow: 0 0 8px rgba(228, 182, 160, 0.5);">เข้าสู่เมนูเลือกการ์ด</h3>
+                    <p class="text-center mb-8" style="color: var(--text-pale-peach);">เลือกรูปแบบการเปิดไพ่ที่คุณต้องการ</p>
+                    <div class="max-w-sm mx-auto">
+                        <div id="open-pick-modal-btn" class="menu-card-item">
+                            <h4>เลือกไพ่</h4>
+                            <p class="mt-2">เปิดไพ่ดวงชะตาตัวคุณเอง</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Added Back Content -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-12">
+                 <a href="/spiritcard.html" class="action-btn items-center justify-center text-center fade-in-item" style="animation-delay: 1.2s;">
+                    <img src="https://i.imgur.com/your-icon-placeholder.png" onerror="this.src='https://placehold.co/144x144/725c6a/ead4b4?text=Icon'" class="w-24 h-24 mb-3" alt="ไอคอนไพ่ตัวตน"/>
+                    <h2 class="text-xl action-btn-title">ดูไพ่ตัวตน</h2>
+                    <p class="action-btn-desc text-sm">ค้นพบไพ่ตัวตนของคุณ</p>
+                </a>
+                <a href="packages.html" class="action-btn items-center justify-center text-center fade-in-item" style="animation-delay: 1.4s;">
+                    <img src="https://i.imgur.com/your-icon-placeholder-2.png" onerror="this.src='https://placehold.co/144x144/725c6a/ead4b4?text=Icon'" class="w-24 h-24 mb-3" alt="ไอคอนแพ็กเกจ"/>
+                    <h2 class="text-xl action-btn-title">แพ็กเกจดูดวง</h2>
+                    <p class="action-btn-desc text-sm">"ชัด เคลียร์ ใช้ได้จริง"</p>
+                </a>
+            </div>
+            
+            <div class="text-sm footer-text mt-12 fade-in-item" style="animation-delay: 1.6s;">Powered by REFFORTUNE</div>
+        </main>
+    </div>
+
+    <!-- Modal Structure -->
+    <div id="service-modal" class="modal-bg" style="display:none; opacity: 0;">
+        <div class="modal-panel">
+            <span class="modal-close" onclick="closeServiceModal()">&times;</span>
+            <img id="modal-img" class="modal-img" src="" alt="ภาพประกอบศาสตร์การดูดวง" style="display:none;" />
+            <div id="modal-title" class="modal-title"></div>
+            <div id="modal-desc" class="modal-desc"></div>
+        </div>
+    </div>
+
+    <script>
+        // Data for each service modal
+        const serviceData = {
+            tarot: {
+                title: 'ไพ่ทาโรต์ (Tarot Card)',
+                desc: 'ศาสตร์แห่งการทำนายอนาคตด้วยไพ่ 78 ใบ ที่จะช่วยให้คุณเข้าใจสถานการณ์ต่างๆ ในชีวิต ทั้งเรื่องความรัก การงาน การเงิน และสุขภาพ ไพ่แต่ละใบมีความหมายเฉพาะตัวที่สามารถตีความได้อย่างลึกซึ้ง เพื่อเป็นแนวทางในการตัดสินใจและเตรียมพร้อมรับมือกับสิ่งที่จะเกิดขึ้น',
+                img: 'https://i.postimg.cc/JzxmbC2j/assets-task-01jyjcx2d1fhabfqjnf0b5sxcc-1750816778-img-1.webp'
+            },
+            oracle: {
+                title: 'ไพ่ออราเคิล (Oracle Card)',
+                desc: 'ไพ่ออราเคิลเป็นเครื่องมือที่ให้คำแนะนำและแรงบันดาลใจ ไม่ได้มีโครงสร้างตายตัวเหมือนไพ่ทาโรต์ ทำให้มีความหลากหลายและอิสระในการตีความสูง เหมาะสำหรับผู้ที่ต้องการคำตอบที่ตรงไปตรงมา คำปลอบโยน หรือมุมมองใหม่ๆ เพื่อฮีลใจและค้นพบศักยภาพในตนเอง',
+                img: 'https://i.postimg.cc/909CT46f/assets-task-01jyjd8bzxf38b4qphad9k7g1q-1750817169-img-1.webp'
+            },
+            astrology: {
+                title: 'โหราศาสตร์ (Astrology)',
+                desc: 'การศึกษาการเคลื่อนที่ของดวงดาวและตำแหน่งของเทห์ฟากฟ้า ที่เชื่อว่ามีอิทธิพลต่อชีวิตและบุคลิกภาพของมนุษย์ การผูกดวงชะตาส่วนบุคคลจะช่วยให้คุณเข้าใจพื้นฐานดวงชะตา พรสวรรค์ และอุปสรรคต่างๆ เพื่อวางแผนชีวิตได้อย่างแม่นยำและมีประสิทธิภาพ',
+                img: 'https://i.postimg.cc/3wwh1fsV/assets-task-01jyjd312heb3r1j8k5stmv8h7-1750816995-img-1.webp'
+            },
+            numerology: {
+                title: 'มหาสัตตเลข (Numerology)',
+                desc: 'ศาสตร์แห่งตัวเลขที่วิเคราะห์ความหมายที่ซ่อนอยู่ในวันเดือนปีเกิดและชื่อของคุณ ตัวเลขแต่ละตัวจะสะท้อนถึงพลังงานและลักษณะนิสัยที่แตกต่างกัน การวิเคราะห์เลขศาสตร์จะช่วยให้คุณรู้จักตัวเองมากขึ้น ค้นพบเส้นทางชีวิตที่เหมาะสม และเข้าใจความสัมพันธ์กับผู้อื่นได้ดียิ่งขึ้น',
+                img: 'https://i.postimg.cc/k5hmpF94/assetstask-01jyjd6az8f259srq63pa.webp'
+            }
+        };
+
+        function openServiceModal(key) {
+            const data = serviceData[key];
+            if (!data) return;
+            document.getElementById('modal-title').innerText = data.title;
+            document.getElementById('modal-desc').innerText = data.desc;
+            const img = document.getElementById('modal-img');
+            if (data.img) {
+                img.src = data.img;
+                img.style.display = 'block';
+            } else {
+                img.style.display = 'none';
+            }
+            const modal = document.getElementById('service-modal');
+            modal.style.display = 'flex';
+            setTimeout(() => {
+                modal.style.opacity = 1
+            }, 10);
+        }
+
+        function closeServiceModal() {
+            const modal = document.getElementById('service-modal');
+            modal.style.opacity = 0;
+            setTimeout(() => {
+                modal.style.display = 'none';
+            }, 300);
+        }
+
+        // Close modal with Escape key or by clicking background
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') closeServiceModal();
+        });
+        document.getElementById('service-modal').addEventListener('click', function(e) {
+            if (e.target === this) closeServiceModal();
+        });
+
+        // --- SCRIPT FOR CARD SELECTION MODAL ---
+        const openPickModalBtn = document.getElementById('open-pick-modal-btn');
+        if (openPickModalBtn) {
+            openPickModalBtn.addEventListener('click', () => {
+                Swal.fire({
+                    title: 'เลือกจำนวนไพ่',
+                    html: `
+                        <p class="mb-4">คุณต้องการเปิดไพ่เพื่อดูคำทำนายกี่ใบ?</p>
+                        <div class="flex flex-col">
+                           <a href="pick.html?count=1" class="swal-card-option">1 ใบ (Daily Guidance)</a>
+                           <a href="pick.html?count=3" class="swal-card-option">3 ใบ (Past, Present, Future)</a>
+                           <a href="pick.html?count=4" class="swal-card-option">4 ใบ (Elemental Cross)</a>
+                           <a href="pick.html?count=10" class="swal-card-option">10 ใบ (Celtic Cross)</a>
+                        </div>
+                    `,
+                    showConfirmButton: false,
+                    showCloseButton: true,
+                    closeButtonHtml: '<span style="color: var(--accent-muted-rose);">&times;</span>'
+                });
+            });
+        }
+    </script>
+</body>
+</html>
