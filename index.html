@@ -10,6 +10,291 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@400;700&display=swap" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+  <style>
+        /* --- THEME & BACKGROUND --- */
+        body {
+        font-family: 'Noto Sans Thai', sans-serif;
+        background-color: #100a33;
+        color: white;
+        overflow-x: hidden;
+        }
+        .space-bg {
+        background: radial-gradient(ellipse at bottom, #0f0755 0%, #100a33 100%);
+        }
+        .stars {
+        position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+        width: 100%; height: 100%; display: block;
+        background: transparent url(https://s3-us-west-2.amazonaws.com/s.cdpn.io/1231630/stars.png) repeat top center;
+        z-index: -2;
+        }
+
+        .swal2-popup {
+            background-color: #111111 !important;
+            border: 2px solid #FBBF24 !important;
+            border-radius: 1rem !important;
+        }
+        .swal2-title {
+            color: #FBBF24 !important;
+        }
+        .swal2-html-container {
+            color: #D1D5DB !important;
+        }
+        .swal-card-option {
+            display: block;
+            width: 100%;
+            padding: 1rem;
+            margin-bottom: 0.75rem;
+            border: 1px solid #FBBF24;
+            border-radius: 0.5rem;
+            text-align: center;
+            font-weight: bold;
+            color: #FBBF24;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+        .swal-card-option:hover {
+            background-color: #FBBF24;
+            color: #111111;
+        }
+
+        .twinkling {
+        position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+        background: transparent url(https://s3-us-west-2.amazonaws.com/s.cdpn.io/1231630/stars.png) repeat top center;
+        z-index: -1;
+        animation: move-twinkle-back 200s linear infinite;
+        }
+        @keyframes move-twinkle-back { from { background-position: 0 0; } to { background-position: -10000px 5000px; } }
+
+        /* --- PLANET --- */
+        .planet {
+        width: 300px;
+        height: 300px;
+        background: radial-gradient(circle at 30% 30%, #a29bfe, #6c5ce77a, #2c2d84);
+        border-radius: 50%;
+        box-shadow: 0 0 40px #6c5ce77c, 0 0 80px #a29bfe, inset -20px -10px 40px #352c84;
+        animation: pulse 6s infinite ease-in-out;
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        z-index: -1;
+        }
+        @keyframes pulse {
+        0%, 100% { transform: translate(-50%, -50%) scale(1); box-shadow: 0 0 40px #6c5ce7, 0 0 80px #a29bfe, inset -20px -10px 40px #3c2c84; }
+        50% { transform: translate(-50%, -50%) scale(1.05); box-shadow: 0 0 55px #8b80ff, 0 0 110px #c4bfff, inset -20px -10px 40px #3c2c84; }
+        }
+        @media (max-width: 768px) {
+        .planet { width: 200px; height: 200px; }
+        }
+
+        /* --- GENERAL STYLES & ANIMATIONS --- */
+        .text-glow {
+        text-shadow: 0 0 8px rgba(192, 132, 252, 0.6), 0 0 32px rgba(139, 92, 246, 0.4);
+        }
+        .reveal-item {
+        opacity: 0;
+        transform: translateY(30px);
+        transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+        }
+        .reveal-item.is-visible {
+        opacity: 1;
+        transform: translateY(0);
+        }
+        .glass-box {
+        background: rgba(141, 133, 172, 0.2);
+        backdrop-filter: blur(5px);
+        -webkit-backdrop-filter: blur(5px);
+        border-radius: 1rem;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        transition: transform 0.4s ease, box-shadow 0.4s ease;
+        }
+        .glass-box:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 20px rgba(71, 8, 187, 0.5);
+        }
+
+        /* --- CARD GAME STYLES --- */
+        .card-wrapper {
+        perspective: 1000px;
+        transition: transform 0.4s ease;
+        }
+        .card-wrapper:hover {
+        transform: translateY(-10px);
+        }
+        .card {
+        width: 120px;
+        height: 180px;
+        transform-style: preserve-3d;
+        transition: transform 1.5s cubic-bezier(0.4, 0, 0.2, 1);
+        cursor: pointer;
+        position: relative;
+        }
+        .card.revealed {
+        transform: rotateY(180deg);
+        }
+        .card-face {
+        position: absolute;
+        width: 100%; height: 100%;
+        backface-visibility: hidden;
+        border-radius: 8px;
+        background-size: cover;
+        background-position: center;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+        .card-back {
+        background-image: url(https://i.postimg.cc/DZnx1m8c/tarot-cards-mystical-poster-meta.webp);
+        }
+        .card-front {
+        transform: rotateY(180deg);
+        }
+
+        /* --- POPUP & MODAL STYLES --- */
+        .popup-panel {
+        transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+        }
+        .popup-hidden{opacity:0;pointer-events:none;transform:scale(.95)}
+        .popup-visible{opacity:1;pointer-events:auto;transform:scale(1)}
+        .service-popup-panel {
+        transition: opacity 0.5s cubic-bezier(0.4, 0, 0.2, 1), transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        /* --- NEW: BLACK & GOLD CARD MENU --- */
+        .menu-gold-theme {
+        background-color: #111111;
+        border: 2px solid #FBBF24; /* gold-400 */
+        border-radius: 1rem;
+        padding: 2rem;
+        box-shadow: 0 0 25px rgba(251, 191, 36, 0.3);
+        }
+        .menu-card-item {
+        background-color: rgba(17, 17, 17, 0.6);
+        border: 1px solid #FBBF24; /* gold-400 */
+        border-radius: 0.75rem;
+        padding: 1.5rem;
+        text-align: center;
+        transition: all 0.3s ease-in-out;
+        }
+        .menu-card-item:hover {
+        transform: translateY(-10px);
+        background-color: #1f1f1f;
+        box-shadow: 0 0 20px rgba(251, 191, 36, 0.4);
+        }
+        .menu-card-item h4 {
+        color: #FBBF24; /* gold-400 */
+        font-size: 1.25rem; /* text-xl */
+        font-weight: bold;
+        }
+        .menu-card-item p {
+        color: #D1D5DB; /* gray-300 */
+        font-size: 0.875rem; /* text-sm */
+        }
+        /* --  /* --- FLOATING ACTION BUTTON (FAB) STYLES --- */
+        .fab-container {
+            position: fixed;
+            bottom: 1.5rem;
+            right: 1.5rem;
+            z-index: 50;
+            display: flex;
+            flex-direction: column-reverse;
+            align-items: center;
+        }
+        .fab-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+            margin-bottom: 1rem;
+            transition: all 0.3s ease-in-out;
+            opacity: 0;
+            transform: translateY(10px);
+            pointer-events: none;
+        }
+        .fab-container.open .fab-actions {
+            opacity: 1;
+            transform: translateY(0);
+            pointer-events: auto;
+        }
+        .fab-button {
+            width: 3.5rem; /* 56px */
+            height: 3.5rem; /* 56px */
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s ease-in-out;
+        }
+        .fab-main {
+            background: linear-gradient(45deg, #07bd59, #00821c);
+        }
+        .fab-main:hover {
+            transform: scale(1.1);
+        }
+        .fab-container.open .fab-main {
+            transform: rotate(135deg);
+        }
+        .fab-action-item {
+            width: 3rem; /* 48px */
+            height: 3rem; /* 48px */
+            background-color: #a78bfa00;
+        }
+        .fab-action-item:hover {
+            background-color: #76f65c00;
+            transform: scale(1.15);
+        }
+
+
+        /* --- MOBILE RESPONSIVE --- */
+        @media (max-width: 480px) {
+        #card-container { gap: 0.75rem; }
+        .card { width: 90px; height: 135px; }
+        .card-wrapper:hover { transform: none; }
+        }
+        /* --- MAGIC CURSOR --- */
+        .magic-cursor {
+            position: fixed;
+            width: 20px;
+            height: 20px;
+            background: #c4bfff;
+            border-radius: 50%;
+            z-index: 1000;
+            pointer-events: none;
+            box-shadow: 0 0 10px #c4bfff, 0 0 20px #c4bfff, 0 0 30px #8b80ff;
+            transition: transform 0.2s ease-out, opacity 0.3s ease;
+            transform: translate(-50%, -50%) scale(1);
+        }
+        .magic-cursor.hover {
+            transform: translate(-50%, -50%) scale(1.5);
+            opacity: 0.7;
+            }
+        /* --- ZODIAC FEATURE STYLES --- */
+        .zodiac-icon {
+            transition: all 0.3s ease-in-out;
+            opacity: 0.6;
+        }
+        .zodiac-icon:hover {
+            opacity: 1;
+            transform: scale(1.1);
+            filter: drop-shadow(0 0 10px #A78BFA);
+        }
+        .zodiac-icon.active {
+            opacity: 1;
+            transform: scale(1.15);
+            filter: drop-shadow(0 0 15px #C4B5FD);
+        }
+
+        /* --- LOADER --- */
+        .loader-sm { 
+            width: 24px; 
+            height: 24px; 
+            border: 3px solid rgba(255,255,255,0.3); 
+            border-top-color: #a78bfa; 
+            border-radius: 50%; 
+            display: inline-block; 
+            animation: spin 1s linear infinite; 
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+    </style>
   <style>
     body {font-family: 'Noto Sans Thai', sans-serif; background:#100a33; color:white; overflow-x:hidden;}
     .space-bg {background: radial-gradient(ellipse at bottom,#0f0755 0%,#100a33 100%);position:fixed;inset:0;z-index:-3;}
@@ -61,10 +346,22 @@
         </button>
       </div>
       <!-- Main Action Buttons -->
- 
+ <section class="py-12 reveal-item is-visible">
+                    <div class="menu-gold-theme">
+                        <h3 class="text-3xl font-bold text-amber-300 mb-2 text-center" style="text-shadow: 0 0 8px rgba(252, 211, 77, 0.5);">เข้าสู่เมนูเลือกการ์ด</h3>
+                        <p class="text-center text-gray-300 mb-8">เลือกรูปแบบการเปิดไพ่ที่คุณต้องการ</p>
+                        <div class="grid md:grid-cols-1 gap-6">
+                            <div id="start-game-button"></div>
+                            <div id="open-pick-modal-btn" class="menu-card-item cursor-pointer">
+                                <h4>เลือกไพ่</h4>
+                                <p class="mt-2"> เปิดไพ่ดวงชะตาตัวคุณเอง</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
         <div class="fade-in-item" style="animation-delay: 1.0s;">
           <a href="/spiritcard.html" class="action-btn w-full h-full p-6 rounded-2xl flex flex-col items-center justify-center">
-            <img src="/icon/card.png" class="action-btn-icon w-36 h-36 " alt="ไอคอนแพ็กเกจ"/>
+            <img src="/icon/4.png" class="action-btn-icon w-36 h-36 " alt="ไอคอนแพ็กเกจ"/>
             <h2 class="text-xl font-bold">ดูไพ่ตัวตน</h2>
             <p class="text-white/60 text-sm">ค้นพบไพ่ตัวตนของคุณ</p>
           </a>
@@ -78,7 +375,7 @@
           </a>
         </div>
       </div>
-      <div class="text-xs text-violet-300 mt-10"> Copyright 💎 REFFORTUNE ✦</div>
+      <div class="text-xs text-violet-300 mt-10">Powered by REFFORTUNE ✦ EasyZen</div>
     </main>
   </div>
   <!-- FAB Home Button (Mobile Only) -->
