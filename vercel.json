@@ -8,6 +8,10 @@
       "source": "/spirit",
       "destination": "/spiritcard.html"
     }
-
+,
+ {
+      "source": "/test",
+      "destination": "/test.html"
+    }
   ]
 }
