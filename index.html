@@ -11,7 +11,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@400;700&display=swap" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-  <style>
+   <style>
         /* --- MODERN GRADIENT THEME --- */
         body {
             font-family: 'Noto Sans Thai', sans-serif;
@@ -47,31 +47,31 @@
         }
 
         .swal2-popup {
-            background-color: #111111 !important;
-            border: 2px solid #FBBF24 !important;
+            background-color: #ffffff !important;
+            border: 2px solid #460083 !important;
             border-radius: 1rem !important;
         }
         .swal2-title {
-            color: #FBBF24 !important;
+            color: #4d002e !important;
         }
         .swal2-html-container {
-            color: #D1D5DB !important;
+            color: #880369ec !important;
         }
         .swal-card-option {
             display: block;
             width: 100%;
             padding: 1rem;
             margin-bottom: 0.75rem;
-            border: 1px solid #FBBF24;
+            border: 1px solid #6c0053;
             border-radius: 0.5rem;
             text-align: center;
             font-weight: bold;
-            color: #FBBF24;
+            color: #490049;
             text-decoration: none;
             transition: all 0.3s ease;
         }
         .swal-card-option:hover {
-            background-color: #FBBF24;
+            background-color: #b324fb;
             color: #111111;
         }
 
@@ -359,6 +359,92 @@
         }
         @keyframes spin { to { transform: rotate(360deg); } }
     </style>
+  <style>
+    body {font-family: 'Noto Sans Thai', sans-serif; background:#100a33; color:white; overflow-x:hidden;}
+    .space-bg {background: radial-gradient(ellipse at bottom,#0f0755 0%,#100a33 100%);position:fixed;inset:0;z-index:-3;}
+    .stars {position:fixed;inset:0;background:transparent url(https://s3-us-west-2.amazonaws.com/s.cdpn.io/1231630/stars.png) repeat top center;z-index:-2;}
+    .twinkling {position:fixed;inset:0;background:transparent url(https://s3-us-west-2.amazonaws.com/s.cdpn.io/1231630/stars.png) repeat top center;z-index:-1;animation:move-twinkle-back 200s linear infinite;}
+    @keyframes move-twinkle-back{from{background-position:0 0;}to{background-position:-10000px 5000px;}}
+    .action-btn {
+        background: linear-gradient(145deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
+        backdrop-filter: blur(20px);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        border-radius: 20px;
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .action-btn::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+        transition: left 0.6s;
+    }
+    
+    .action-btn:hover::before {
+        left: 100%;
+    }
+    
+    .action-btn:hover {
+        background: linear-gradient(145deg, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.1));
+        border-color: rgba(255, 255, 255, 0.4);
+        transform: translateY(-12px) scale(1.05);
+        box-shadow: 0 25px 50px rgba(0, 0, 0, 0.2);
+    }
+    .fade-in-item{animation:fadeIn 1s ease-out both;}
+    @keyframes fadeIn{
+        from{
+            opacity:0;
+            transform:translateY(30px) scale(0.95);
+        }
+        to{
+            opacity:1;
+            transform:translateY(0) scale(1);
+        }
+    }
+    
+    /* --- ENHANCED ANIMATIONS --- */
+    .bounce-in {
+        animation: bounceIn 1s ease-out both;
+    }
+    
+    @keyframes bounceIn {
+        0% {
+            opacity: 0;
+            transform: scale(0.3) translateY(50px);
+        }
+        50% {
+            opacity: 1;
+            transform: scale(1.05) translateY(-10px);
+        }
+        70% {
+            transform: scale(0.95) translateY(5px);
+        }
+        100% {
+            opacity: 1;
+            transform: scale(1) translateY(0);
+        }
+    }
+    /* --- Modal --- */
+    .modal-bg{position:fixed;inset:0;background:rgba(16,10,51,0.90);backdrop-filter:blur(2px);z-index:99;display:flex;align-items:center;justify-content:center;transition:opacity .3s;}
+    .modal-panel{background:linear-gradient(135deg,#22194f 60%,#1a133c 100%);padding:2.5rem 2rem;border-radius:1.5rem;box-shadow:0 8px 32px #100a3340;max-width:420px;width:95vw;position:relative;border:1.5px solid #a78bfa33;}
+    .modal-close{position:absolute;top:1.5rem;right:1.5rem;font-size:2rem;color:#a78bfa99;cursor:pointer;transition:.2s;}
+    .modal-close:hover{color:#fff;transform:rotate(90deg);}
+    .modal-img{border-radius:.75rem;margin-bottom:1.5rem;box-shadow:0 0 16px #8b5cf6bb;max-height:180px;max-width:100%;object-fit:cover;}
+    .modal-title{font-size:1.4rem;font-weight:700;color:#a78bfa;margin-bottom:.75rem;text-align:left;}
+    .modal-desc{font-size:1rem;color:#e0e7ffbb;text-align:left;}
+        /* Floating Home Button for Mobile */
+        .fab-home-btn { position: fixed; left: 50%; bottom: 22px; transform: translateX(-50%); z-index: 100; display: none; }
+        @media (max-width: 768px) {
+        .fab-home-btn { display: flex !important; }
+        }
+  </style>
+
   <style>
     body {font-family: 'Noto Sans Thai', sans-serif; background:#100a33; color:white; overflow-x:hidden;}
     .space-bg {background: radial-gradient(ellipse at bottom,#0f0755 0%,#100a33 100%);position:fixed;inset:0;z-index:-3;}
