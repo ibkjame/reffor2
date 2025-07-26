@@ -11,611 +11,211 @@
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@400;700&display=swap" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-   <style>
-        /* --- MODERN GRADIENT THEME --- */
-        body {
-            font-family: 'Noto Sans Thai', sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: #ffffff;
-            overflow-x: hidden;
-            min-height: 100vh;
-        }
-        
-        /* --- ANIMATED BACKGROUND --- */
-        .space-bg {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
-            background-size: 400% 400%;
-            animation: gradientShift 15s ease infinite;
-            position: fixed;
-            inset: 0;
-            z-index: -3;
-        }
-        
-        @keyframes gradientShift {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
-        
-        .stars {
-            position: fixed; 
-            top: 0; left: 0; right: 0; bottom: 0;
-            width: 100%; height: 100%; 
-            background: transparent url(https://s3-us-west-2.amazonaws.com/s.cdpn.io/1231630/stars.png) repeat top center;
-            z-index: -2;
-            opacity: 0.3;
-        }
-
-        .swal2-popup {
-            background-color: #ffffff !important;
-            border: 2px solid #460083 !important;
-            border-radius: 1rem !important;
-        }
-        .swal2-title {
-            color: #4d002e !important;
-        }
-        .swal2-html-container {
-            color: #880369ec !important;
-        }
-        .swal-card-option {
-            display: block;
-            width: 100%;
-            padding: 1rem;
-            margin-bottom: 0.75rem;
-            border: 1px solid #6c0053;
-            border-radius: 0.5rem;
-            text-align: center;
-            font-weight: bold;
-            color: #490049;
-            text-decoration: none;
-            transition: all 0.3s ease;
-        }
-        .swal-card-option:hover {
-            background-color: #b324fb;
-            color: #111111;
-        }
-
-        .twinkling {
-            position: fixed; 
-            top: 0; left: 0; right: 0; bottom: 0;
-            background: transparent url(https://s3-us-west-2.amazonaws.com/s.cdpn.io/1231630/stars.png) repeat top center;
-            z-index: -1;
-            animation: move-twinkle-back 300s linear infinite;
-            opacity: 0.4;
-        }
-        
-        @keyframes move-twinkle-back { 
-            from { background-position: 0 0; } 
-            to { background-position: -10000px 5000px; } 
-        }
-
-        /* --- FLOATING ORBS --- */
-        .floating-orb {
-            position: fixed;
-            border-radius: 50%;
-            background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.8), rgba(167, 139, 250, 0.4), rgba(139, 92, 246, 0.2));
-            animation: float 8s ease-in-out infinite;
-            z-index: -1;
-            filter: blur(1px);
-        }
-        
-        .orb-1 {
-            width: 200px; height: 200px;
-            top: 20%; left: 10%;
-            animation-delay: 0s;
-        }
-        
-        .orb-2 {
-            width: 150px; height: 150px;
-            top: 60%; right: 15%;
-            animation-delay: -3s;
-        }
-        
-        .orb-3 {
-            width: 100px; height: 100px;
-            bottom: 20%; left: 20%;
-            animation-delay: -6s;
-        }
-        
-        @keyframes float {
-            0%, 100% { 
-                transform: translateY(0px) rotate(0deg);
-                opacity: 0.7;
-            }
-            50% { 
-                transform: translateY(-20px) rotate(180deg);
-                opacity: 1;
-            }
-        }
-
-        /* --- MODERN GLASS MORPHISM --- */
-        .text-glow {
-            text-shadow: 0 0 20px rgba(255, 255, 255, 0.5), 0 0 40px rgba(167, 139, 250, 0.3);
-        }
-        
-        .glass-box {
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border-radius: 20px;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-        
-        .glass-box:hover {
-            transform: translateY(-10px) scale(1.02);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
-            border-color: rgba(255, 255, 255, 0.3);
-            background: rgba(255, 255, 255, 0.15);
-        }
-
-        /* --- CARD GAME STYLES --- */
-        .card-wrapper {
-        perspective: 1000px;
-        transition: transform 0.4s ease;
-        }
-        .card-wrapper:hover {
-        transform: translateY(-10px);
-        }
-        .card {
-        width: 120px;
-        height: 180px;
-        transform-style: preserve-3d;
-        transition: transform 1.5s cubic-bezier(0.4, 0, 0.2, 1);
-        cursor: pointer;
-        position: relative;
-        }
-        .card.revealed {
-        transform: rotateY(180deg);
-        }
-        .card-face {
-        position: absolute;
-        width: 100%; height: 100%;
-        backface-visibility: hidden;
-        border-radius: 8px;
-        background-size: cover;
-        background-position: center;
-        box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-        }
-        .card-back {
-        background-image: url(https://i.postimg.cc/DZnx1m8c/tarot-cards-mystical-poster-meta.webp);
-        }
-        .card-front {
-        transform: rotateY(180deg);
-        }
-
-        /* --- POPUP & MODAL STYLES --- */
-        .popup-panel {
-        transition: opacity 0.5s ease-out, transform 0.5s ease-out;
-        }
-        .popup-hidden{opacity:0;pointer-events:none;transform:scale(.95)}
-        .popup-visible{opacity:1;pointer-events:auto;transform:scale(1)}
-        .service-popup-panel {
-        transition: opacity 0.5s cubic-bezier(0.4, 0, 0.2, 1), transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-        /* --- PREMIUM CARD MENU --- */
-        .menu-premium-theme {
-            background: linear-gradient(145deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
-            backdrop-filter: blur(25px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            border-radius: 24px;
-            padding: 2.5rem;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
-        }
-        
-        .menu-card-item {
-            background: linear-gradient(145deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
-            backdrop-filter: blur(15px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            border-radius: 16px;
-            padding: 2rem;
-            text-align: center;
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            cursor: pointer;
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .menu-card-item::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-            transition: left 0.5s;
-        }
-        
-        .menu-card-item:hover::before {
-            left: 100%;
-        }
-        
-        .menu-card-item:hover {
-            transform: translateY(-15px) scale(1.05);
-            background: linear-gradient(145deg, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.1));
-            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.2);
-            border-color: rgba(255, 255, 255, 0.4);
-        }
-        
-        .menu-card-item h4 {
-            color: #ffffff;
-            font-size: 1.5rem;
-            font-weight: 700;
-            margin-bottom: 0.5rem;
-            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        }
-        
-        .menu-card-item p {
-            color: rgba(255, 255, 255, 0.8);
-            font-size: 0.95rem;
-            line-height: 1.6;
-        }
-        /* --  /* --- FLOATING ACTION BUTTON (FAB) STYLES --- */
-        .fab-container {
-            position: fixed;
-            bottom: 1.5rem;
-            right: 1.5rem;
-            z-index: 50;
-            display: flex;
-            flex-direction: column-reverse;
-            align-items: center;
-        }
-        .fab-actions {
-            display: flex;
-            flex-direction: column;
-            gap: 0.75rem;
-            margin-bottom: 1rem;
-            transition: all 0.3s ease-in-out;
-            opacity: 0;
-            transform: translateY(10px);
-            pointer-events: none;
-        }
-        .fab-container.open .fab-actions {
-            opacity: 1;
-            transform: translateY(0);
-            pointer-events: auto;
-        }
-        .fab-button {
-            width: 3.5rem; /* 56px */
-            height: 3.5rem; /* 56px */
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-            transition: all 0.3s ease-in-out;
-        }
-        .fab-main {
-            background: linear-gradient(45deg, #07bd59, #00821c);
-        }
-        .fab-main:hover {
-            transform: scale(1.1);
-        }
-        .fab-container.open .fab-main {
-            transform: rotate(135deg);
-        }
-        .fab-action-item {
-            width: 3rem; /* 48px */
-            height: 3rem; /* 48px */
-            background-color: #a78bfa00;
-        }
-        .fab-action-item:hover {
-            background-color: #76f65c00;
-            transform: scale(1.15);
-        }
-
-
-        /* --- MOBILE RESPONSIVE --- */
-        @media (max-width: 480px) {
-        #card-container { gap: 0.75rem; }
-        .card { width: 90px; height: 135px; }
-        .card-wrapper:hover { transform: none; }
-        }
-        /* --- MAGIC CURSOR --- */
-        .magic-cursor {
-            position: fixed;
-            width: 20px;
-            height: 20px;
-            background: #c4bfff;
-            border-radius: 50%;
-            z-index: 1000;
-            pointer-events: none;
-            box-shadow: 0 0 10px #c4bfff, 0 0 20px #c4bfff, 0 0 30px #8b80ff;
-            transition: transform 0.2s ease-out, opacity 0.3s ease;
-            transform: translate(-50%, -50%) scale(1);
-        }
-        .magic-cursor.hover {
-            transform: translate(-50%, -50%) scale(1.5);
-            opacity: 0.7;
-            }
-        /* --- ZODIAC FEATURE STYLES --- */
-        .zodiac-icon {
-            transition: all 0.3s ease-in-out;
-            opacity: 0.6;
-        }
-        .zodiac-icon:hover {
-            opacity: 1;
-            transform: scale(1.1);
-            filter: drop-shadow(0 0 10px #A78BFA);
-        }
-        .zodiac-icon.active {
-            opacity: 1;
-            transform: scale(1.15);
-            filter: drop-shadow(0 0 15px #C4B5FD);
-        }
-
-        /* --- LOADER --- */
-        .loader-sm { 
-            width: 24px; 
-            height: 24px; 
-            border: 3px solid rgba(255,255,255,0.3); 
-            border-top-color: #a78bfa; 
-            border-radius: 50%; 
-            display: inline-block; 
-            animation: spin 1s linear infinite; 
-        }
-        @keyframes spin { to { transform: rotate(360deg); } }
-    </style>
   <style>
-    body {font-family: 'Noto Sans Thai', sans-serif; background:#100a33; color:white; overflow-x:hidden;}
-    .space-bg {background: radial-gradient(ellipse at bottom,#0f0755 0%,#100a33 100%);position:fixed;inset:0;z-index:-3;}
-    .stars {position:fixed;inset:0;background:transparent url(https://s3-us-west-2.amazonaws.com/s.cdpn.io/1231630/stars.png) repeat top center;z-index:-2;}
-    .twinkling {position:fixed;inset:0;background:transparent url(https://s3-us-west-2.amazonaws.com/s.cdpn.io/1231630/stars.png) repeat top center;z-index:-1;animation:move-twinkle-back 200s linear infinite;}
-    @keyframes move-twinkle-back{from{background-position:0 0;}to{background-position:-10000px 5000px;}}
-    .action-btn {
-        background: linear-gradient(145deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
-        backdrop-filter: blur(20px);
-        border: 1px solid rgba(255, 255, 255, 0.2);
-        border-radius: 20px;
-        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-        position: relative;
-        overflow: hidden;
+    /* --- NEW THEME & BACKGROUND (จากที่คุณระบุ) --- */
+    body {
+        font-family: 'Noto Sans Thai', sans-serif;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: #ffffff;
+        overflow-x: hidden;
     }
-    
-    .action-btn::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: -100%;
-        width: 100%;
-        height: 100%;
-        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
-        transition: left 0.6s;
-    }
-    
-    .action-btn:hover::before {
-        left: 100%;
-    }
-    
-    .action-btn:hover {
-        background: linear-gradient(145deg, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.1));
-        border-color: rgba(255, 255, 255, 0.4);
-        transform: translateY(-12px) scale(1.05);
-        box-shadow: 0 25px 50px rgba(0, 0, 0, 0.2);
-    }
-    .fade-in-item{animation:fadeIn 1s ease-out both;}
-    @keyframes fadeIn{
-        from{
-            opacity:0;
-            transform:translateY(30px) scale(0.95);
-        }
-        to{
-            opacity:1;
-            transform:translateY(0) scale(1);
-        }
-    }
-    
-    /* --- ENHANCED ANIMATIONS --- */
-    .bounce-in {
-        animation: bounceIn 1s ease-out both;
-    }
-    
-    @keyframes bounceIn {
-        0% {
-            opacity: 0;
-            transform: scale(0.3) translateY(50px);
-        }
-        50% {
-            opacity: 1;
-            transform: scale(1.05) translateY(-10px);
-        }
-        70% {
-            transform: scale(0.95) translateY(5px);
-        }
-        100% {
-            opacity: 1;
-            transform: scale(1) translateY(0);
-        }
-    }
-    /* --- Modal --- */
-    .modal-bg{position:fixed;inset:0;background:rgba(16,10,51,0.90);backdrop-filter:blur(2px);z-index:99;display:flex;align-items:center;justify-content:center;transition:opacity .3s;}
-    .modal-panel{background:linear-gradient(135deg,#22194f 60%,#1a133c 100%);padding:2.5rem 2rem;border-radius:1.5rem;box-shadow:0 8px 32px #100a3340;max-width:420px;width:95vw;position:relative;border:1.5px solid #a78bfa33;}
-    .modal-close{position:absolute;top:1.5rem;right:1.5rem;font-size:2rem;color:#a78bfa99;cursor:pointer;transition:.2s;}
-    .modal-close:hover{color:#fff;transform:rotate(90deg);}
-    .modal-img{border-radius:.75rem;margin-bottom:1.5rem;box-shadow:0 0 16px #8b5cf6bb;max-height:180px;max-width:100%;object-fit:cover;}
-    .modal-title{font-size:1.4rem;font-weight:700;color:#a78bfa;margin-bottom:.75rem;text-align:left;}
-    .modal-desc{font-size:1rem;color:#e0e7ffbb;text-align:left;}
-        /* Floating Home Button for Mobile */
-        .fab-home-btn { position: fixed; left: 50%; bottom: 22px; transform: translateX(-50%); z-index: 100; display: none; }
-        @media (max-width: 768px) {
-        .fab-home-btn { display: flex !important; }
-        }
-  </style>
 
-  <style>
-    body {font-family: 'Noto Sans Thai', sans-serif; background:#100a33; color:white; overflow-x:hidden;}
-    .space-bg {background: radial-gradient(ellipse at bottom,#0f0755 0%,#100a33 100%);position:fixed;inset:0;z-index:-3;}
-    .stars {position:fixed;inset:0;background:transparent url(https://s3-us-west-2.amazonaws.com/s.cdpn.io/1231630/stars.png) repeat top center;z-index:-2;}
-    .twinkling {position:fixed;inset:0;background:transparent url(https://s3-us-west-2.amazonaws.com/s.cdpn.io/1231630/stars.png) repeat top center;z-index:-1;animation:move-twinkle-back 200s linear infinite;}
-    @keyframes move-twinkle-back{from{background-position:0 0;}to{background-position:-10000px 5000px;}}
-    .action-btn {
+    .space-bg {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+        background-size: 400% 400%;
+        animation: gradientShift 15s ease infinite;
+        position: fixed;
+        inset: 0;
+        z-index: -3;
+    }
+
+    @keyframes gradientShift {
+        0% { background-position: 0% 50%; }
+        50% { background-position: 100% 50%; }
+        100% { background-position: 0% 50%; }
+    }
+
+    .stars { position: fixed; inset: 0; background: transparent url(https://s3-us-west-2.amazonaws.com/s.cdpn.io/1231630/stars.png) repeat top center; z-index: -2; }
+    .twinkling { position: fixed; inset: 0; background: transparent url(https://s3-us-west-2.amazonaws.com/s.cdpn.io/1231630/stars.png) repeat top center; z-index: -1; animation: move-twinkle-back 300s linear infinite; opacity: 0.4; }
+    @keyframes move-twinkle-back { from { background-position: 0 0; } to { background-position: -10000px 5000px; } }
+
+    /* --- REFACTORED: Glassmorphism Style --- */
+    .glass-box {
         background: linear-gradient(145deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
-        backdrop-filter: blur(20px);
+        backdrop-filter: blur(25px);
+        -webkit-backdrop-filter: blur(25px);
         border: 1px solid rgba(255, 255, 255, 0.2);
-        border-radius: 20px;
-        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-        position: relative;
-        overflow: hidden;
+        border-radius: 24px;
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        transition: transform 0.4s ease, box-shadow 0.4s ease;
     }
-    
-    .action-btn::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: -100%;
-        width: 100%;
-        height: 100%;
-        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
-        transition: left 0.6s;
+    .glass-box:hover {
+      transform: translateY(-8px) scale(1.02);
+      box-shadow: 0 20px 40px rgba(45, 22, 105, 0.2);
     }
-    
-    .action-btn:hover::before {
-        left: 100%;
+
+    .text-glow {
+        text-shadow: 0 0 20px rgba(255, 255, 255, 0.5), 0 0 40px rgba(167, 139, 250, 0.3);
     }
-    
-    .action-btn:hover {
-        background: linear-gradient(145deg, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.1));
-        border-color: rgba(255, 255, 255, 0.4);
-        transform: translateY(-12px) scale(1.05);
-        box-shadow: 0 25px 50px rgba(0, 0, 0, 0.2);
-    }
-    .fade-in-item{animation:fadeIn 1s ease-out both;}
-    @keyframes fadeIn{
-        from{
-            opacity:0;
-            transform:translateY(30px) scale(0.95);
-        }
-        to{
-            opacity:1;
-            transform:translateY(0) scale(1);
-        }
-    }
-    
-    /* --- ENHANCED ANIMATIONS --- */
-    .bounce-in {
-        animation: bounceIn 1s ease-out both;
-    }
-    
-    @keyframes bounceIn {
-        0% {
+
+    /* --- REFACTORED: Animation --- */
+    @keyframes fadeIn {
+        from {
             opacity: 0;
-            transform: scale(0.3) translateY(50px);
+            transform: translateY(30px) scale(0.95);
         }
-        50% {
+        to {
             opacity: 1;
-            transform: scale(1.05) translateY(-10px);
-        }
-        70% {
-            transform: scale(0.95) translateY(5px);
-        }
-        100% {
-            opacity: 1;
-            transform: scale(1) translateY(0);
+            transform: translateY(0) scale(1);
         }
     }
-    /* --- Modal --- */
-    .modal-bg{position:fixed;inset:0;background:rgba(16,10,51,0.90);backdrop-filter:blur(2px);z-index:99;display:flex;align-items:center;justify-content:center;transition:opacity .3s;}
-    .modal-panel{background:linear-gradient(135deg,#22194f 60%,#1a133c 100%);padding:2.5rem 2rem;border-radius:1.5rem;box-shadow:0 8px 32px #100a3340;max-width:420px;width:95vw;position:relative;border:1.5px solid #a78bfa33;}
-    .modal-close{position:absolute;top:1.5rem;right:1.5rem;font-size:2rem;color:#a78bfa99;cursor:pointer;transition:.2s;}
-    .modal-close:hover{color:#fff;transform:rotate(90deg);}
-    .modal-img{border-radius:.75rem;margin-bottom:1.5rem;box-shadow:0 0 16px #8b5cf6bb;max-height:180px;max-width:100%;object-fit:cover;}
-    .modal-title{font-size:1.4rem;font-weight:700;color:#a78bfa;margin-bottom:.75rem;text-align:left;}
-    .modal-desc{font-size:1rem;color:#e0e7ffbb;text-align:left;}
-        /* Floating Home Button for Mobile */
-        .fab-home-btn { position: fixed; left: 50%; bottom: 22px; transform: translateX(-50%); z-index: 100; display: none; }
-        @media (max-width: 768px) {
-        .fab-home-btn { display: flex !important; }
-        }
+    .fade-in-item { opacity: 0; animation: fadeIn 1s ease-out forwards; }
+
+    /* --- REFACTORED: Service Modal --- */
+    .modal-bg {
+        position: fixed; inset: 0;
+        background: rgba(30, 21, 80, 0.6);
+        backdrop-filter: blur(8px);
+        -webkit-backdrop-filter: blur(8px);
+        z-index: 99; display: flex; align-items: center; justify-content: center;
+        transition: opacity 0.3s ease;
+    }
+    .modal-panel {
+        /* ใช้ .glass-box style แต่ปรับ padding และ max-width ให้เหมาะกับ Modal */
+        background: linear-gradient(145deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0.1));
+        backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px);
+        border: 1px solid rgba(255, 255, 255, 0.25); border-radius: 24px;
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+        padding: 2.5rem 2rem;
+        max-width: 450px; width: 95vw;
+        position: relative;
+    }
+    .modal-close { position: absolute; top: 1.5rem; right: 1.5rem; font-size: 2rem; color: rgba(255, 255, 255, 0.6); cursor: pointer; transition: all .2s; }
+    .modal-close:hover { color: #fff; transform: rotate(90deg) scale(1.1); }
+    .modal-img { border-radius: .75rem; margin-bottom: 1.5rem; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2); max-height: 180px; width:100%; object-fit: cover; }
+    .modal-title { font-size: 1.5rem; font-weight: 700; color: #fff; margin-bottom: .75rem; text-align: left; }
+    .modal-desc { font-size: 1rem; color: rgba(255, 255, 255, 0.8); text-align: left; }
+
+    /* --- REFACTORED: SweetAlert2 Card Picker --- */
+    .swal2-popup {
+        background: linear-gradient(145deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0.1)) !important;
+        backdrop-filter: blur(15px) !important;
+        -webkit-backdrop-filter: blur(15px) !important;
+        border: 1px solid rgba(255, 255, 255, 0.2) !important;
+        border-radius: 24px !important;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.2) !important;
+    }
+    .swal2-title { color: #ffffff !important; }
+    .swal2-html-container { color: rgba(255, 255, 255, 0.8) !important; }
+    .swal2-close { color: rgba(255, 255, 255, 0.7) !important; transition: all 0.2s ease; }
+    .swal2-close:hover { color: #ffffff !important; transform: scale(1.2); }
+
+    .swal-card-option {
+        display: block; width: 100%;
+        padding: 1rem; margin-bottom: 0.75rem;
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        border-radius: 12px;
+        text-align: center; font-weight: bold;
+        color: #ffffff; text-decoration: none;
+        background: rgba(255, 255, 255, 0.1);
+        transition: all 0.3s ease;
+    }
+    .swal-card-option:hover {
+        background-color: rgba(167, 139, 250, 0.3); /* สีม่วงอ่อนโปร่งแสง */
+        border-color: rgba(196, 181, 253, 0.7);
+        transform: translateY(-4px);
+    }
+
+
+    /* --- REFACTORED: Floating Home Button --- */
+    .fab-home-btn {
+      position: fixed; left: 50%; bottom: 22px; transform: translateX(-50%); z-index: 100; display: none;
+      background: linear-gradient(45deg, #667eea, #764ba2);
+      box-shadow: 0 8px 32px rgba(76, 58, 162, 0.44);
+    }
+    @media (max-width: 768px) {
+      .fab-home-btn { display: flex !important; }
+    }
   </style>
 </head>
 <body class="antialiased">
   <div class="space-bg"></div>
   <div class="stars"></div>
   <div class="twinkling"></div>
-  
-  <!-- Floating Orbs -->
-  <div class="floating-orb orb-1"></div>
-  <div class="floating-orb orb-2"></div>
-  <div class="floating-orb orb-3"></div>
-  
+
   <div class="relative min-h-screen flex items-center justify-center p-4">
-    <main class="w-full max-w-3xl mx-auto text-center">
-      <h1 class="text-4xl md:text-6xl font-bold text-white mb-4 text-glow bounce-in">ดูดวงกับเรฟ</h1>
-      <p class="text-xl md:text-2xl text-white/90 mb-12 fade-in-item" style="animation-delay: 0.2s; text-shadow: 0 2px 4px rgba(0,0,0,0.3);">REFFORTUNE</p>
-      
+    <main class="w-full max-w-4xl mx-auto text-center">
+
+      <h1 class="text-4xl md:text-5xl font-bold text-white text-glow mb-12">ดูดวงกับเรฟ REFFORTUNE</h1>
+
       <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-        <button class="action-btn fade-in-item p-8 flex flex-col gap-3 items-start cursor-pointer" style="animation-delay: 0.3s;" onclick="openServiceModal('tarot')">
+        <button class="glass-box fade-in-item p-8 flex flex-col gap-3 items-start text-left cursor-pointer" onclick="openServiceModal('tarot')">
           <span class="text-2xl font-bold text-white">ไพ่ทาโรต์ (Tarot Card)</span>
           <span class="text-base text-white/80">ศาสตร์แห่งการทำนายอนาคตด้วยไพ่ 78 ใบ เพื่อเป็นแนวทางในการตัดสินใจ</span>
         </button>
-        <button class="action-btn fade-in-item p-8 flex flex-col gap-3 items-start cursor-pointer" style="animation-delay: 0.4s;" onclick="openServiceModal('oracle')">
+        <button class="glass-box fade-in-item p-8 flex flex-col gap-3 items-start text-left cursor-pointer" style="animation-delay: 0.1s" onclick="openServiceModal('oracle')">
           <span class="text-2xl font-bold text-white">ไพ่ออราเคิล (Oracle Card)</span>
           <span class="text-base text-white/80">เครื่องมือที่ให้คำแนะนำและแรงบันดาลใจ เพื่อฮีลใจและค้นพบศักยภาพในตนเอง</span>
         </button>
-        <button class="action-btn fade-in-item p-8 flex flex-col gap-3 items-start cursor-pointer" style="animation-delay: 0.5s;" onclick="openServiceModal('astrology')">
+        <button class="glass-box fade-in-item p-8 flex flex-col gap-3 items-start text-left cursor-pointer" style="animation-delay: 0.2s" onclick="openServiceModal('astrology')">
           <span class="text-2xl font-bold text-white">โหราศาสตร์ (Astrology)</span>
           <span class="text-base text-white/80">ศึกษาการเคลื่อนที่ของดวงดาว เพื่อเข้าใจพื้นฐานดวงชะตาและวางแผนชีวิต</span>
         </button>
-        <button class="action-btn fade-in-item p-8 flex flex-col gap-3 items-start cursor-pointer" style="animation-delay: 0.6s;" onclick="openServiceModal('numerology')">
+        <button class="glass-box fade-in-item p-8 flex flex-col gap-3 items-start text-left cursor-pointer" style="animation-delay: 0.3s" onclick="openServiceModal('numerology')">
           <span class="text-2xl font-bold text-white">มหาสัตตเลข (Numerology)</span>
           <span class="text-base text-white/80">ศาสตร์แห่งตัวเลขจากวันเกิดและชื่อ เพื่อค้นพบเส้นทางชีวิตที่เหมาะสม</span>
         </button>
       </div>
-      <!-- Main Action Buttons -->
- <section class="py-12 reveal-item is-visible">
-                    <div class="menu-premium-theme fade-in-item" style="animation-delay: 0.7s;">
-                        <h3 class="text-3xl font-bold text-white mb-2 text-center text-glow">เข้าสู่เมนูเลือกการ์ด</h3>
-                        <p class="text-center text-white/80 mb-8">เลือกรูปแบบการเปิดไพ่ที่คุณต้องการ</p>
-                        <div class="grid md:grid-cols-1 gap-6">
-                            <div id="start-game-button"></div>
-                            <div id="open-pick-modal-btn" class="menu-card-item cursor-pointer">
-                                <h4>เลือกไพ่</h4>
-                                <p class="mt-2"> เปิดไพ่ดวงชะตาตัวคุณเอง</p>
-                            </div>
-                        </div>
-                    </div>
-                </section>
-        <div class="fade-in-item" style="animation-delay: 0.8s;">
-          <a href="/spiritcard.html" class="action-btn w-full h-full p-6 rounded-2xl flex flex-col items-center justify-center">
-            <img src="/icon/4.png" class="action-btn-icon w-36 h-36 " alt="ไอคอนแพ็กเกจ"/>
-            <h2 class="text-xl font-bold text-white">ดูไพ่ตัวตน</h2>
-            <p class="text-white/80 text-sm">ค้นพบไพ่ตัวตนของคุณ</p>
-          </a>
+
+      <section class="py-8 fade-in-item" style="animation-delay: 0.4s">
+        <div class="glass-box p-8 md:p-10">
+            <h3 class="text-3xl font-bold text-white mb-2 text-center text-glow">เข้าสู่เมนูเลือกการ์ด</h3>
+            <p class="text-center text-white/80 mb-8">เลือกรูปแบบการเปิดไพ่ที่คุณต้องการ</p>
+            <div class="max-w-sm mx-auto">
+                <div id="open-pick-modal-btn" class="glass-box !rounded-xl p-4 cursor-pointer">
+                    <h4 class="text-xl font-bold">เลือกไพ่ (Pick a Card)</h4>
+                    <p class="mt-1 text-white/80">เปิดไพ่เพื่อรับคำทำนาย</p>
+                </div>
+            </div>
         </div>
-        
-        <div class="fade-in-item" style="animation-delay: 0.9s;">
-          <a href="packages.html" class="action-btn w-full h-full p-6 rounded-2xl flex flex-col items-center justify-center">
-            <img src="/icon/Wallet.png" class="action-btn-icon w-16 h-16 mb-3" alt="ไอคอนแพ็กเกจ"/>
+      </section>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8">
+          <a href="/spiritcard.html" class="glass-box fade-in-item p-6 flex flex-col items-center justify-center text-center" style="animation-delay: 0.5s;">
+            <img src="/icon/4.png" class="w-24 h-24 mb-3" alt="ไอคอนไพ่ตัวตน"/>
+            <h2 class="text-xl font-bold text-white">ดูไพ่ตัวตน</h2>
+            <p class="text-white/80 text-sm">ค้นพบไพ่ประจำตัวของคุณ</p>
+          </a>
+          <a href="packages.html" class="glass-box fade-in-item p-6 flex flex-col items-center justify-center text-center" style="animation-delay: 0.6s;">
+            <img src="/icon/Wallet.png" class="w-16 h-16 mb-3" alt="ไอคอนแพ็กเกจ"/>
             <h2 class="text-xl font-bold text-white">แพ็กเกจดูดวง</h2>
             <p class="text-white/80 text-sm">"ชัด เคลียร์ ใช้ได้จริง"</p>
           </a>
-        </div>
       </div>
-      <div class="text-sm text-white/70 mt-12 fade-in-item" style="animation-delay: 1.0s;">Powered by REFFORTUNE ✦ EasyZen</div>
+
+      <div class="text-sm text-white/60 mt-16 text-glow">Powered by REFFORTUNE ✦ EasyZen</div>
     </main>
   </div>
-  <!-- FAB Home Button (Mobile Only) -->
-  <a href="/" class="fab-home-btn bg-gradient-to-br from-purple-500 to-green-400 shadow-lg rounded-full p-0.5" style="box-shadow:0 8px 32px #5d3bfe44;">
-    <div class="flex items-center justify-center bg-[#130b32] rounded-full w-16 h-16">
-      <svg width="38" height="38" fill="none" stroke="#fff" stroke-width="2.2" viewBox="0 0 24 24">
-        <path d="M3 12L12 5l9 7M5 10v10a1 1 0 001 1h3m8-11v10a1 1 0 01-1 1h-3m-8-11l9 7 9-7"/>
+
+  <a href="/" class="fab-home-btn shadow-lg rounded-full p-0.5">
+    <div class="flex items-center justify-center bg-gray-800/80 backdrop-blur-sm rounded-full w-16 h-16 border border-white/20">
+      <svg width="38" height="38" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
       </svg>
     </div>
   </a>
-  <!-- Modal Structure -->
-  <div id="service-modal" class="modal-bg" style="display:none;">
+
+  <div id="service-modal" class="modal-bg" style="display:none; opacity: 0;">
     <div class="modal-panel">
       <span class="modal-close" onclick="closeServiceModal()">&times;</span>
-      <img id="modal-img" class="modal-img" src="" alt="" style="display:none;" />
-      <div class="modal-title" id="modal-title"></div>
-      <div class="modal-desc" id="modal-desc"></div>
+      <img id="modal-img" class="modal-img" src="" alt="ภาพประกอบศาสตร์การดูดวง" style="display:none;" />
+      <div id="modal-title" class="modal-title"></div>
+      <div id="modal-desc" class="modal-desc"></div>
     </div>
   </div>
+
   <script>
-    // ข้อมูลแต่ละศาสตร์
+    // ข้อมูลแต่ละศาสตร์ (คงเดิม)
     const serviceData = {
       tarot: {
         title: 'ไพ่ทาโรต์ (Tarot Card)',
@@ -638,50 +238,52 @@
         img: 'https://i.postimg.cc/k5hmpF94/assetstask-01jyjd6az8f259srq63pa.webp'
       }
     };
+
+    // Modal Controller (ปรับปรุงให้มี Fade Animation)
+    const modal = document.getElementById('service-modal');
     function openServiceModal(key){
-      const data=serviceData[key];
+      const data = serviceData[key];
       if(!data) return;
-      document.getElementById('modal-title').innerText=data.title;
-      document.getElementById('modal-desc').innerText=data.desc;
-      const img=document.getElementById('modal-img');
-      if(data.img){ img.src=data.img; img.style.display='block'; } else { img.style.display='none'; }
-      document.getElementById('service-modal').style.display='flex';
-      setTimeout(()=>{document.getElementById('service-modal').style.opacity=1},10);
+      document.getElementById('modal-title').innerText = data.title;
+      document.getElementById('modal-desc').innerText = data.desc;
+      const img = document.getElementById('modal-img');
+      if(data.img){ img.src = data.img; img.style.display = 'block'; } else { img.style.display = 'none'; }
+      modal.style.display = 'flex';
+      setTimeout(() => { modal.style.opacity = 1; }, 10); // Fade in
     }
     function closeServiceModal(){
-      document.getElementById('service-modal').style.opacity=0;
-      setTimeout(()=>{document.getElementById('service-modal').style.display='none';},300);
+      modal.style.opacity = 0;
+      setTimeout(() => { modal.style.display = 'none'; }, 300); // Wait for fade out
     }
-    document.addEventListener('keydown',function(e){
-      if(e.key==='Escape')closeServiceModal();
+    document.addEventListener('keydown', (e) => {
+      if(e.key === 'Escape') closeServiceModal();
     });
-    document.getElementById('service-modal').addEventListener('click',function(e){
-      if(e.target===this)closeServiceModal();
+    modal.addEventListener('click', (e) => {
+      if(e.target === modal) closeServiceModal();
     });
 
-
-       // --- SCRIPT FOR SELECTION MODAL ---
-        const openPickModalBtn = document.getElementById('open-pick-modal-btn');
-        if(openPickModalBtn) {
-            openPickModalBtn.addEventListener('click', () => {
-                Swal.fire({
-                    title: 'เลือกจำนวนไพ่',
-                    html: `
-                        <p class="mb-4">คุณต้องการเปิดไพ่เพื่อดูคำทำนายกี่ใบ?</p>
-                        <div class="flex flex-col">
-                         <a href="pick.html?count=1" class="swal-card-option">1 ใบ  (1 card)</a>
-                         <a href="pick.html?count=2" class="swal-card-option">2 ใบ  (2 card)</a>
-                            <a href="pick.html?count=3" class="swal-card-option">3 ใบ  (3 card)</a>
-                            <a href="pick.html?count=4" class="swal-card-option">4 ใบ  (4 card)</a>
-
-                            <a href="pick.html?count=10" class="swal-card-option">10 ใบ  (10 card)</a>
-                        </div>
-                    `,
-                    showConfirmButton: false,
-                    showCloseButton: true,
-                });
+    // SweetAlert2 Controller (คงเดิม)
+    const openPickModalBtn = document.getElementById('open-pick-modal-btn');
+    if(openPickModalBtn) {
+        openPickModalBtn.addEventListener('click', () => {
+            Swal.fire({
+                title: 'เลือกจำนวนไพ่',
+                html: `
+                    <p class="mb-4 text-white/80">คุณต้องการเปิดไพ่เพื่อดูคำทำนายกี่ใบ?</p>
+                    <div class="flex flex-col">
+                      <a href="pick.html?count=1" class="swal-card-option">1 ใบ (Quick Insight)</a>
+                      <a href="pick.html?count=2" class="swal-card-option">2 ใบ (Choice/Duality)</a>
+                      <a href="pick.html?count=3" class="swal-card-option">3 ใบ (Past, Present, Future)</a>
+                      <a href="pick.html?count=4" class="swal-card-option">4 ใบ (Action Plan)</a>
+                      <a href="pick.html?count=10" class="swal-card-option">10 ใบ (Celtic Cross)</a>
+                    </div>
+                `,
+                showConfirmButton: false,
+                showCloseButton: true,
+                target: 'body'
             });
-        }
+        });
+    }
   </script>
 </body>
 </html>
