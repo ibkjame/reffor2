@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>ดูดวงกับเรฟ - REFFORTUNE</title>
+  <meta name="description" content="ดูดวงกับเรฟ บริการดูดวงไพ่ทาโรต์ ไพ่ออราเคิล โหราศาสตร์ และมหาสัตตเลข พร้อมแพ็กเกจที่เหมาะกับคุณ เช็คดวงชะตา วางแผนชีวิต และรับคำแนะนำที่ชัดเจน ใช้ได้จริง" />
+  <meta name="keywords" content="ดูดวง, ไพ่ทาโรต์, ไพ่ออราเคิล, โหราศาสตร์, มหาสัตตเลข, ดูดวงออนไลน์, เรฟฟอร์จูน, ดูดวงความรัก, ดูดวงการงาน, ดูดวงการเงิน" />
+  <meta property="og:image" content="https://i.imgur.com/8a5g6aD.png" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@400;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+  <style>
+    /* --- Custom Purple Theme --- */
+    body {
+        font-family: 'Noto Sans Thai', sans-serif;
+        background-color: #F5F3F9; /* Light purple background */
+        color: #594A69; /* Dark purple text */
+        overflow-x: hidden;
+    }
+    
+    /* --- Background Canvas Effect --- */
+    #background-canvas {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 0; /* Behind content, but visible */
+        opacity: 0.6;
+    }
+    
+    /* Ensure content is above the canvas */
+    .relative {
+        position: relative;
+        z-index: 1;
+    }
+
+    /* --- Main Action Buttons --- */
+    .action-btn {
+        background-color: rgba(255, 255, 255, 0.8); /* Slightly transparent */
+        backdrop-filter: blur(5px);
+        border: 1px solid #DCD6E8;
+        border-radius: 1rem;
+        transition: all .3s ease;
+        box-shadow: 0 4px 12px rgba(180, 160, 220, 0.15);
+    }
+    .action-btn:hover {
+        transform: translateY(-8px) scale(1.03);
+        box-shadow: 0 10px 25px rgba(109, 40, 217, 0.2);
+        border-color: #A78BFA;
+    }
+    
+    .action-btn-title { color: #6D28D9; }
+    .action-btn-desc { color: #594A69; }
+
+    /* --- Main Heading --- */
+    .main-heading {
+        color: #4B3D5E;
+        text-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    }
+
+    /* --- "Pick a Card" Menu --- */
+    .menu-purple-theme {
+        background-color: rgba(255, 255, 255, 0.85); /* Slightly transparent */
+        backdrop-filter: blur(5px);
+        border: 1px solid #DCD6E8;
+        border-radius: 1rem;
+        padding: 2rem;
+        box-shadow: 0 8px 32px 0 rgba(180, 160, 220, 0.2);
+    }
+    .menu-card-item {
+        background-color: #F5F3F9;
+        border: 1px solid #DCD6E8;
+        border-radius: 0.75rem;
+        padding: 1.5rem;
+        text-align: center;
+        transition: all 0.3s ease-in-out;
+        cursor: pointer;
+    }
+    .menu-card-item:hover {
+        transform: translateY(-10px);
+        background-color: #FFFFFF;
+        box-shadow: 0 0 20px rgba(109, 40, 217, 0.15);
+        border-color: #A78BFA;
+    }
+    .menu-card-item h4 {
+        color: #6D28D9;
+        font-size: 1.25rem; /* text-xl */
+        font-weight: bold;
+    }
+    .menu-card-item p {
+        color: #594A69; /* gray-300 */
+        font-size: 0.875rem; /* text-sm */
+    }
+
+    /* --- Modal --- */
+    .modal-bg {
+        position: fixed; inset: 0; 
+        background: rgba(30, 20, 50, 0.8); 
+        backdrop-filter: blur(5px); 
+        z-index: 99; 
+        display: flex; 
+        align-items: center; 
+        justify-content: center; 
+        transition: opacity .3s;
+    }
+    .modal-panel {
+        background: #FFFFFF;
+        padding: 2rem;
+        border-radius: 1.5rem;
+        box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+        max-width: 450px;
+        width: 95vw;
+        position: relative;
+    }
+    .modal-close {
+        position: absolute; top: 1rem; right: 1rem; 
+        font-size: 1.5rem; color: #A89CB9; 
+        cursor: pointer; transition: .2s;
+    }
+    .modal-close:hover { color: #594A69; transform: rotate(90deg); }
+    .modal-img { border-radius: .75rem; margin-bottom: 1.5rem; }
+    .modal-title { font-size: 1.5rem; font-weight: 700; color: #6D28D9; margin-bottom: .75rem; text-align: left; }
+    .modal-desc { font-size: 1rem; color: #594A69; text-align: left; }
+
+    /* --- SweetAlert2 Customization for Card Picking --- */
+    .swal2-popup {
+        background-color: #FFFFFF !important;
+        border: 1px solid #DCD6E8 !important;
+        border-radius: 1rem !important;
+        color: #594A69 !important;
+    }
+    .swal2-title {
+        color: #6D28D9 !important;
+    }
+    .swal-card-option {
+        display: block; width: 100%;
+        padding: 1rem; margin-bottom: 0.75rem;
+        border: 1px solid #C4B5FD;
+        border-radius: 0.5rem;
+        text-align: center; font-weight: bold;
+        color: #6D28D9;
+        text-decoration: none;
+        transition: all 0.3s ease;
+    }
+    .swal-card-option:hover {
+        background-color: #8B5CF6;
+        color: #FFFFFF;
+    }
+
+    /* --- General & Animations --- */
+    .fade-in-item { animation: fadeIn 1s ease-out both; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+  </style>
+</head>
+<body class="antialiased">
+  
+  <canvas id="background-canvas"></canvas>
+
+  <div class="relative min-h-screen flex items-center justify-center p-4">
+    <main class="w-full max-w-4xl mx-auto text-center">
+      <h1 class="main-heading text-4xl md:text-5xl font-bold mb-10 fade-in-item">ดูดวงกับเรฟ REFFORTUNE</h1>
+      
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+        <button class="action-btn fade-in-item p-6 flex flex-col gap-2 items-start text-left" style="animation-delay: 0.1s;" onclick="openServiceModal('tarot')">
+          <span class="action-btn-title text-xl font-bold">ไพ่ทาโรต์ (Tarot Card)</span>
+          <span class="action-btn-desc text-sm">ศาสตร์แห่งการทำนายอนาคตด้วยไพ่ 78 ใบ เพื่อเป็นแนวทางในการตัดสินใจ</span>
+        </button>
+        <button class="action-btn fade-in-item p-6 flex flex-col gap-2 items-start text-left" style="animation-delay: 0.2s;" onclick="openServiceModal('oracle')">
+          <span class="action-btn-title text-xl font-bold text-pink-500">ไพ่ออราเคิล (Oracle Card)</span>
+          <span class="action-btn-desc text-sm">เครื่องมือที่ให้คำแนะนำและแรงบันดาลใจ เพื่อฮีลใจและค้นพบศักยภาพในตนเอง</span>
+        </button>
+        <button class="action-btn fade-in-item p-6 flex flex-col gap-2 items-start text-left" style="animation-delay: 0.3s;" onclick="openServiceModal('astrology')">
+          <span class="action-btn-title text-xl font-bold text-cyan-500">โหราศาสตร์ (Astrology)</span>
+          <span class="action-btn-desc text-sm">ศึกษาการเคลื่อนที่ของดวงดาว เพื่อเข้าใจพื้นฐานดวงชะตาและวางแผนชีวิต</span>
+        </button>
+        <button class="action-btn fade-in-item p-6 flex flex-col gap-2 items-start text-left" style="animation-delay: 0.4s;" onclick="openServiceModal('numerology')">
+          <span class="action-btn-title text-xl font-bold text-amber-500">มหาสัตตเลข (Numerology)</span>
+          <span class="action-btn-desc text-sm">ศาสตร์แห่งตัวเลขจากวันเกิดและชื่อ เพื่อค้นพบเส้นทางชีวิตที่เหมาะสม</span>
+        </button>
+      </div>
+
+      <section class="py-8 fade-in-item" style="animation-delay: 0.5s;">
+        <div class="menu-purple-theme">
+            <h3 class="text-3xl font-bold text-purple-700 mb-2 text-center">เข้าสู่เมนูหลัก</h3>
+            <p class="text-center text-gray-600 mb-8">เลือกบริการที่คุณสนใจ หรือคำนวณไพ่ประจำตัวของคุณ</p>
+            <div class="grid md:grid-cols-2 gap-6">
+                <div id="open-pick-modal-btn" class="menu-card-item">
+                    <h4>เลือกไพ่ทำนาย</h4>
+                    <p class="mt-2">เปิดไพ่เพื่อรับคำทำนายแบบเจาะจง</p>
+                </div>
+                <a href="/spiritcard.html" class="menu-card-item no-underline">
+                  <h4>ค้นหาไพ่ตัวตน</h4>
+                  <p class="mt-2">คำนวณไพ่จากวันเกิดของคุณ</p>
+                </a>
+            </div>
+        </div>
+      </section>
+        
+      <div class="text-xs text-purple-400 mt-10 fade-in-item" style="animation-delay: 0.6s;">Powered by REFFORTUNE</div>
+    </main>
+  </div>
+
+  <!-- Modal Structure -->
+  <div id="service-modal" class="modal-bg" style="display:none; opacity: 0;">
+    <div class="modal-panel">
+      <span class="modal-close" onclick="closeServiceModal()">&times;</span>
+      <img id="modal-img" class="modal-img" src="" alt="" style="display:none;" />
+      <div id="modal-title" class="modal-title"></div>
+      <div id="modal-desc" class="modal-desc"></div>
+    </div>
+  </div>
+
+  <script>
+    // ข้อมูลแต่ละศาสตร์
+    const serviceData = {
+      tarot: {
+        title: 'ไพ่ทาโรต์ (Tarot Card)',
+        desc: 'ศาสตร์แห่งการทำนายอนาคตด้วยไพ่ 78 ใบ ที่จะช่วยให้คุณเข้าใจสถานการณ์ต่างๆ ในชีวิต ทั้งเรื่องความรัก การงาน การเงิน และสุขภาพ ไพ่แต่ละใบมีความหมายเฉพาะตัวที่สามารถตีความได้อย่างลึกซึ้ง เพื่อเป็นแนวทางในการตัดสินใจและเตรียมพร้อมรับมือกับสิ่งที่จะเกิดขึ้น',
+        img: 'https://i.postimg.cc/JzxmbC2j/assets-task-01jyjcx2d1fhabfqjnf0b5sxcc-1750816778-img-1.webp'
+      },
+      oracle: {
+        title: 'ไพ่ออราเคิล (Oracle Card)',
+        desc: 'ไพ่ออราเคิลเป็นเครื่องมือที่ให้คำแนะนำและแรงบันดาลใจ ไม่ได้มีโครงสร้างตายตัวเหมือนไพ่ทาโรต์ ทำให้มีความหลากหลายและอิสระในการตีความสูง เหมาะสำหรับผู้ที่ต้องการคำตอบที่ตรงไปตรงมา คำปลอบโยน หรือมุมมองใหม่ๆ เพื่อฮีลใจและค้นพบศักยภาพในตนเอง',
+        img: 'https://i.postimg.cc/909CT46f/assets-task-01jyjd8bzxf38b4qphad9k7g1q-1750817169-img-1.webp'
+      },
+      astrology: {
+        title: 'โหราศาสตร์ (Astrology)',
+        desc: 'การศึกษาการเคลื่อนที่ของดวงดาวและตำแหน่งของเทห์ฟากฟ้า ที่เชื่อว่ามีอิทธิพลต่อชีวิตและบุคลิกภาพของมนุษย์ การผูกดวงชะตาส่วนบุคคลจะช่วยให้คุณเข้าใจพื้นฐานดวงชะตา พรสวรรค์ และอุปสรรคต่างๆ เพื่อวางแผนชีวิตได้อย่างแม่นยำและมีประสิทธิภาพ',
+        img: 'https://i.postimg.cc/3wwh1fsV/assets-task-01jyjd312heb3r1j8k5stmv8h7-1750816995-img-1.webp'
+      },
+      numerology: {
+        title: 'มหาสัตตเลข (Numerology)',
+        desc: 'ศาสตร์แห่งตัวเลขที่วิเคราะห์ความหมายที่ซ่อนอยู่ในวันเดือนปีเกิดและชื่อของคุณ ตัวเลขแต่ละตัวจะสะท้อนถึงพลังงานและลักษณะนิสัยที่แตกต่างกัน การวิเคราะห์เลขศาสตร์จะช่วยให้คุณรู้จักตัวเองมากขึ้น ค้นพบเส้นทางชีวิตที่เหมาะสม และเข้าใจความสัมพันธ์กับผู้อื่นได้ดียิ่งขึ้น',
+        img: 'https://i.postimg.cc/k5hmpF94/assetstask-01jyjd6az8f259srq63pa.webp'
+      }
+    };
+
+    const modalElement = document.getElementById('service-modal');
+
+    function openServiceModal(key){
+      const data = serviceData[key];
+      if(!data) return;
+      document.getElementById('modal-title').innerText = data.title;
+      document.getElementById('modal-desc').innerText = data.desc;
+      const img = document.getElementById('modal-img');
+      if(data.img){ img.src = data.img; img.style.display='block'; } else { img.style.display='none'; }
+      modalElement.style.display = 'flex';
+      setTimeout(() => { modalElement.style.opacity = 1 }, 10);
+    }
+
+    function closeServiceModal(){
+      modalElement.style.opacity = 0;
+      setTimeout(() => { modalElement.style.display = 'none'; }, 300);
+    }
+
+    document.addEventListener('keydown', function(e){
+      if(e.key === 'Escape') closeServiceModal();
+    });
+    modalElement.addEventListener('click', function(e){
+      if(e.target === this) closeServiceModal();
+    });
+
+    // --- SCRIPT FOR SELECTION MODAL ---
+    const openPickModalBtn = document.getElementById('open-pick-modal-btn');
+    if(openPickModalBtn) {
+        openPickModalBtn.addEventListener('click', () => {
+            Swal.fire({
+                title: 'เลือกจำนวนไพ่',
+                html: `
+                    <p class="mb-4">คุณต้องการเปิดไพ่เพื่อดูคำทำนายกี่ใบ?</p>
+                    <div class="flex flex-col">
+                     <a href="pick.html?count=1" class="swal-card-option">1 ใบ (Daily Insight)</a>
+                     <a href="pick.html?count=3" class="swal-card-option">3 ใบ (Past, Present, Future)</a>
+                     <a href="pick.html?count=4" class="swal-card-option">4 ใบ (Celtic Cross Spread)</a>
+                     <a href="pick.html?count=10" class="swal-card-option">10 ใบ (Relationship Spread)</a>
+                    </div>
+                `,
+                showConfirmButton: false,
+                showCloseButton: true,
+                customClass: {
+                    popup: 'swal2-popup',
+                    title: 'swal2-title',
+                }
+            });
+        });
+    }
+  </script>
+  <script>
+    // --- Animated Background Script ---
+    const canvas = document.getElementById('background-canvas');
+    const ctx = canvas.getContext('2d');
+    let particlesArray;
+
+    // Set canvas size
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    // Particle class
+    class Particle {
+        constructor(x, y, directionX, directionY, size, color) {
+            this.x = x;
+            this.y = y;
+            this.directionX = directionX;
+            this.directionY = directionY;
+            this.size = size;
+            this.color = color;
+        }
+        draw() {
+            ctx.beginPath();
+            ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2, false);
+            ctx.fillStyle = this.color;
+            ctx.fill();
+        }
+        update() {
+            if (this.x > canvas.width || this.x < 0) {
+                this.directionX = -this.directionX;
+            }
+            if (this.y > canvas.height || this.y < 0) {
+                this.directionY = -this.directionY;
+            }
+            this.x += this.directionX;
+            this.y += this.directionY;
+            this.draw();
+        }
+    }
+
+    // Create particle array
+    function init() {
+        particlesArray = [];
+        let numberOfParticles = (canvas.height * canvas.width) / 9000;
+        for (let i = 0; i < numberOfParticles; i++) {
+            let size = (Math.random() * 2) + 1;
+            let x = (Math.random() * ((innerWidth - size * 2) - (size * 2)) + size * 2);
+            let y = (Math.random() * ((innerHeight - size * 2) - (size * 2)) + size * 2);
+            let directionX = (Math.random() * .4) - .2;
+            let directionY = (Math.random() * .4) - .2;
+            let color = 'rgba(167, 139, 250, 0.8)'; // Glowing purple color
+
+            particlesArray.push(new Particle(x, y, directionX, directionY, size, color));
+        }
+    }
+
+    // Animation loop
+    function animate() {
+        requestAnimationFrame(animate);
+        ctx.clearRect(0, 0, innerWidth, innerHeight);
+
+        for (let i = 0; i < particlesArray.length; i++) {
+            particlesArray[i].update();
+        }
+        connect();
+    }
+
+    // Connect particles with lines
+    function connect() {
+        let opacityValue = 1;
+        for (let a = 0; a < particlesArray.length; a++) {
+            for (let b = a; b < particlesArray.length; b++) {
+                let distance = ((particlesArray[a].x - particlesArray[b].x) * (particlesArray[a].x - particlesArray[b].x))
+                             + ((particlesArray[a].y - particlesArray[b].y) * (particlesArray[a].y - particlesArray[b].y));
+                if (distance < (canvas.width / 7) * (canvas.height / 7)) {
+                    opacityValue = 1 - (distance / 20000);
+                    ctx.strokeStyle = 'rgba(196, 181, 253,' + opacityValue + ')'; // Lighter purple for lines
+                    ctx.lineWidth = 1;
+                    ctx.beginPath();
+                    ctx.moveTo(particlesArray[a].x, particlesArray[a].y);
+                    ctx.lineTo(particlesArray[b].x, particlesArray[b].y);
+                    ctx.stroke();
+                }
+            }
+        }
+    }
+    
+    // Resize event
+    window.addEventListener('resize', () => {
+        canvas.width = innerWidth;
+        canvas.height = innerHeight;
+        init();
+    });
+
+    init();
+    animate();
+  </script>
+</body>
+</html>
