@@ -82,11 +82,11 @@
         .result-card { transition: transform 0.5s ease, box-shadow 0.5s ease; }
         .result-card:hover { transform: translateY(-10px) scale(1.05); box-shadow: 0 0 30px rgba(167, 139, 250, 0.5); }
 
-        .interpretation-section h4 { font-size: 1.25rem; font-weight: bold; color: #5a004b; margin-top: 1.5rem; margin-bottom: 0.5rem; padding-bottom: 0.25rem; border-bottom: 1px solid rgba(110, 231, 183, 0.3); }
+        .interpretation-section h4 { font-size: 1.25rem; font-weight: bold; color: ##9333EA; margin-top: 1.5rem; margin-bottom: 0.5rem; padding-bottom: 0.25rem; border-bottom: 1px solid rgba(110, 231, 183, 0.3); }
         .interpretation-section ul { list-style-position: inside; margin-left: 0.5rem; }
         .interpretation-section li::marker { content: '✨ '; }
         
-        .loader { width: 48px; height: 48px; border: 5px solid #FFF; border-bottom-color: #a78bfa; border-radius: 50%; display: block; margin: 2rem auto; box-sizing: border-box; animation: rotation 1s linear infinite; }
+        .loader { width: 48px; height: 48px; border: 5px solid ##9333EA; border-bottom-color: ##9333EA; border-radius: 50%; display: block; margin: 2rem auto; box-sizing: border-box; animation: rotation 1s linear infinite; }
         @keyframes rotation { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
     </style>
 </head>
@@ -256,7 +256,7 @@
                 container.className = `text-center fade-in-item`;
                 container.style.animationDelay = delay;
                 container.innerHTML = `
-                    <h3 class="text-2xl font-bold text-cyan-300 mb-4 text-glow">${title}</h3>
+                    <h3 class="text-2xl font-bold text-white-300 mb-4 text-glow">${title}</h3>
                     <img src="${card.img}" alt="${card.name}" class="result-card w-48 md:w-64 mx-auto rounded-lg shadow-lg">
                     <p class="mt-4 text-xl font-semibold">${card.name}</p>
                 `;
