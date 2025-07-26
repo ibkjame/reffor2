@@ -12,260 +12,376 @@
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
   <style>
-    /* --- Custom Purple Theme --- */
+    /* --- THEME & BACKGROUND --- */
     body {
         font-family: 'Noto Sans Thai', sans-serif;
-        background-color: #F5F3F9; /* Light purple background */
-        color: #594A69; /* Dark purple text */
+        background: linear-gradient(135deg, #9E63BF 0%, #764ba2 100%);
+        color: #ffffff;
         overflow-x: hidden;
     }
+    .space-bg {
+        background: linear-gradient(135deg, #9E63BF 0%, #764ba2 50%, #f093fb 100%);
+        background-size: 400% 400%;
+        animation: gradientShift 15s ease infinite;
+        position: fixed; inset: 0; z-index: -3;
+    }
+    @keyframes gradientShift { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
+    .stars { position: fixed; inset: 0; background: transparent url(https://s3-us-west-2.amazonaws.com/s.cdpn.io/1231630/stars.png) repeat top center; z-index: -2; }
+    .twinkling { position: fixed; inset: 0; background: transparent url(https://s3-us-west-2.amazonaws.com/s.cdpn.io/1231630/stars.png) repeat top center; z-index: -1; animation: move-twinkle-back 300s linear infinite; opacity: 0.4; }
+    @keyframes move-twinkle-back { from { background-position: 0 0; } to { background-position: -10000px 5000px; } }
 
-    /* --- Main Action Buttons --- */
-    .action-btn {
-        background-color: #FFFFFF;
-        border: 1px solid #DCD6E8;
-        border-radius: 1rem;
-        transition: all .3s ease;
-        box-shadow: 0 4px 12px rgba(180, 160, 220, 0.15);
+    /* --- Glassmorphism Style --- */
+    .glass-box {
+        background: linear-gradient(145deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
+        backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px);
+        border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 24px;
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        transition: transform 0.4s ease, box-shadow 0.4s ease;
+        overflow: hidden; /* Needed for rounded corners on child images */
     }
-    .action-btn:hover {
-        transform: translateY(-8px) scale(1.03);
-        box-shadow: 0 10px 25px rgba(109, 40, 217, 0.2);
-        border-color: #A78BFA;
-    }
+    .glass-box:hover { transform: translateY(-8px) scale(1.02); box-shadow: 0 20px 40px rgba(45, 22, 105, 0.2); }
+    .text-glow { text-shadow: 0 0 20px rgba(255, 255, 255, 0.5), 0 0 40px rgba(167, 139, 250, 0.3); }
+
+    /* --- Animation --- */
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(30px) scale(0.95); } to { opacity: 1; transform: translateY(0) scale(1); } }
+    .fade-in-item { opacity: 0; animation: fadeIn 1s ease-out forwards; }
+
+    /* --- Daily Card Modal & Flip Animation --- */
+    #daily-card-modal .modal-panel { max-width: 380px; }
+    .card-flipper { perspective: 1000px; cursor: pointer; }
+    .card-inner { position: relative; width: 100%; padding-top: 150%; transform-style: preserve-3d; transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1); }
+    .card-flipper.revealed .card-inner { transform: rotateY(180deg); }
+    .card-face { position: absolute; top: 0; left: 0; width: 100%; height: 100%; backface-visibility: hidden; border-radius: 16px; background-size: cover; background-position: center; box-shadow: 0 10px 25px rgba(0,0,0,0.2); }
+    .card-back { background-image: url(/icon/backcard.png); }
+    .card-front { transform: rotateY(180deg); background-color: #667eea; }
+    #daily-card-result { transition: opacity 0.5s ease 0.3s; }
     
-    .action-btn-title { color: #6D28D9; }
-    .action-btn-desc { color: #594A69; }
-
-    /* --- Main Heading --- */
-    .main-heading {
-        color: #4B3D5E;
-        text-shadow: 0 2px 4px rgba(0,0,0,0.05);
-    }
-
-    /* --- "Pick a Card" Menu --- */
-    .menu-purple-theme {
-        background-color: #FFFFFF;
-        border: 1px solid #DCD6E8;
-        border-radius: 1rem;
-        padding: 2rem;
-        box-shadow: 0 8px 32px 0 rgba(180, 160, 220, 0.2);
-    }
-    .menu-card-item {
-        background-color: #F5F3F9;
-        border: 1px solid #DCD6E8;
-        border-radius: 0.75rem;
-        padding: 1.5rem;
-        text-align: center;
-        transition: all 0.3s ease-in-out;
-        cursor: pointer;
-    }
-    .menu-card-item:hover {
-        transform: translateY(-10px);
-        background-color: #FFFFFF;
-        box-shadow: 0 0 20px rgba(109, 40, 217, 0.15);
-        border-color: #A78BFA;
-    }
-    .menu-card-item h4 {
-        color: #6D28D9;
-        font-size: 1.25rem; /* text-xl */
-        font-weight: bold;
-    }
-    .menu-card-item p {
-        color: #594A69; /* gray-300 */
-        font-size: 0.875rem; /* text-sm */
-    }
-
-    /* --- Modal --- */
+    /* --- Modal Base (Only for Daily Card now) --- */
     .modal-bg {
-        position: fixed; inset: 0; 
-        background: rgba(30, 20, 50, 0.8); 
-        backdrop-filter: blur(5px); 
-        z-index: 99; 
-        display: flex; 
-        align-items: center; 
-        justify-content: center; 
-        transition: opacity .3s;
+        position: fixed; inset: 0;
+        background: rgba(30, 21, 80, 0.6);
+        backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+        z-index: 99; display: flex; align-items: center; justify-content: center;
+        transition: opacity 0.3s ease;
     }
     .modal-panel {
-        background: #FFFFFF;
-        padding: 2rem;
-        border-radius: 1.5rem;
-        box-shadow: 0 8px 32px rgba(0,0,0,0.1);
-        max-width: 450px;
-        width: 95vw;
-        position: relative;
+        background: linear-gradient(145deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0.1));
+        backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px);
+        border: 1px solid rgba(255, 255, 255, 0.25); border-radius: 24px;
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+        padding: 2.5rem 2rem; max-width: 450px; width: 95vw; position: relative;
     }
-    .modal-close {
-        position: absolute; top: 1rem; right: 1rem; 
-        font-size: 1.5rem; color: #A89CB9; 
-        cursor: pointer; transition: .2s;
-    }
-    .modal-close:hover { color: #594A69; transform: rotate(90deg); }
-    .modal-img { border-radius: .75rem; margin-bottom: 1.5rem; }
-    .modal-title { font-size: 1.5rem; font-weight: 700; color: #6D28D9; margin-bottom: .75rem; text-align: left; }
-    .modal-desc { font-size: 1rem; color: #594A69; text-align: left; }
-
-    /* --- SweetAlert2 Customization for Card Picking --- */
+    .modal-close { position: absolute; top: 1.5rem; right: 1.5rem; font-size: 2rem; color: rgba(255, 255, 255, 0.6); cursor: pointer; transition: all .2s; }
+    .modal-close:hover { color: #fff; transform: rotate(90deg) scale(1.1); }
+    
+    /* --- SweetAlert2 Card Picker --- */
     .swal2-popup {
-        background-color: #FFFFFF !important;
-        border: 1px solid #DCD6E8 !important;
-        border-radius: 1rem !important;
-        color: #594A69 !important;
+        background: linear-gradient(145deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0.1)) !important;
+        backdrop-filter: blur(15px) !important; -webkit-backdrop-filter: blur(15px) !important;
+        border: 1px solid rgba(255, 255, 255, 0.2) !important; border-radius: 24px !important;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.2) !important;
     }
-    .swal2-title {
-        color: #6D28D9 !important;
-    }
+    .swal2-title { color: #ffffff !important; }
+    .swal2-html-container { color: rgba(255, 255, 255, 0.8) !important; }
+    .swal2-close { color: rgba(255, 255, 255, 0.7) !important; transition: all 0.2s ease; }
+    .swal2-close:hover { color: #ffffff !important; transform: scale(1.2); }
     .swal-card-option {
-        display: block; width: 100%;
-        padding: 1rem; margin-bottom: 0.75rem;
-        border: 1px solid #C4B5FD;
-        border-radius: 0.5rem;
-        text-align: center; font-weight: bold;
-        color: #6D28D9;
-        text-decoration: none;
-        transition: all 0.3s ease;
+        display: block; width: 100%; padding: 1rem; margin-bottom: 0.75rem;
+        border: 1px solid rgba(255, 255, 255, 0.3); border-radius: 12px;
+        text-align: center; font-weight: bold; color: #ffffff; text-decoration: none;
+        background: rgba(255, 255, 255, 0.1); transition: all 0.3s ease;
     }
-    .swal-card-option:hover {
-        background-color: #8B5CF6;
-        color: #FFFFFF;
-    }
+    .swal-card-option:hover { background-color: rgba(167, 139, 250, 0.3); border-color: rgba(196, 181, 253, 0.7); transform: translateY(-4px); }
 
-    /* --- General & Animations --- */
-    .fade-in-item { animation: fadeIn 1s ease-out both; }
-    @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+    /* --- Floating Home Button --- */
+    .fab-home-btn {
+      position: fixed; left: 50%; bottom: 22px; transform: translateX(-50%); z-index: 100; display: none;
+      background: linear-gradient(45deg, #9E63BF, #764ba2);
+      box-shadow: 0 8px 32px rgba(76, 58, 162, 0.44);
+    }
+    @media (max-width: 768px) { .fab-home-btn { display: flex !important; } }
   </style>
 </head>
 <body class="antialiased">
-  
+  <div class="space-bg"></div>
+  <div class="stars"></div>
+  <div class="twinkling"></div>
+
   <div class="relative min-h-screen flex items-center justify-center p-4">
     <main class="w-full max-w-4xl mx-auto text-center">
-      <h1 class="main-heading text-4xl md:text-5xl font-bold mb-10 fade-in-item">ดูดวงกับเรฟ REFFORTUNE</h1>
-      
+
+      <img src="/icon/main.png" alt="โลโก้ ดูดวงกับเรฟ REFFORTUNE" class="w-full max-w-sm mx-auto mb-12">
+
       <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-        <button class="action-btn fade-in-item p-6 flex flex-col gap-2 items-start text-left" style="animation-delay: 0.1s;" onclick="openServiceModal('tarot')">
-          <span class="action-btn-title text-xl font-bold">ไพ่ทาโรต์ (Tarot Card)</span>
-          <span class="action-btn-desc text-sm">ศาสตร์แห่งการทำนายอนาคตด้วยไพ่ 78 ใบ เพื่อเป็นแนวทางในการตัดสินใจ</span>
-        </button>
-        <button class="action-btn fade-in-item p-6 flex flex-col gap-2 items-start text-left" style="animation-delay: 0.2s;" onclick="openServiceModal('oracle')">
-          <span class="action-btn-title text-xl font-bold text-pink-500">ไพ่ออราเคิล (Oracle Card)</span>
-          <span class="action-btn-desc text-sm">เครื่องมือที่ให้คำแนะนำและแรงบันดาลใจ เพื่อฮีลใจและค้นพบศักยภาพในตนเอง</span>
-        </button>
-        <button class="action-btn fade-in-item p-6 flex flex-col gap-2 items-start text-left" style="animation-delay: 0.3s;" onclick="openServiceModal('astrology')">
-          <span class="action-btn-title text-xl font-bold text-cyan-500">โหราศาสตร์ (Astrology)</span>
-          <span class="action-btn-desc text-sm">ศึกษาการเคลื่อนที่ของดวงดาว เพื่อเข้าใจพื้นฐานดวงชะตาและวางแผนชีวิต</span>
-        </button>
-        <button class="action-btn fade-in-item p-6 flex flex-col gap-2 items-start text-left" style="animation-delay: 0.4s;" onclick="openServiceModal('numerology')">
-          <span class="action-btn-title text-xl font-bold text-amber-500">มหาสัตตเลข (Numerology)</span>
-          <span class="action-btn-desc text-sm">ศาสตร์แห่งตัวเลขจากวันเกิดและชื่อ เพื่อค้นพบเส้นทางชีวิตที่เหมาะสม</span>
-        </button>
+        <div class="glass-box fade-in-item relative aspect-video">
+          <img src="/icon/t.png" alt="ไพ่ทาโรต์" class="absolute inset-0 w-full h-full object-cover rounded-xl">
+          <div class="absolute inset-0 w-full h-full bg-gradient-to-t from-black/60 to-transparent rounded-xl p-6 flex flex-col justify-end">
+            <h3 class="text-2xl font-bold text-white">ไพ่ทาโรต์</h3>
+            <p class="text-base text-white/80 mt-1">ศาสตร์การทำนายผ่านไพ่ ที่สะท้อนสถานการณ์ ความรู้สึก และแนวทางในการตัดสินใจในอนาคต</p>
+          </div>
+        </div>
+        <div class="glass-box fade-in-item relative aspect-video" style="animation-delay: 0.1s">
+          <img src="/icon/o.png" alt="ไพ่ออราเคิล" class="absolute inset-0 w-full h-full object-cover rounded-xl">
+          <div class="absolute inset-0 w-full h-full bg-gradient-to-t from-black/60 to-transparent rounded-xl p-6 flex flex-col justify-end">
+            <h3 class="text-2xl font-bold text-white">ไพ่ออราเคิล</h3>
+            <p class="text-base text-white/80 mt-1">ไพ่แห่งพลังบวก ให้คำแนะนำ เติมแรงบันดาลใจ และช่วยเยียวยาหัวใจ เพื่อให้คุณเชื่อมั่นในศักยภาพของตัวเอง</p>
+          </div>
+        </div>
+        <div class="glass-box fade-in-item relative aspect-video" style="animation-delay: 0.2s">
+          <img src="/icon/1a.png" alt="โหราศาสตร์" class="absolute inset-0 w-full h-full object-cover rounded-xl">
+          <div class="absolute inset-0 w-full h-full bg-gradient-to-t from-black/60 to-transparent rounded-xl p-6 flex flex-col justify-end">
+            <h3 class="text-2xl font-bold text-white">โหราศาสตร์</h3>
+            <p class="text-base text-white/80 mt-1">การอ่านดวงดาวเพื่อเข้าใจตัวตน ลักษณะนิสัย และแนวโน้มของชีวิต พร้อมแนะแนวทางการวางแผนในแต่ละช่วงเวลา</p>
+          </div>
+        </div>
+        <div class="glass-box fade-in-item relative aspect-video" style="animation-delay: 0.3s">
+          <img src="/icon/n.png" alt="มหาสัตตเลข" class="absolute inset-0 w-full h-full object-cover rounded-xl">
+          <div class="absolute inset-0 w-full h-full bg-gradient-to-t from-black/60 to-transparent rounded-xl p-6 flex flex-col justify-end">
+            <h3 class="text-2xl font-bold text-white">มหาสัตตเลข</h3>
+            <p class="text-base text-white/80 mt-1">ถอดรหัสตัวเลขจากวันเกิดและชื่อ เพื่อค้นหาพลังชีวิต เส้นทางที่เหมาะสม และจุดแข็งเฉพาะตัวของคุณ</p>
+          </div>
+        </div>
       </div>
 
-      <section class="py-8 fade-in-item" style="animation-delay: 0.5s;">
-        <div class="menu-purple-theme">
-            <h3 class="text-3xl font-bold text-purple-700 mb-2 text-center">เข้าสู่เมนูหลัก</h3>
-            <p class="text-center text-gray-600 mb-8">เลือกบริการที่คุณสนใจ หรือคำนวณไพ่ประจำตัวของคุณ</p>
-            <div class="grid md:grid-cols-2 gap-6">
-                <div id="open-pick-modal-btn" class="menu-card-item">
-                    <h4>เลือกไพ่ทำนาย</h4>
-                    <p class="mt-2">เปิดไพ่เพื่อรับคำทำนายแบบเจาะจง</p>
+      <section class="py-8 fade-in-item" style="animation-delay: 0.4s">
+        <div class="glass-box p-8 md:p-10">
+            <h3 class="text-3xl font-bold text-white mb-2 text-center text-glow">เมนูหลัก</h3>
+            <p class="text-center text-white/80 mb-8">เลือกบริการที่คุณต้องการ</p>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8">
+                 <div id="open-pick-modal-btn" class="glass-box !rounded-xl p-4 cursor-pointer flex flex-col items-center justify-center text-center">
+                    <h4 class="text-xl font-bold">ดูดวงไพ่ทาโรต์</h4>
+                    <p class="mt-1 text-white/80">เปิดไพ่เพื่อรับคำทำนาย</p>
                 </div>
-                <a href="/spiritcard.html" class="menu-card-item no-underline">
-                  <h4>ค้นหาไพ่ตัวตน</h4>
-                  <p class="mt-2">คำนวณไพ่จากวันเกิดของคุณ</p>
-                </a>
+                <div id="daily-card-button-container" class="glass-box !rounded-xl p-4 cursor-pointer flex flex-col items-center justify-center text-center" onclick="openDailyCardModal()">
+                    <h3 class="text-xl font-bold">ไพ่ประจำวัน</h3>
+                    <p id="daily-card-subtitle" class="text-white/80 mt-1">รับคำแนะนำสำหรับวันนี้</p>
+                </div>
+                 <a href="/spiritcard.html" class="glass-box !rounded-xl p-4 flex flex-col items-center justify-center text-center">
+                    <h2 class="text-xl font-bold text-white">ดวงดาวและจิตวิญญาณ</h2>
+                    <p class="text-white/80 text-sm mt-1">ค้นหาไพ่ที่เป็นของคุณ</p>
+                  </a>
+                  <a href="packages.html" class="glass-box !rounded-xl p-4 flex flex-col items-center justify-center text-center">
+                    <h2 class="text-xl font-bold text-white">แพ็กเกจดูดวง</h2>
+                    <p class="text-white/80 text-sm mt-1">ดูดวงส่วนตัวแบบเจาะลึก</p>
+                  </a>
             </div>
         </div>
       </section>
-        
-      <div class="text-xs text-purple-400 mt-10 fade-in-item" style="animation-delay: 0.6s;">Powered by REFFORTUNE</div>
+      
+      <div class="text-sm text-white/60 mt-16 text-glow">Powered by REFFORTUNE ✦ verzey</div>
     </main>
   </div>
 
-  <!-- Modal Structure -->
-  <div id="service-modal" class="modal-bg" style="display:none; opacity: 0;">
-    <div class="modal-panel">
-      <span class="modal-close" onclick="closeServiceModal()">&times;</span>
-      <img id="modal-img" class="modal-img" src="" alt="" style="display:none;" />
-      <div id="modal-title" class="modal-title"></div>
-      <div id="modal-desc" class="modal-desc"></div>
+  <a href="/" class="fab-home-btn shadow-lg rounded-full p-0.5">
+    <div class="flex items-center justify-center bg-gray-800/80 backdrop-blur-sm rounded-full w-16 h-16 border border-white/20">
+      <svg width="38" height="38" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" /></svg>
     </div>
+  </a>
+
+  <div id="daily-card-modal" class="modal-bg" style="display:none; opacity: 0;">
+      <div class="modal-panel text-center">
+          <span class="modal-close" onclick="closeDailyCardModal()">&times;</span>
+          <div id="daily-card-content">
+              </div>
+      </div>
   </div>
 
-  <script>
-    // ข้อมูลแต่ละศาสตร์
-    const serviceData = {
-      tarot: {
-        title: 'ไพ่ทาโรต์ (Tarot Card)',
-        desc: 'ศาสตร์แห่งการทำนายอนาคตด้วยไพ่ 78 ใบ ที่จะช่วยให้คุณเข้าใจสถานการณ์ต่างๆ ในชีวิต ทั้งเรื่องความรัก การงาน การเงิน และสุขภาพ ไพ่แต่ละใบมีความหมายเฉพาะตัวที่สามารถตีความได้อย่างลึกซึ้ง เพื่อเป็นแนวทางในการตัดสินใจและเตรียมพร้อมรับมือกับสิ่งที่จะเกิดขึ้น',
-        img: 'https://i.postimg.cc/JzxmbC2j/assets-task-01jyjcx2d1fhabfqjnf0b5sxcc-1750816778-img-1.webp'
-      },
-      oracle: {
-        title: 'ไพ่ออราเคิล (Oracle Card)',
-        desc: 'ไพ่ออราเคิลเป็นเครื่องมือที่ให้คำแนะนำและแรงบันดาลใจ ไม่ได้มีโครงสร้างตายตัวเหมือนไพ่ทาโรต์ ทำให้มีความหลากหลายและอิสระในการตีความสูง เหมาะสำหรับผู้ที่ต้องการคำตอบที่ตรงไปตรงมา คำปลอบโยน หรือมุมมองใหม่ๆ เพื่อฮีลใจและค้นพบศักยภาพในตนเอง',
-        img: 'https://i.postimg.cc/909CT46f/assets-task-01jyjd8bzxf38b4qphad9k7g1q-1750817169-img-1.webp'
-      },
-      astrology: {
-        title: 'โหราศาสตร์ (Astrology)',
-        desc: 'การศึกษาการเคลื่อนที่ของดวงดาวและตำแหน่งของเทห์ฟากฟ้า ที่เชื่อว่ามีอิทธิพลต่อชีวิตและบุคลิกภาพของมนุษย์ การผูกดวงชะตาส่วนบุคคลจะช่วยให้คุณเข้าใจพื้นฐานดวงชะตา พรสวรรค์ และอุปสรรคต่างๆ เพื่อวางแผนชีวิตได้อย่างแม่นยำและมีประสิทธิภาพ',
-        img: 'https://i.postimg.cc/3wwh1fsV/assets-task-01jyjd312heb3r1j8k5stmv8h7-1750816995-img-1.webp'
-      },
-      numerology: {
-        title: 'มหาสัตตเลข (Numerology)',
-        desc: 'ศาสตร์แห่งตัวเลขที่วิเคราะห์ความหมายที่ซ่อนอยู่ในวันเดือนปีเกิดและชื่อของคุณ ตัวเลขแต่ละตัวจะสะท้อนถึงพลังงานและลักษณะนิสัยที่แตกต่างกัน การวิเคราะห์เลขศาสตร์จะช่วยให้คุณรู้จักตัวเองมากขึ้น ค้นพบเส้นทางชีวิตที่เหมาะสม และเข้าใจความสัมพันธ์กับผู้อื่นได้ดียิ่งขึ้น',
-        img: 'https://i.postimg.cc/k5hmpF94/assetstask-01jyjd6az8f259srq63pa.webp'
-      }
-    };
+   <script>
+    // --- TAROT DECK DATA ---
+    const tarotDeck = [
+        { id: 'maj00', name: 'The Fool', img: 'card/00.png', daily_advice: "วันนี้เหมาะกับการเริ่มต้นสิ่งใหม่ๆ ลองเสี่ยงและเปิดใจรับประสบการณ์ที่ไม่คาดคิดดูสิ" },
+        { id: 'maj01', name: 'The Magician', img: 'card/01.png', daily_advice: "คุณมีพลังและความสามารถอยู่ในมือ จงใช้มันสร้างสรรค์สิ่งที่ต้องการให้เป็นจริงในวันนี้" },
+        { id: 'maj02', name: 'The High Priestess', img: 'card/02.png', daily_advice: "วันนี้ลองเชื่อในสัญชาตญาณของคุณ คำตอบที่คุณค้นหาอาจซ่อนอยู่ภายในใจของคุณเอง" },
+        { id: 'maj03', name: 'The Empress', img: 'card/03.png', daily_advice: "เป็นวันที่ดีในการดูแลตัวเองและคนรอบข้าง โอบรับความอุดมสมบูรณ์และความสุขเล็กๆ น้อยๆ" },
+        { id: 'maj04', name: 'The Emperor', img: 'card/04.png', daily_advice: "วันนี้คุณต้องใช้ความเป็นผู้นำและการตัดสินใจที่เด็ดขาด จัดการเรื่องต่างๆ ให้เป็นระเบียบ" },
+        { id: 'maj05', name: 'The Hierophant', img: 'card/05.png', daily_advice: "มองหาคำแนะนำจากผู้มีประสบการณ์ หรือยึดมั่นในหลักการและประเพณีที่ดีงาม" },
+        { id: 'maj06', name: 'The Lovers', img: 'card/06.png', daily_advice: "วันนี้คุณอาจต้องตัดสินใจในเรื่องสำคัญที่เกี่ยวกับความสัมพันธ์ หรือเลือกในสิ่งที่หัวใจเรียกร้อง" },
+        { id: 'maj07', name: 'The Chariot', img: 'card/07.png', daily_advice: "มุ่งไปข้างหน้าอย่างมุ่งมั่นและควบคุมสถานการณ์ให้ดี ชัยชนะอยู่ไม่ไกลเกินเอื้อม" },
+        { id: 'maj08', name: 'Strength', img: 'card/08.png', daily_advice: "ใช้ความแข็งแกร่งจากภายในและความเมตตาในการเอาชนะอุปสรรค ไม่ใช่แค่พละกำลัง" },
+        { id: 'maj09', name: 'The Hermit', img: 'card/09.png', daily_advice: "วันนี้ลองใช้เวลาอยู่กับตัวเองเพื่อทบทวนและค้นหาคำตอบจากภายใน ความเงียบจะให้ปัญญาแก่คุณ" },
+        { id: 'maj10', name: 'Wheel of Fortune', img: 'card/10.png', daily_advice: "เตรียมรับมือกับการเปลี่ยนแปลง วันนี้โชคชะตากำลังหมุนวน อาจมีทั้งเรื่องดีและไม่คาดฝัน" },
+        { id: 'maj11', name: 'Justice', img: 'card/11.png', daily_advice: "วันนี้ทุกการกระทำจะส่งผลอย่างตรงไปตรงมา จงทำในสิ่งที่ถูกต้องและยุติธรรม" },
+        { id: 'maj12', name: 'The Hanged Man', img: 'card/12.png', daily_advice: "ลองมองสถานการณ์จากมุมมองใหม่ๆ การหยุดนิ่งหรือเสียสละบางอย่างอาจนำไปสู่ความเข้าใจที่ลึกซึ้งขึ้น" },
+        { id: 'maj13', name: 'Death', img: 'card/13.png', daily_advice: "วันนี้คือวันแห่งการสิ้นสุดเพื่อเริ่มต้นใหม่ จงปล่อยวางสิ่งเก่าๆ ที่ไม่จำเป็นออกไป" },
+        { id: 'maj14', name: 'Temperance', img: 'card/14.png', daily_advice: "พยายามหาความสมดุลในทุกๆ เรื่องของชีวิต การผสมผสานสิ่งที่แตกต่างจะนำมาซึ่งความกลมกลืน" },
+        { id: 'maj15', name: 'The Devil', img: 'card/15.png', daily_advice: "ระวังสิ่งล่อลวงและพันธนาการที่มองไม่เห็น วันนี้คุณอาจต้องเผชิญหน้ากับด้านมืดในใจตัวเอง" },
+        { id: 'maj16', name: 'The Tower', img: 'card/16.png', daily_advice: "อาจเกิดการเปลี่ยนแปลงอย่างฉับพลันและรุนแรง แม้จะน่ากลัวแต่มันคือการทลายโครงสร้างเก่าเพื่อสิ่งที่ดีกว่า" },
+        { id: 'maj17', name: 'The Star', img: 'card/17.png', daily_advice: "วันนี้เต็มไปด้วยความหวังและการเยียวยา จงมองโลกในแง่ดีและเชื่อมั่นในอนาคต" },
+        { id: 'maj18', name: 'The Moon', img: 'card/18.png', daily_advice: "สิ่งต่างๆ อาจไม่เป็นอย่างที่เห็น ระวังสับสนและอย่าเพิ่งตัดสินใจเรื่องสำคัญจากข้อมูลที่ไม่ชัดเจน" },
+        { id: 'maj19', name: 'The Sun', img: 'card/19.png', daily_advice: "เป็นวันที่สดใสและเต็มไปด้วยพลังบวก จงมีความสุขกับความสำเร็จและแบ่งปันความสุขให้ผู้อื่น" },
+        { id: 'maj20', name: 'Judgement', img: 'card/20.png', daily_advice: "วันนี้คุณอาจได้รับการประเมินผล หรือถึงเวลาต้องตัดสินใจครั้งสำคัญเพื่อก้าวไปสู่บทใหม่ของชีวิต" },
+        { id: 'maj21', name: 'The World', img: 'card/21.png', daily_advice: "เป็นวันที่ดีในการปิดจ๊อบหรือโครงการต่างๆ ให้สำเร็จลุล่วง คุณมาถึงจุดที่สมบูรณ์แล้ว" },
+        { id: 'wan01', name: 'Ace of Wands', img: 'card/w1.png', daily_advice: "วันนี้เป็นวันแห่งการเริ่มต้นโปรเจกต์ใหม่ๆ พลังงานกำลังมาเต็ม!" },
+        { id: 'wan02', name: 'Two of Wands', img: 'card/w2.png', daily_advice: "ถึงเวลาวางแผนอนาคตและมองไปข้างหน้า คุณมีทางเลือกที่ดีอยู่ในมือ" },
+        { id: 'wan03', name: 'Three of Wands', img: 'card/w3.png', daily_advice: "การรอคอยของคุณกำลังจะสิ้นสุด ผลลัพธ์ที่ดีกำลังเดินทางมา" },
+        { id: 'wan04', name: 'Four of Wands', img: 'card/w4.png', daily_advice: "เป็นวันแห่งการเฉลิมฉลองความสำเร็จและความมั่นคง ใช้เวลากับครอบครัวหรือคนที่คุณรัก" },
+        { id: 'wan05', name: 'Five of Wands', img: 'card/w5.png', daily_advice: "อาจเจอความขัดแย้งหรือการแข่งขันเล็กน้อย จงใช้มันเป็นแรงผลักดัน" },
+        { id: 'wan06', name: 'Six of Wands', img: 'card/w6.png', daily_advice: "วันนี้คุณจะได้รับชัยชนะและการยอมรับในสิ่งที่คุณทำ จงภูมิใจในตัวเอง" },
+        { id: 'wan07', name: 'Seven of Wands', img: 'card/w7.png', daily_advice: "คุณอาจต้องลุกขึ้นมาปกป้องจุดยืนของตัวเอง จงกล้าหาญและอย่ายอมแพ้" },
+        { id: 'wan08', name: 'Eight of Wands', img: 'card/w8.png', daily_advice: "ข่าวดีหรือความคืบหน้ากำลังจะมาถึงอย่างรวดเร็ว เตรียมตัวให้พร้อม" },
+        { id: 'wan09', name: 'Nine of Wands', img: 'card/w9.png', daily_advice: "แม้จะเหนื่อยแต่ใกล้จะถึงเส้นชัยแล้ว อย่าเพิ่งท้อถอย ความอดทนคือสิ่งสำคัญ" },
+        { id: 'wan10', name: 'Ten of Wands', img: 'card/w10.png', daily_advice: "คุณอาจรู้สึกแบกรับภาระหนักเกินไป ลองปล่อยวางหรือขอความช่วยเหลือดูบ้าง" },
+        { id: 'wan_p', name: 'Page of Wands', img: 'card/w11.png', daily_advice: "เปิดรับไอเดียใหม่ๆ และความกระตือรือร้น อาจมีข่าวดีเกี่ยวกับการเริ่มต้นบางอย่าง" },
+        { id: 'wan_k', name: 'Knight of Wands', img: 'card/w12.png', daily_advice: "ถึงเวลาลงมือทำอย่างกล้าหาญและเต็มไปด้วยพลัง แต่อย่าใจร้อนจนเกินไป" },
+        { id: 'wan_q', name: 'Queen of Wands', img: 'card/w13.png', daily_advice: "วันนี้คุณจะเต็มไปด้วยความมั่นใจและเสน่ห์ จงเป็นผู้นำและสร้างแรงบันดาลใจ" },
+        { id: 'wan_K', name: 'King of Wands', img: 'card/w14.png', daily_advice: "ใช้ความเป็นผู้นำและวิสัยทัศน์ของคุณในการสร้างสรรค์และนำพาทีมไปสู่ความสำเร็จ" },
+        { id: 'cup01', name: 'Ace of Cups', img: 'card/c1.png', daily_advice: "วันนี้เป็นวันแห่งความรักและการเริ่มต้นทางอารมณ์ใหม่ๆ เปิดใจรับความรู้สึกดีๆ" },
+        { id: 'cup02', name: 'Two of Cups', img: 'card/c2.png', daily_advice: "ความสัมพันธ์จะดีขึ้น มีการเชื่อมต่อทางใจที่ลึกซึ้ง อาจหมายถึงการร่วมมือที่ดี" },
+        { id: 'cup03', name: 'Three of Cups', img: 'card/c3.png', daily_advice: "เป็นวันแห่งการเฉลิมฉลองกับเพื่อนฝูง มีความสุขกับมิตรภาพและความสำเร็จร่วมกัน" },
+        { id: 'cup04', name: 'Four of Cups', img: 'card/c4.png', daily_advice: "อาจรู้สึกเบื่อหน่ายหรือไม่พอใจในสิ่งที่มี ลองมองหาโอกาสใหม่ๆ ที่คุณอาจมองข้ามไป" },
+        { id: 'cup05', name: 'Five of Cups', img: 'card/c5.png', daily_advice: "อย่าจมอยู่กับความผิดหวังในอดีต ลองมองไปรอบๆ ยังมีสิ่งดีๆ เหลืออยู่" },
+        { id: 'cup06', name: 'Six of Cups', img: 'card/c6.png', daily_advice: "วันนี้อาจหวนนึกถึงความทรงจำดีๆ ในอดีต หรือได้พบเจอเพื่อนเก่า" },
+        { id: 'cup07', name: 'Seven of Cups', img: 'card/c7.png', daily_advice: "คุณมีตัวเลือกมากมายจนอาจทำให้สับสน จงเลือกสิ่งที่สำคัญจริงๆ ไม่ใช่แค่ภาพลวงตา" },
+        { id: 'cup08', name: 'Eight of Cups', img: 'card/c8.png', daily_advice: "ถึงเวลาเดินออกจากสิ่งที่ไม่ตอบโจทย์ชีวิตอีกต่อไป เพื่อค้นหาสิ่งที่ดีกว่า" },
+        { id: 'cup09', name: 'Nine of Cups', img: 'card/c9.png', daily_advice: "วันนี้คุณจะรู้สึกพึงพอใจและมีความสุขกับสิ่งที่คุณมี เป็นวันแห่งความสมหวัง" },
+        { id: 'cup10', name: 'Ten of Cups', img: 'card/c10.png', daily_advice: "ความสุขในครอบครัวและความสัมพันธ์ที่สมบูรณ์แบบกำลังรอคุณอยู่" },
+        { id: 'cup_p', name: 'Page of Cups', img: 'card/c11.png', daily_advice: "อาจมีข้อความหรือข่าวดีทางอารมณ์มาถึง เปิดใจรับฟังความรู้สึกของตัวเองและผู้อื่น" },
+        { id: 'cup_k', name: 'Knight of Cups', img: 'card/c12.png', daily_advice: "ทำตามหัวใจและความรู้สึกของคุณ อาจมีคนนำความรักหรือข้อเสนอดีๆ มาให้" },
+        { id: 'cup_q', name: 'Queen of Cups', img: 'card/c13.png', daily_advice: "ใช้สัญชาตญาณและความเมตตาในการดูแลความรู้สึกของคนรอบข้าง วันนี้คุณคือผู้เยียวยา" },
+        { id: 'cup_K', name: 'King of Cups', img: 'card/c14.png', daily_advice: "ควบคุมอารมณ์ได้อย่างสมดุลและใช้ปัญญาในการตัดสินใจเรื่องที่เกี่ยวกับความรู้สึก" },
+        { id: 'swo01', name: 'Ace of Swords', img: 'card/s1.png', daily_advice: "วันนี้ความคิดคุณจะเฉียบแหลม เป็นจุดเริ่มต้นของความเข้าใจใหม่ๆ หรือการตัดสินใจที่ชัดเจน" },
+        { id: 'swo02', name: 'Two of Swords', img: 'card/s2.png', daily_advice: "คุณอาจกำลังลังเลที่จะตัดสินใจ ลองใช้เวลาอยู่กับตัวเองเพื่อหาทางออก" },
+        { id: 'swo03', name: 'Three of Swords', img: 'card/s3.png', daily_advice: "อาจต้องเผชิญกับความจริงที่เจ็บปวด แต่มันจะนำไปสู่การเยียวยาในที่สุด" },
+        { id: 'swo04', name: 'Four of Swords', img: 'card/s4.png', daily_advice: "ถึงเวลาพักผ่อนและฟื้นฟูพลังความคิด อย่าเพิ่งรีบร้อนตัดสินใจอะไร" },
+        { id: 'swo05', name: 'Five of Swords', img: 'card/s5.png', daily_advice: "ระวังความขัดแย้งที่อาจนำไปสู่ความพ่ายแพ้ของทุกฝ่าย บางครั้งการยอมถอยก็ดีกว่า" },
+        { id: 'swo06', name: 'Six of Swords', img: 'card/s6.png', daily_advice: "กำลังก้าวผ่านช่วงเวลาที่ยากลำบากไปสู่สิ่งที่ดีกว่า อนาคตที่สดใสรออยู่" },
+        { id: 'swo07', name: 'Seven of Swords', img: 'card/s7.png', daily_advice: "อาจต้องใช้ไหวพริบในการแก้ปัญหา แต่ระวังอย่าทำอะไรลับๆ ล่อๆ ที่ไม่ซื่อสัตย์" },
+        { id: 'swo08', name: 'Eight of Swords', img: 'card/s8.png', daily_advice: "คุณอาจรู้สึกติดกับดักทางความคิดของตัวเอง ลองมองหาทางออก คุณไม่ได้โดดเดี่ยว" },
+        { id: 'swo09', name: 'Nine of Swords', img: 'card/s9.png', daily_advice: "ความวิตกกังวลอาจทำให้คุณนอนไม่หลับ พยายามปล่อยวางและมองปัญหาตามความเป็นจริง" },
+        { id: 'swo10', name: 'Ten of Swords', img: 'card/s10.png', daily_advice: "การสิ้นสุดที่เจ็บปวดกำลังมาถึง แต่มันคือจุดจบเพื่อเริ่มต้นใหม่จริงๆ" },
+        { id: 'swo_p', name: 'Page of Swords', img: 'card/s11.png', daily_advice: "มีพลังอยากรู้อยากเห็นและพร้อมเรียนรู้สิ่งใหม่ๆ แต่ระวังคำพูดที่อาจทำร้ายคนอื่นโดยไม่ตั้งใจ" },
+        { id: 'swo_k', name: 'Knight of Swords', img: 'card/s12.png', daily_advice: "มุ่งไปข้างหน้าอย่างรวดเร็วและเด็ดเดี่ยวเพื่อเป้าหมาย แต่ระวังความหุนหันพลันแล่น" },
+        { id: 'swo_q', 'name': 'Queen of Swords', img: 'card/s13.png', daily_advice: "ใช้ความฉลาดและประสบการณ์ในการตัดสินใจอย่างยุติธรรมและชัดเจน อย่าใช้อารมณ์" },
+        { id: 'swo_K', name: 'King of Swords', img: 'card/s14.png', daily_advice: "คุณคือผู้มีอำนาจทางความคิดและสติปัญญา ใช้มันเพื่อสร้างความยุติธรรมและนำทางผู้อื่น" },
+        { id: 'pen01', name: 'Ace of Pentacles', img: 'card/p1.png', daily_advice: "มีโอกาสดีๆ เกี่ยวกับการเงินหรือการงานเข้ามา เป็นจุดเริ่มต้นของความมั่นคง" },
+        { id: 'pen02', name: 'Two of Pentacles', img: 'card/p2.png', daily_advice: "วันนี้คุณอาจต้องจัดการหลายๆ อย่างพร้อมกัน พยายามรักษาสมดุลให้ดี" },
+        { id: 'pen03', name: 'Three of Pentacles', img: 'card/p3.png', daily_advice: "การทำงานเป็นทีมจะนำไปสู่ความสำเร็จที่มีคุณภาพ จงให้คุณค่ากับความร่วมมือ" },
+        { id: 'pen04', name: 'Four of Pentacles', img: 'card/p4.png', daily_advice: "ระวังการยึดติดกับสิ่งของหรือความสำเร็จมากเกินไป จนไม่กล้าเสี่ยงเพื่อเติบโต" },
+        { id: 'pen05', name: 'Five of Pentacles', img: 'card/p5.png', daily_advice: "อาจรู้สึกขาดแคลนหรือโดดเดี่ยว อย่ากลัวที่จะขอความช่วยเหลือ มีคนพร้อมจะช่วยคุณ" },
+        { id: 'pen06', name: 'Six of Pentacles', img: 'card/p6.png', daily_advice: "เป็นวันแห่งความเอื้อเฟื้อเผื่อแผ่ ทั้งการให้และการรับความช่วยเหลือทางการเงินหรืออื่นๆ" },
+        { id: 'pen07', name: 'Seven of Pentacles', img: 'card/p7.png', daily_advice: "ถึงเวลาประเมินผลงานที่คุณทำมาอย่างอดทน รอคอยผลลัพธ์อย่างใจเย็น" },
+        { id: 'pen08', name: 'Eight of Pentacles', img: 'card/p8.png', daily_advice: "วันนี้เหมาะกับการทุ่มเทฝึกฝนทักษะของคุณอย่างเต็มที่ ความขยันจะนำมาซึ่งความสำเร็จ" },
+        { id: 'pen09', name: 'Nine of Pentacles', img: 'card/p9.png', daily_advice: "เพลิดเพลินกับความสำเร็จและความอุดมสมบูรณ์ที่คุณสร้างขึ้นมาด้วยตัวเอง" },
+        { id: 'pen10', name: 'Ten of Pentacles', img: 'card/p10.png', daily_advice: "ความมั่งคั่งและความมั่นคงในระยะยาวกำลังมาถึง เป็นมรดกตกทอดสู่คนรุ่นหลัง" },
+        { id: 'pen_p', name: 'Page of Pentacles', img: 'card/p11.png', daily_advice: "มีโอกาสใหม่ๆ ในการเรียนรู้หรือเริ่มต้นโปรเจกต์ที่จับต้องได้ จงตั้งใจและลงมือทำ" },
+        { id: 'pen_k', name: 'Knight of Pentacles', img: 'card/p12.png', daily_advice: "ทำงานอย่างหนักแน่นและมีความรับผิดชอบ ความสม่ำเสมอจะนำไปสู่เป้าหมาย" },
+        { id: 'pen_q', name: 'Queen of Pentacles', img: 'card/p13.png', daily_advice: "วันนี้คุณจะสามารถจัดการเรื่องงานและเรื่องส่วนตัวได้อย่างลงตัวและอบอุ่น" },
+        { id: 'pen_K', name: 'King of Pentacles', img: 'card/p14.png', daily_advice: "คุณคือสัญลักษณ์ของความสำเร็จและความมั่งคั่งที่มาจากการทำงานหนักและมั่นคง" }
+    ];
 
-    const modalElement = document.getElementById('service-modal');
+    // --- DAILY CARD FEATURE ---
+    const dailyCardModal = document.getElementById('daily-card-modal');
+    const dailyCardContent = document.getElementById('daily-card-content');
+    const dailyCardSubtitle = document.getElementById('daily-card-subtitle');
 
-    function openServiceModal(key){
-      const data = serviceData[key];
-      if(!data) return;
-      document.getElementById('modal-title').innerText = data.title;
-      document.getElementById('modal-desc').innerText = data.desc;
-      const img = document.getElementById('modal-img');
-      if(data.img){ img.src = data.img; img.style.display='block'; } else { img.style.display='none'; }
-      modalElement.style.display = 'flex';
-      setTimeout(() => { modalElement.style.opacity = 1 }, 10);
+    function getTodayString() {
+        return new Date().toLocaleDateString('en-CA'); // YYYY-MM-DD format
     }
 
-    function closeServiceModal(){
-      modalElement.style.opacity = 0;
-      setTimeout(() => { modalElement.style.display = 'none'; }, 300);
+    function initializeDailyCard() {
+        const storedCard = JSON.parse(localStorage.getItem('dailyCard'));
+        if (storedCard && storedCard.date === getTodayString()) {
+            dailyCardSubtitle.textContent = `ไพ่ของคุณวันนี้คือ "${tarotDeck[storedCard.cardIndex].name}"`;
+        } else {
+            dailyCardSubtitle.textContent = 'รับคำแนะนำสำหรับวันนี้';
+        }
     }
 
-    document.addEventListener('keydown', function(e){
-      if(e.key === 'Escape') closeServiceModal();
-    });
-    modalElement.addEventListener('click', function(e){
-      if(e.target === this) closeServiceModal();
-    });
+    function openDailyCardModal() {
+        const storedCard = JSON.parse(localStorage.getItem('dailyCard'));
+        if (storedCard && storedCard.date === getTodayString()) {
+            // Show already drawn card
+            showDrawnCard(tarotDeck[storedCard.cardIndex], true);
+        } else {
+            // Show card back to draw a new one
+            showCardBack();
+        }
+        dailyCardModal.style.display = 'flex';
+        setTimeout(() => { dailyCardModal.style.opacity = 1; }, 10);
+    }
 
-    // --- SCRIPT FOR SELECTION MODAL ---
+    function closeDailyCardModal() {
+        dailyCardModal.style.opacity = 0;
+        setTimeout(() => { dailyCardModal.style.display = 'none'; }, 300);
+    }
+
+    function showCardBack() {
+        dailyCardContent.innerHTML = `
+            <h3 class="text-2xl font-bold text-white mb-4 text-glow">ไพ่ประจำวัน</h3>
+            <div id="daily-card-flipper" class="card-flipper" onclick="drawAndRevealCard()">
+                <div class="card-inner">
+                    <div class="card-face card-back"></div>
+                    <div id="daily-card-front" class="card-face card-front"></div>
+                </div>
+            </div>
+            <p class="text-white/80 mt-4">แตะที่ไพ่เพื่อเปิด</p>
+        `;
+    }
+
+    function drawAndRevealCard() {
+        const flipper = document.getElementById('daily-card-flipper');
+        if (flipper.classList.contains('revealed')) return; // Prevent re-drawing
+
+        const cardIndex = Math.floor(Math.random() * tarotDeck.length);
+        const cardData = tarotDeck[cardIndex];
+
+        // Save to localStorage
+        localStorage.setItem('dailyCard', JSON.stringify({ date: getTodayString(), cardIndex: cardIndex }));
+
+        // Update UI
+        document.getElementById('daily-card-front').style.backgroundImage = `url(${cardData.img})`;
+        flipper.classList.add('revealed');
+        
+        // Show result after flip animation
+        setTimeout(() => {
+            showDrawnCard(cardData, false);
+            initializeDailyCard(); // Update main page subtitle
+        }, 800);
+    }
+
+    function showDrawnCard(cardData, isAlreadyDrawn) {
+        const title = isAlreadyDrawn ? 'นี่คือไพ่ประจำวันของคุณ' : 'ไพ่ของคุณวันนี้คือ...';
+        dailyCardContent.innerHTML = `
+            <h3 class="text-2xl font-bold text-white mb-4 text-glow">${title}</h3>
+            <img src="${cardData.img}" alt="${cardData.name}" class="w-full max-w-[250px] mx-auto rounded-xl shadow-lg">
+            <div id="daily-card-result" class="mt-4">
+                <h4 class="text-xl font-bold text-white">${cardData.name}</h4>
+                <p class="text-white/80 mt-2">${cardData.daily_advice}</p>
+            </div>
+        `;
+    }
+
+
+    // --- SWEETALERT2 PICKER ---
     const openPickModalBtn = document.getElementById('open-pick-modal-btn');
     if(openPickModalBtn) {
         openPickModalBtn.addEventListener('click', () => {
             Swal.fire({
                 title: 'เลือกจำนวนไพ่',
-                html: `
-                    <p class="mb-4">คุณต้องการเปิดไพ่เพื่อดูคำทำนายกี่ใบ?</p>
-                    <div class="flex flex-col">
-                     <a href="pick.html?count=1" class="swal-card-option">1 ใบ (Daily Insight)</a>
-                     <a href="pick.html?count=3" class="swal-card-option">3 ใบ (Past, Present, Future)</a>
-                     <a href="pick.html?count=4" class="swal-card-option">4 ใบ (Celtic Cross Spread)</a>
-                     <a href="pick.html?count=10" class="swal-card-option">10 ใบ (Relationship Spread)</a>
-                    </div>
-                `,
-                showConfirmButton: false,
-                showCloseButton: true,
-                customClass: {
-                    popup: 'swal2-popup',
-                    title: 'swal2-title',
-                }
+                html: `<p class="mb-4 text-white/80">คุณต้องการเปิดไพ่เพื่อดูคำทำนายกี่ใบ?</p>
+                       <div class="flex flex-col">
+                         <a href="pick.html?count=1" class="swal-card-option">1 ใบ (Quick Insight)</a>
+                         <a href="pick.html?count=2" class="swal-card-option">2 ใบ (Choice/Duality)</a>
+                         <a href="pick.html?count=3" class="swal-card-option">3 ใบ (Past, Present, Future)</a>
+                         <a href="pick.html?count=4" class="swal-card-option">4 ใบ (Action Plan)</a>
+                         <a href="pick.html?count=10" class="swal-card-option">10 ใบ (Celtic Cross)</a>
+                       </div>`,
+                showConfirmButton: false, showCloseButton: true, target: 'body'
             });
         });
     }
+
+    // --- INITIALIZE & EVENT LISTENERS ---
+    document.addEventListener('DOMContentLoaded', () => {
+        initializeDailyCard();
+    });
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        closeDailyCardModal();
+      }
+    });
+    dailyCardModal.addEventListener('click', (e) => { if (e.target === dailyCardModal) closeDailyCardModal(); });
+
   </script>
 </body>
 </html>
