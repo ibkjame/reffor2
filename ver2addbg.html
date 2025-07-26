@@ -78,6 +78,10 @@
         text-align: center;
         transition: all 0.3s ease-in-out;
         cursor: pointer;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        text-decoration: none;
     }
     .menu-card-item:hover {
         transform: translateY(-10px);
@@ -149,6 +153,31 @@
         background-color: #8B5CF6;
         color: #FFFFFF;
     }
+    
+    /* --- Floating Action Button (FAB) for Mobile --- */
+    .fab-home-btn {
+        position: fixed;
+        left: 50%;
+        bottom: 22px;
+        transform: translateX(-50%);
+        z-index: 100;
+        display: none; /* Hidden by default */
+        background: linear-gradient(45deg, #8B5CF6, #6D28D9);
+        width: 64px;
+        height: 64px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 8px 25px rgba(109, 40, 217, 0.4);
+        transition: transform 0.3s ease;
+    }
+    .fab-home-btn:hover {
+        transform: translateX(-50%) scale(1.1);
+    }
+    @media (max-width: 768px) {
+        .fab-home-btn { display: flex !important; }
+    }
 
     /* --- General & Animations --- */
     .fade-in-item { animation: fadeIn 1s ease-out both; }
@@ -186,14 +215,18 @@
         <div class="menu-purple-theme">
             <h3 class="text-3xl font-bold text-purple-700 mb-2 text-center">เข้าสู่เมนูหลัก</h3>
             <p class="text-center text-gray-600 mb-8">เลือกบริการที่คุณสนใจ หรือคำนวณไพ่ประจำตัวของคุณ</p>
-            <div class="grid md:grid-cols-2 gap-6">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                 <div id="open-pick-modal-btn" class="menu-card-item">
                     <h4>เลือกไพ่ทำนาย</h4>
                     <p class="mt-2">เปิดไพ่เพื่อรับคำทำนายแบบเจาะจง</p>
                 </div>
-                <a href="/spiritcard.html" class="menu-card-item no-underline">
+                <a href="/spiritcard.html" class="menu-card-item">
                   <h4>ค้นหาไพ่ตัวตน</h4>
                   <p class="mt-2">คำนวณไพ่จากวันเกิดของคุณ</p>
+                </a>
+                <a href="/packages.html" class="menu-card-item">
+                  <h4>แพ็กเกจดูดวง</h4>
+                  <p class="mt-2">"ชัด เคลียร์ ใช้ได้จริง"</p>
                 </a>
             </div>
         </div>
@@ -202,6 +235,13 @@
       <div class="text-xs text-purple-400 mt-10 fade-in-item" style="animation-delay: 0.6s;">Powered by REFFORTUNE</div>
     </main>
   </div>
+
+  <!-- FAB Home Button (Mobile Only) -->
+  <a href="/" class="fab-home-btn">
+    <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-white" viewBox="0 0 20 20" fill="currentColor">
+      <path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z" />
+    </svg>
+  </a>
 
   <!-- Modal Structure -->
   <div id="service-modal" class="modal-bg" style="display:none; opacity: 0;">
