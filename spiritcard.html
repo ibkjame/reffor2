@@ -4,8 +4,8 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <title>เส้นทางแห่งตำนาน - ค้นพบไพ่ตัวตนของคุณ | REFFORTUNE</title>
-    <meta name="description" content="ใส่ข้อมูลวันเกิดของคุณเพื่อคำนวณไพ่ประจำราศีและไพ่จิตวิญญาณ พร้อมรับคำทำนายเชิงลึกจาก AI เพื่อค้นพบตัวตนที่แท้จริง" />
-    <meta name="keywords" content="ไพ่ตัวตน, ไพ่จิตวิญญาณ, ไพ่ประจำราศี, คำนวณไพ่, ดูดวงจากวันเกิด, reffortune, AI Tarot" />
+    <meta name="description" content="ใส่ข้อมูลวันเกิดของคุณเพื่อคำนวณไพ่ประจำราศีและไพ่จิตวิญญาณ พร้อมรับคำทำนายเชิงลึกเพื่อค้นพบตัวตนที่แท้จริง" />
+    <meta name="keywords" content="ไพ่ตัวตน, ไพ่จิตวิญญาณ, ไพ่ประจำราศี, คำนวณไพ่, ดูดวงจากวันเกิด, reffortune" />
 
     <!-- Favicons & Meta Tags -->
     <link rel="icon" type="image/png" href="https://reffortune.com/icon/favicon-96x96.png" sizes="96x96" />
@@ -20,57 +20,73 @@
     <!-- Helper Libraries -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-    
-    <!-- Central Stylesheet -->
-    <link rel="stylesheet" href="theme.css">
 
     <style>
-        /* Page-specific styles */
-        .form-input { 
-            background-color: rgba(74, 35, 90, 0.2); 
-            border: 1px solid rgba(74, 35, 90, 0.3);
-            color: #3D2C42;
-        }
-        .form-input::placeholder { color: rgba(61, 44, 66, 0.6); }
-        .form-input:focus { 
-            border-color: #4A235A; 
-            box-shadow: 0 0 15px rgba(74, 35, 90, 0.3); 
-            background-color: rgba(74, 35, 90, 0.1);
+        body { 
+            font-family: 'Noto Sans Thai', sans-serif; 
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); 
+            color: #ffffff; 
+            overflow-x: hidden;
         }
         
-        .result-card { 
-            transition: transform 0.5s ease, box-shadow 0.5s ease; 
-            border-radius: 0.75rem;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        .space-bg { 
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+            background-size: 400% 400%;
+            animation: gradientShift 15s ease infinite;
+            position: fixed; 
+            inset: 0; 
+            z-index: -3; 
         }
-        .result-card:hover { 
-            transform: translateY(-10px) scale(1.05); 
-            box-shadow: 0 10px 30px rgba(74, 35, 90, 0.4); 
+        
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        
+        .stars { position: fixed; inset: 0; background: transparent url(https://s3-us-west-2.amazonaws.com/s.cdpn.io/1231630/stars.png) repeat top center; z-index: -2; }
+        .twinkling { position: fixed; inset: 0; background: transparent url(https://s3-us-west-2.amazonaws.com/s.cdpn.io/1231630/stars.png) repeat top center; z-index: -1; animation: move-twinkle-back 300s linear infinite; opacity: 0.4; }
+        @keyframes move-twinkle-back { from { background-position: 0 0; } to { background-position: -10000px 5000px; } }
+        
+        .glass-box { 
+            background: linear-gradient(145deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
+            backdrop-filter: blur(25px); 
+            -webkit-backdrop-filter: blur(25px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 24px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        }
+        
+        .text-glow { 
+            text-shadow: 0 0 20px rgba(255, 255, 255, 0.5), 0 0 40px rgba(167, 139, 250, 0.3); 
         }
 
-        .interpretation-section h4 { 
-            font-size: 1.25rem; 
-            font-weight: bold; 
-            color: #3D2C42; /* Darker Purple */
-            margin-top: 1.5rem; 
-            margin-bottom: 0.5rem; 
-            padding-bottom: 0.25rem; 
-            border-bottom: 1px solid rgba(74, 35, 90, 0.3); 
+        @keyframes fadeIn { 
+            from { 
+                opacity: 0; 
+                transform: translateY(30px) scale(0.95); 
+            } 
+            to { 
+                opacity: 1; 
+                transform: translateY(0) scale(1); 
+            } 
         }
+        .fade-in-item { opacity: 0; animation: fadeIn 1s ease-out forwards; }
+        
+        @keyframes fadeOut { to { opacity: 0; transform: scale(0.95); height: 0; padding: 0; margin: 0; border: 0; overflow: hidden; } }
+        .fade-out { animation: fadeOut 0.8s ease-out forwards; }
+
+        .form-input { background-color: rgba(0,0,0,0.3); border: 1px solid #4b5563; }
+        .form-input:focus { border-color: #a78bfa; box-shadow: 0 0 15px rgba(167, 139, 250, 0.3); }
+        
+        .result-card { transition: transform 0.5s ease, box-shadow 0.5s ease; }
+        .result-card:hover { transform: translateY(-10px) scale(1.05); box-shadow: 0 0 30px rgba(167, 139, 250, 0.5); }
+
+        .interpretation-section h4 { font-size: 1.25rem; font-weight: bold; color: #6ee7b7; margin-top: 1.5rem; margin-bottom: 0.5rem; padding-bottom: 0.25rem; border-bottom: 1px solid rgba(110, 231, 183, 0.3); }
         .interpretation-section ul { list-style-position: inside; margin-left: 0.5rem; }
         .interpretation-section li::marker { content: '✨ '; }
         
-        .loader { 
-            width: 48px; 
-            height: 48px; 
-            border: 5px solid rgba(74, 35, 90, 0.2); 
-            border-bottom-color: #4A235A; 
-            border-radius: 50%; 
-            display: block; 
-            margin: 2rem auto; 
-            box-sizing: border-box; 
-            animation: rotation 1s linear infinite; 
-        }
+        .loader { width: 48px; height: 48px; border: 5px solid #FFF; border-bottom-color: #a78bfa; border-radius: 50%; display: block; margin: 2rem auto; box-sizing: border-box; animation: rotation 1s linear infinite; }
         @keyframes rotation { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
     </style>
 </head>
@@ -83,11 +99,10 @@
     <!-- Main Content -->
     <div class="relative min-h-screen p-4 md:p-8 flex flex-col items-center">
         <header class="text-center my-8 md:my-12 fade-in-item w-full max-w-4xl">
-            <h1 class="text-4xl md:text-5xl font-bold text-purple-900 text-glow mb-4">เส้นทางแห่งตำนาน</h1>
-            <p class="text-purple-800 opacity-90 max-w-2xl mx-auto">ค้นพบไพ่ตัวตนและไพ่จิตวิญญาณของคุณ ผ่านวันเดือนปีเกิด เพื่อเข้าใจแก่นแท้ของตนเอง</p>
+            <h1 class="text-4xl md:text-5xl font-bold text-glow mb-4">เส้นทางแห่งตำนาน</h1>
+            <p class="text-white/80 max-w-2xl mx-auto">ค้นพบไพ่ตัวตนและไพ่จิตวิญญาณของคุณ ผ่านวันเดือนปีเกิด เพื่อเข้าใจแก่นแท้ของตนเอง</p>
              <div class="flex justify-center gap-6 mt-6">
-                <a href="index.html" class="text-purple-700 hover:text-purple-900 font-semibold">&larr; กลับหน้าหลัก</a>
-                <a href="#" id="reset-link" class="text-purple-700 hover:text-purple-900 font-semibold">คำนวณใหม่</a>
+                <a href="#" id="reset-link" class="text-purple-300 hover:text-white">คำนวณใหม่</a>
             </div>
         </header>
 
@@ -96,25 +111,33 @@
             <form id="birthdate-form">
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                     <div>
-                        <label for="day" class="block mb-2 text-sm font-medium">วันเกิด</label>
-                        <input type="number" id="day" name="day" class="form-input w-full p-2.5 rounded-lg" placeholder="เช่น 21" min="1" max="31" required>
+                        <label for="day" class="block mb-2 text-sm font-medium text-gray-300">วันเกิด</label>
+                        <input type="number" id="day" name="day" class="form-input w-full p-2.5 rounded-lg" placeholder="เช่น 21" min="1" max="31" required value="">
                     </div>
                     <div>
-                        <label for="month" class="block mb-2 text-sm font-medium">เดือน</label>
+                        <label for="month" class="block mb-2 text-sm font-medium text-gray-300">เดือน</label>
                         <select id="month" name="month" class="form-input w-full p-2.5 rounded-lg" required>
-                            <option value="1">มกราคม</option> <option value="2">กุมภาพันธ์</option> <option value="3">มีนาคม</option>
-                            <option value="4">เมษายน</option> <option value="5">พฤษภาคม</option> <option value="6">มิถุนายน</option>
-                            <option value="7">กรกฎาคม</option> <option value="8">สิงหาคม</option> <option value="9">กันยายน</option>
-                            <option value="10">ตุลาคม</option> <option value="11">พฤศจิกายน</option> <option value="12">ธันวาคม</option>
+                            <option value="1">มกราคม</option>
+                            <option value="2">กุมภาพันธ์</option>
+                            <option value="3">มีนาคม</option>
+                            <option value="4">เมษายน</option>
+                            <option value="5">พฤษภาคม</option>
+                            <option value="6">มิถุนายน</option>
+                            <option value="7">กรกฎาคม</option>
+                            <option value="8">สิงหาคม</option>
+                            <option value="9">กันยายน</option>
+                            <option value="10">ตุลาคม</option>
+                            <option value="11">พฤศจิกายน</option>
+                            <option value="12">ธันวาคม</option>
                         </select>
                     </div>
                     <div>
-                        <label for="year" class="block mb-2 text-sm font-medium">ปีเกิด (ค.ศ.)</label>
-                        <input type="number" id="year" name="year" class="form-input w-full p-2.5 rounded-lg" placeholder="เช่น 1995" min="1900" max="2025" required>
+                        <label for="year" class="block mb-2 text-sm font-medium text-gray-300">ปีเกิด (ค.ศ.)</label>
+                        <input type="number" id="year" name="year" class="form-input w-full p-2.5 rounded-lg" placeholder="เช่น 1995" min="1900" max="2024" required value="">
                     </div>
                 </div>
                 <div class="text-center mt-6">
-                    <button type="submit" id="submit-button" class="bg-purple-800 hover:bg-purple-900 text-white font-bold py-3 px-8 rounded-full transition-all duration-300 transform hover:scale-105">
+                    <button type="submit" id="submit-button" class="bg-purple-600 hover:bg-purple-700 text-white font-bold py-3 px-8 rounded-full transition-all duration-300 transform hover:scale-105">
                         ค้นหาไพ่ตัวตน
                     </button>
                 </div>
@@ -124,29 +147,31 @@
         <!-- Result Section -->
         <section id="result-section" class="hidden w-full max-w-5xl mt-8">
              <div id="card-display-area" class="grid grid-cols-1 md:grid-cols-2 gap-8 justify-items-center">
-                <!-- Card containers will be injected here -->
+                <!-- Card containers will be injected here by JavaScript -->
             </div>
             <!-- AI Interpretation -->
             <div id="interpretation-container" class="glass-box p-6 md:p-8 rounded-2xl mt-8 fade-in-item" style="animation-delay: 0.4s;">
-                 <h3 class="text-2xl font-bold text-purple-900 text-glow mb-4">เสียงสะท้อนจากจิตวิญญาณของคุณ</h3>
-                 <div id="interpretation-text" class="text-purple-800 space-y-4 interpretation-section"></div>
+                 <h3 class="text-2xl font-bold text-purple-300 mb-4">เสียงสะท้อนจากจิตวิญญาณของคุณ</h3>
+                 <div id="interpretation-text" class="text-gray-300 space-y-4 interpretation-section"></div>
             </div>
         </section>
     </div>
     
     <script>
+        // --- Tarot Data (Embedded) ---
+        // (ขออนุญาตย่อข้อมูลไพ่เพื่อให้โค้ดกระชับ)
         const tarotDeck = [
-            { id: 'maj00', name: 'The Fool' }, { id: 'maj01', name: 'The Magician' },
-            { id: 'maj02', name: 'The High Priestess' }, { id: 'maj03', name: 'The Empress' },
-            { id: 'maj04', name: 'The Emperor' }, { id: 'maj05', name: 'The Hierophant' },
-            { id: 'maj06', name: 'The Lovers' }, { id: 'maj07', name: 'The Chariot' },
-            { id: 'maj08', name: 'Strength' }, { id: 'maj09', name: 'The Hermit' },
-            { id: 'maj10', name: 'Wheel of Fortune' }, { id: 'maj11', name: 'Justice' },
-            { id: 'maj12', name: 'The Hanged Man' }, { id: 'maj13', name: 'Death' },
-            { id: 'maj14', 'name': 'Temperance' }, { id: 'maj15', name: 'The Devil' },
-            { id: 'maj16', name: 'The Tower' }, { id: 'maj17', name: 'The Star' },
-            { id: 'maj18', name: 'The Moon' }, { id: 'maj19', name: 'The Sun' },
-            { id: 'maj20', name: 'Judgement' }, { id: 'maj21', name: 'The World' }
+            { id: 'maj00', name: 'The Fool', img: 'https://reffortune.com/card/00.png' }, { id: 'maj01', name: 'The Magician', img: 'https://reffortune.com/card/01.png' },
+            { id: 'maj02', name: 'The High Priestess', img: 'https://reffortune.com/card/02.png' }, { id: 'maj03', name: 'The Empress', img: 'https://reffortune.com/card/03.png' },
+            { id: 'maj04', name: 'The Emperor', img: 'https://reffortune.com/card/04.png' }, { id: 'maj05', name: 'The Hierophant', img: 'https://reffortune.com/card/05.png' },
+            { id: 'maj06', name: 'The Lovers', img: 'https://reffortune.com/card/06.png' }, { id: 'maj07', name: 'The Chariot', img: 'https://reffortune.com/card/07.png' },
+            { id: 'maj08', name: 'Strength', img: 'https://reffortune.com/card/08.png' }, { id: 'maj09', name: 'The Hermit', img: 'https://reffortune.com/card/09.png' },
+            { id: 'maj10', name: 'Wheel of Fortune', img: 'https://reffortune.com/card/10.png' }, { id: 'maj11', name: 'Justice', img: 'https://reffortune.com/card/11.png' },
+            { id: 'maj12', name: 'The Hanged Man', img: 'https://reffortune.com/card/12.png' }, { id: 'maj13', name: 'Death', img: 'https://reffortune.com/card/13.png' },
+            { id: 'maj14', name: 'Temperance', img: 'https://reffortune.com/card/14.png' }, { id: 'maj15', name: 'The Devil', img: 'https://reffortune.com/card/15.png' },
+            { id: 'maj16', name: 'The Tower', img: 'https://reffortune.com/card/16.png' }, { id: 'maj17', name: 'The Star', img: 'https://reffortune.com/card/17.png' },
+            { id: 'maj18', name: 'The Moon', img: 'https://reffortune.com/card/18.png' }, { id: 'maj19', name: 'The Sun', img: 'https://reffortune.com/card/19.png' },
+            { id: 'maj20', name: 'Judgement', img: 'https://reffortune.com/card/20.png' }, { id: 'maj21', name: 'The World', img: 'https://reffortune.com/card/21.png' }
         ];
 
         document.addEventListener('DOMContentLoaded', () => {
@@ -168,17 +193,13 @@
                 const year = parseInt(document.getElementById('year').value);
 
                 if (!day || !month || !year) {
-                    Swal.fire({
-                        title: 'ข้อมูลไม่ครบถ้วน', 
-                        text: 'กรุณากรอกข้อมูลวันเกิดให้ครบถ้วน', 
-                        icon: 'error',
-                        customClass: { popup: 'swal2-popup' } // Apply custom theme
-                    });
+                    Swal.fire('ข้อมูลไม่ครบถ้วน', 'กรุณากรอกข้อมูลวันเกิดให้ครบถ้วน', 'error');
                     return;
                 }
 
                 const zodiacCard = getZodiacCard(day, month);
                 const soulCard = calculateSoulCard(day, month, year);
+
                 displayResults(zodiacCard, soulCard);
             }
 
@@ -207,59 +228,50 @@
                     sum = sum.toString().split('').reduce((acc, digit) => acc + parseInt(digit), 0);
                 }
                 if (sum === 0) sum = 21; 
-                return tarotDeck[sum];
+                const cardId = 'maj' + sum.toString().padStart(2, '0');
+                return tarotDeck.find(card => card.id === cardId);
             }
 
             function displayResults(zodiacCard, soulCard) {
                 cardDisplayArea.innerHTML = ''; 
+
                 const zodiacContainer = createCardElement('ไพ่ประจำราศี', zodiacCard, '0s');
                 const soulContainer = createCardElement('ไพ่จิตวิญญาณ', soulCard, '0.2s');
+
                 cardDisplayArea.appendChild(zodiacContainer);
                 cardDisplayArea.appendChild(soulContainer);
 
                 generateAiInterpretation(zodiacCard, soulCard);
 
                 inputSection.classList.add('fade-out');
-                const fadeOutAnimation = inputSection.animate([{ opacity: 1 }, { opacity: 0, transform: 'scale(0.95)' }], { duration: 600, easing: 'ease-out' });
-                fadeOutAnimation.onfinish = () => {
+                setTimeout(() => {
                     inputSection.style.display = 'none';
                     resultSection.classList.remove('hidden');
                     resultSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                };
+                }, 800);
             }
 
             function createCardElement(title, card, delay) {
                 const container = document.createElement('div');
                 container.className = `text-center fade-in-item`;
                 container.style.animationDelay = delay;
-                // Find the index of the card in the tarotDeck to construct the image URL
-                const cardIndex = tarotDeck.findIndex(c => c.name === card.name);
-                // Ensure cardIndex is valid before creating URL
-                const cardImageUrl = cardIndex !== -1 
-                    ? `https://reffortune.com/card/${String(cardIndex).padStart(2, '0')}.png`
-                    : 'https://placehold.co/200x350/BAA1AE/4A235A?text=Error';
-
                 container.innerHTML = `
-                    <h3 class="text-2xl font-bold text-purple-800 text-glow mb-4">${title}</h3>
-                    <img src="${cardImageUrl}" alt="ไพ่ ${card.name}" class="result-card w-48 md:w-64 mx-auto">
+                    <h3 class="text-2xl font-bold text-cyan-300 mb-4 text-glow">${title}</h3>
+                    <img src="${card.img}" alt="${card.name}" class="result-card w-48 md:w-64 mx-auto rounded-lg shadow-lg">
                     <p class="mt-4 text-xl font-semibold">${card.name}</p>
                 `;
                 return container;
             }
 
-            // [CHANGED] This function now calls our own backend API endpoint
             async function generateAiInterpretation(zodiacCard, soulCard) {
-                interpretationDiv.innerHTML = '<div class="loader"></div><p class="text-center">AI กำลังอ่านไพ่🃏...เพื่อสร้างคำทำนายเฉพาะตัวคุณ...</p>';
+                interpretationDiv.innerHTML = '<div class="loader"></div><p class="text-center">กำลังอ่านไพ่🃏...เพื่อสร้างคำทำนายเฉพาะตัวคุณ...</p>';
                 submitButton.disabled = true;
 
-                // The API endpoint we created (e.g., on Vercel)
-                const apiUrl = '/api/getInterpretation';
-
                 try {
-                    const response = await fetch(apiUrl, {
+                    // *** เปลี่ยนจากเรียก Google API ตรงๆ มาเรียก API ของเราเอง ***
+                    const response = await fetch('/api/getInterpretation', {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
-                        // Send only the necessary data
                         body: JSON.stringify({ 
                             zodiacCardName: zodiacCard.name, 
                             soulCardName: soulCard.name 
@@ -274,31 +286,29 @@
                     const result = await response.json();
                     
                     if (result.interpretation) {
-                        // Use the 'marked' library to parse Markdown to HTML
                         interpretationDiv.innerHTML = marked.parse(result.interpretation);
                     } else {
-                        throw new Error("ไม่พบคำทำนายในผลลัพธ์จากเซิร์ฟเวอร์");
+                         throw new Error("ไม่พบคำทำนายในผลลัพธ์จากเซิร์ฟเวอร์");
                     }
 
                 } catch (error) {
                     console.error("Error calling backend API:", error);
-                    interpretationDiv.innerHTML = `<p class="text-red-600 font-semibold">เกิดข้อผิดพลาด: ${error.message}. ระบบอาจกำลังมีผู้ใช้งานจำนวนมาก โปรดลองอีกครั้งในภายหลัง</p>`;
+                    interpretationDiv.innerHTML = `<p class="text-red-400">เกิดข้อผิดพลาด: ${error.message}. โปรดลองอีกครั้งในภายหลัง</p>`;
                 } finally {
                     submitButton.disabled = false;
                 }
             }
 
             function resetPage(e) {
-                if (e) e.preventDefault();
+                e.preventDefault();
                 resultSection.classList.add('hidden');
                 inputSection.style.display = 'block';
-                inputSection.classList.remove('fade-in-item');
-                void inputSection.offsetWidth; // Trigger reflow
-                inputSection.classList.add('fade-in-item');
-                
+                inputSection.classList.remove('fade-out');
                 cardDisplayArea.innerHTML = '';
                 interpretationDiv.innerHTML = '';
-                form.reset();
+                document.getElementById('day').value = '21';
+                document.getElementById('month').value = '3';
+                document.getElementById('year').value = '1995';
                 window.scrollTo({ top: 0, behavior: 'smooth' });
             }
         });
