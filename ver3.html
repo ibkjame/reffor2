@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>ดูดวงกับเรฟ - REFFORTUNE</title>
+  <meta name="description" content="ดูดวงกับเรฟ บริการดูดวงไพ่ทาโรต์ ไพ่ออราเคิล โหราศาสตร์ และมหาสัตตเลข พร้อมแพ็กเกจที่เหมาะกับคุณ เช็คดวงชะตา วางแผนชีวิต และรับคำแนะนำที่ชัดเจน ใช้ได้จริง" />
+  <meta name="keywords" content="ดูดวง, ไพ่ทาโรต์, ไพ่ออราเคิล, โหราศาสตร์, มหาสัตตเลข, ดูดวงออนไลน์, เรฟฟอร์จูน, ดูดวงความรัก, ดูดวงการงาน, ดูดวงการเงิน" />
+  <meta property="og:image" content="https://i.imgur.com/8a5g6aD.png" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@400;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+  <style>
+    /* --- Premium Dark/Gold Theme --- */
+    body {
+        font-family: 'Noto Sans Thai', sans-serif;
+        background-color: #0D0B14; /* Deep purple-black background */
+        color: #D1D5DB; /* Light gray for readability */
+        overflow-x: hidden;
+    }
+    
+    /* --- Background Effects --- */
+    .space-bg {
+        background: radial-gradient(ellipse at bottom, #100a33 0%, #0D0B14 100%);
+        position: fixed; inset: 0; z-index: -3;
+    }
+    .stars {
+        position: fixed; inset: 0;
+        background: transparent url(https://s3-us-west-2.amazonaws.com/s.cdpn.io/1231630/stars.png) repeat top center;
+        z-index: -2;
+    }
+    .twinkling {
+        position: fixed; inset: 0;
+        background: transparent url(https://s3-us-west-2.amazonaws.com/s.cdpn.io/1231630/stars.png) repeat top center;
+        z-index: -1;
+        animation: move-twinkle-back 200s linear infinite;
+    }
+    @keyframes move-twinkle-back { from { background-position: 0 0; } to { background-position: -10000px 5000px; } }
+
+    /* --- Glass Box with Glowing Border --- */
+    .glass-box {
+        background: rgba(22, 18, 40, 0.7);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        border: 1px solid rgba(167, 139, 250, 0.3);
+        border-radius: 1.25rem; /* More rounded corners */
+        box-shadow: 0 0 25px rgba(109, 40, 217, 0.2), 0 0 40px rgba(109, 40, 217, 0.1) inset;
+        transition: all 0.4s ease;
+    }
+    .glass-box:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 0 35px rgba(167, 139, 250, 0.3), 0 0 50px rgba(167, 139, 250, 0.2) inset;
+        border-color: rgba(196, 181, 253, 0.5);
+    }
+    
+    /* --- Typography --- */
+    .main-heading {
+        color: #FFFFFF;
+        text-shadow: 0 0 15px rgba(196, 181, 253, 0.5);
+    }
+    .action-btn-title { color: #FFFFFF; } 
+    .action-btn-desc { color: #A5B4FC; } /* Indigo-200 for description */
+
+    /* --- Main Menu Section --- */
+    .menu-title {
+        color: #FBBF24; /* Amber-400 for gold color */
+        text-shadow: 0 0 10px rgba(251, 191, 36, 0.5);
+    }
+    .menu-card-item {
+        background-color: rgba(13, 11, 20, 0.5);
+        border: 1px solid #4B3D5E;
+        border-radius: 0.75rem;
+        padding: 1.5rem;
+        text-align: center;
+        transition: all 0.3s ease-in-out;
+        cursor: pointer;
+        text-decoration: none;
+    }
+    .menu-card-item:hover {
+        transform: translateY(-10px);
+        background-color: rgba(22, 18, 40, 0.8);
+        border-color: #FBBF24;
+        box-shadow: 0 0 20px rgba(251, 191, 36, 0.2);
+    }
+    .menu-card-item h4 {
+        color: #FFFFFF;
+        font-size: 1.25rem;
+        font-weight: bold;
+        transition: color 0.3s ease;
+    }
+    .menu-card-item:hover h4 {
+        color: #FBBF24;
+    }
+    .menu-card-item p {
+        color: #9CA3AF;
+        font-size: 0.875rem;
+    }
+
+    /* --- Modal & SweetAlert2 --- */
+    .modal-bg {
+        background: rgba(13, 11, 20, 0.8); 
+        backdrop-filter: blur(8px); 
+    }
+    .modal-panel {
+        background: linear-gradient(145deg, #161228, #0D0B14);
+        border: 1px solid #4B3D5E;
+    }
+    .modal-title { color: #A5B4FC; }
+    .modal-desc { color: #D1D5DB; }
+
+    .swal2-popup {
+        background-color: #111111 !important;
+        border: 2px solid #FBBF24 !important;
+        border-radius: 1rem !important;
+    }
+    .swal2-title {
+        color: #FBBF24 !important;
+    }
+    .swal2-html-container {
+        color: #D1D5DB !important;
+    }
+    .swal-card-option {
+        display: block; width: 100%;
+        padding: 1rem; margin-bottom: 0.75rem;
+        border: 1px solid #FBBF24;
+        border-radius: 0.5rem;
+        text-align: center; font-weight: bold;
+        color: #FBBF24;
+        text-decoration: none;
+        transition: all 0.3s ease;
+    }
+    .swal-card-option:hover {
+        background-color: #FBBF24;
+        color: #111111;
+    }
+    
+    /* --- Floating Action Button (FAB) for Mobile --- */
+    .fab-home-btn {
+        position: fixed; left: 50%; bottom: 22px;
+        transform: translateX(-50%); z-index: 100;
+        display: none; /* Hidden by default */
+        background: linear-gradient(45deg, #8B5CF6, #FBBF24);
+        width: 64px; height: 64px; border-radius: 50%;
+        display: flex; align-items: center; justify-content: center;
+        box-shadow: 0 8px 25px rgba(139, 92, 246, 0.4);
+        transition: transform 0.3s ease;
+    }
+    .fab-home-btn:hover {
+        transform: translateX(-50%) scale(1.1);
+    }
+    @media (max-width: 768px) {
+        .fab-home-btn { display: flex !important; }
+    }
+
+    /* --- General & Animations --- */
+    .fade-in-item { animation: fadeIn 1s ease-out both; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+  </style>
+</head>
+<body class="antialiased">
+  
+  <div class="space-bg"></div>
+  <div class="stars"></div>
+  <div class="twinkling"></div>
+
+  <div class="relative min-h-screen flex items-center justify-center p-4">
+    <main class="w-full max-w-4xl mx-auto text-center">
+      <h1 class="main-heading text-4xl md:text-5xl font-bold mb-4 fade-in-item">ดูดวงกับเรฟ</h1>
+      <p class="text-indigo-300 text-lg mb-10 fade-in-item" style="animation-delay: 0.1s;">REF FORTUNE</p>
+      
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+        <button class="glass-box fade-in-item p-6 flex flex-col gap-2 items-start text-left" style="animation-delay: 0.2s;" onclick="openServiceModal('tarot')">
+          <span class="action-btn-title text-xl font-bold">ไพ่ทาโรต์ (Tarot Card)</span>
+          <span class="action-btn-desc text-sm">ศาสตร์แห่งการทำนายอนาคตด้วยไพ่ 78 ใบ เพื่อเป็นแนวทางในการตัดสินใจ</span>
+        </button>
+        <button class="glass-box fade-in-item p-6 flex flex-col gap-2 items-start text-left" style="animation-delay: 0.3s;" onclick="openServiceModal('oracle')">
+          <span class="action-btn-title text-xl font-bold">ไพ่ออราเคิล (Oracle Card)</span>
+          <span class="action-btn-desc text-sm">เครื่องมือที่ให้คำแนะนำและแรงบันดาลใจ เพื่อฮีลใจและค้นพบศักยภาพในตนเอง</span>
+        </button>
+      </div>
+
+      <section class="py-8 fade-in-item" style="animation-delay: 0.4s;">
+        <div class="glass-box p-8">
+            <h3 class="menu-title text-3xl font-bold mb-2 text-center">เมนูหลัก & บริการ</h3>
+            <p class="text-center text-gray-400 mb-8">เลือกบริการที่คุณสนใจ หรือคำนวณไพ่ประจำตัวของคุณ</p>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div id="open-pick-modal-btn" class="menu-card-item">
+                    <h4>เลือกไพ่ทำนาย</h4>
+                    <p class="mt-2">เปิดไพ่เพื่อรับคำทำนายแบบเจาะจง</p>
+                </div>
+                <a href="/spiritcard.html" class="menu-card-item">
+                  <h4>ค้นหาไพ่ตัวตน</h4>
+                  <p class="mt-2">คำนวณไพ่จากวันเกิดของคุณ</p>
+                </a>
+                <a href="/packages.html" class="menu-card-item">
+                  <h4>แพ็กเกจดูดวง</h4>
+                  <p class="mt-2">"ชัด เคลียร์ ใช้ได้จริง"</p>
+                </a>
+            </div>
+        </div>
+      </section>
+        
+      <div class="text-xs text-purple-400 mt-10 fade-in-item" style="animation-delay: 0.5s;">Line: @reffortune | IG: @reffortune</div>
+    </main>
+  </div>
+
+  <!-- FAB Home Button (Mobile Only) -->
+  <a href="/" class="fab-home-btn">
+    <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-white" viewBox="0 0 20 20" fill="currentColor">
+      <path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z" />
+    </svg>
+  </a>
+
+  <!-- Modal Structure -->
+  <div id="service-modal" class="modal-bg" style="display:none; opacity: 0;">
+    <div class="modal-panel">
+      <span class="modal-close" onclick="closeServiceModal()">&times;</span>
+      <img id="modal-img" class="modal-img" src="" alt="" style="display:none;" />
+      <div id="modal-title" class="modal-title"></div>
+      <div id="modal-desc" class="modal-desc"></div>
+    </div>
+  </div>
+
+  <script>
+    const serviceData = {
+      tarot: {
+        title: 'ไพ่ทาโรต์ (Tarot Card)',
+        desc: 'ศาสตร์แห่งการทำนายอนาคตด้วยไพ่ 78 ใบ ที่จะช่วยให้คุณเข้าใจสถานการณ์ต่างๆ ในชีวิต ทั้งเรื่องความรัก การงาน การเงิน และสุขภาพ ไพ่แต่ละใบมีความหมายเฉพาะตัวที่สามารถตีความได้อย่างลึกซึ้ง เพื่อเป็นแนวทางในการตัดสินใจและเตรียมพร้อมรับมือกับสิ่งที่จะเกิดขึ้น',
+        img: 'https://i.postimg.cc/JzxmbC2j/assets-task-01jyjcx2d1fhabfqjnf0b5sxcc-1750816778-img-1.webp'
+      },
+      oracle: {
+        title: 'ไพ่ออราเคิล (Oracle Card)',
+        desc: 'ไพ่ออราเคิลเป็นเครื่องมือที่ให้คำแนะนำและแรงบันดาลใจ ไม่ได้มีโครงสร้างตายตัวเหมือนไพ่ทาโรต์ ทำให้มีความหลากหลายและอิสระในการตีความสูง เหมาะสำหรับผู้ที่ต้องการคำตอบที่ตรงไปตรงมา คำปลอบโยน หรือมุมมองใหม่ๆ เพื่อฮีลใจและค้นพบศักยภาพในตนเอง',
+        img: 'https://i.postimg.cc/909CT46f/assets-task-01jyjd8bzxf38b4qphad9k7g1q-1750817169-img-1.webp'
+      }
+    };
+
+    const modalElement = document.getElementById('service-modal');
+    function openServiceModal(key){
+      const data = serviceData[key];
+      if(!data) return;
+      document.getElementById('modal-title').innerText = data.title;
+      document.getElementById('modal-desc').innerText = data.desc;
+      const img = document.getElementById('modal-img');
+      if(data.img){ img.src = data.img; img.style.display='block'; } else { img.style.display='none'; }
+      modalElement.style.display = 'flex';
+      setTimeout(() => { modalElement.style.opacity = 1 }, 10);
+    }
+    function closeServiceModal(){
+      modalElement.style.opacity = 0;
+      setTimeout(() => { modalElement.style.display = 'none'; }, 300);
+    }
+    document.addEventListener('keydown', (e) => { if(e.key === 'Escape') closeServiceModal(); });
+    modalElement.addEventListener('click', (e) => { if(e.target === modalElement) closeServiceModal(); });
+
+    const openPickModalBtn = document.getElementById('open-pick-modal-btn');
+    if(openPickModalBtn) {
+        openPickModalBtn.addEventListener('click', () => {
+            Swal.fire({
+                title: 'เลือกจำนวนไพ่',
+                html: `
+                    <p class="mb-4 text-gray-300">คุณต้องการเปิดไพ่เพื่อดูคำทำนายกี่ใบ?</p>
+                    <div class="flex flex-col">
+                     <a href="pick.html?count=1" class="swal-card-option">1 ใบ (Daily Insight)</a>
+                     <a href="pick.html?count=3" class="swal-card-option">3 ใบ (Past, Present, Future)</a>
+                     <a href="pick.html?count=4" class="swal-card-option">4 ใบ (Celtic Cross Spread)</a>
+                     <a href="pick.html?count=10" class="swal-card-option">10 ใบ (Relationship Spread)</a>
+                    </div>
+                `,
+                showConfirmButton: false,
+                showCloseButton: true,
+                closeButtonHtml: '<span class="text-gray-400 hover:text-white">&times;</span>'
+            });
+        });
+    }
+  </script>
+</body>
+</html>
