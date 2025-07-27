@@ -28,7 +28,12 @@
             color: #ffffff; 
             overflow-x: hidden;
         }
-        
+         .fab-home-btn {
+      position: fixed; left: 50%; bottom: 22px; transform: translateX(-50%); z-index: 100; display: none;
+      background: linear-gradient(45deg, #9E63BF, #764ba2);
+      box-shadow: 0 8px 32px rgba(76, 58, 162, 0.44);
+    }
+    @media (max-width: 768px) { .fab-home-btn { display: flex !important; } }
         .space-bg { 
             background: linear-gradient(135deg, #9E63BF 0%, #764ba2 50%, #f093fb 100%);
             background-size: 400% 400%;
@@ -82,7 +87,7 @@
         .result-card { transition: transform 0.5s ease, box-shadow 0.5s ease; }
         .result-card:hover { transform: translateY(-10px) scale(1.05); box-shadow: 0 0 30px rgba(167, 139, 250, 0.5); }
 
-        .interpretation-section h4 { font-size: 1.25rem; font-weight: bold; color: #ffffff; margin-top: 1.5rem; margin-bottom: 0.5rem; padding-bottom: 0.25rem; border-bottom: 1px solid rgba(110, 231, 183, 0.3); }
+        .interpretation-section h4 { font-size: 1.25rem; font-weight: bold; color: #9333EA; margin-top: 1.5rem; margin-bottom: 0.5rem; padding-bottom: 0.25rem; border-bottom: 1px solid rgba(110, 231, 183, 0.3); }
         .interpretation-section ul { list-style-position: inside; margin-left: 0.5rem; }
         .interpretation-section li::marker { content: '✨ '; }
         
@@ -144,6 +149,8 @@
             </form>
         </section>
 
+         <div><a href="/" class="text-purple-300 hover:text-white mb-4 inline-block">← กลับหน้าหลัก</a></div>
+
         <!-- Result Section -->
         <section id="result-section" class="hidden w-full max-w-5xl mt-8">
              <div id="card-display-area" class="grid grid-cols-1 md:grid-cols-2 gap-8 justify-items-center">
@@ -156,7 +163,9 @@
             </div>
         </section>
     </div>
-    
+     <a href="/" class="fab-home-btn shadow-lg rounded-full p-0.5">
+    <div class="flex items-center justify-center bg-gray-800/80 backdrop-blur-sm rounded-full w-16 h-16 border border-white/20">
+      <svg width="38" height="38" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" /></svg>
     <script>
         // --- Tarot Data (Embedded) ---
         // (ขออนุญาตย่อข้อมูลไพ่เพื่อให้โค้ดกระชับ)
