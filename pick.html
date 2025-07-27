@@ -3,9 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>เลือกไพ่ - ดูดวงกับเรฟ</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="pick.css">
 <!-- Google tag (gtag.js) -->
 <!-- Google Tag Manager -->
 <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
@@ -13,155 +10,314 @@ new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
 j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
 })(window,document,'script','dataLayer','GTM-PLWVCJN8');</script>
-<!-- End Google Tag Manager -->
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
-<link rel="icon" type="image/png" href="/icon/favicon-96x96.png" sizes="96x96" />
-<link rel="icon" type="image/svg+xml" href="/icon/favicon.svg" />
-<link rel="shortcut icon" href="/icon/favicon.ico" />
-<link rel="apple-touch-icon" sizes="180x180" href="/icon/apple-touch-icon.png" />
-<meta name="apple-mobile-web-app-title" content="ดูดวงกับเรฟ" />
-<link rel="manifest" href="/icon/site.webmanifest" />
-    
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>เลือกไพ่ทาโรต์ - REFFORTUNE</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    /* --- THEME & BACKGROUND --- */
+    html, body {
+        height: 100%;
+        overflow: hidden; /* Prevent scrolling on the body */
+    }
+    body {
+        font-family: 'Noto Sans Thai', sans-serif;
+        background: linear-gradient(135deg, #9E63BF 0%, #764ba2 100%);
+        color: #ffffff;
+    }
+    .space-bg {
+        background: linear-gradient(135deg, #9E63BF 0%, #764ba2 50%, #f093fb 100%);
+        background-size: 400% 400%;
+        animation: gradientShift 15s ease infinite;
+        position: fixed; inset: 0; z-index: -2;
+    }
+    @keyframes gradientShift { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
+    .stars { position: fixed; inset: 0; background: transparent url(https://s3-us-west-2.amazonaws.com/s.cdpn.io/1231630/stars.png) repeat top center; z-index: -1; }
+    .twinkling { position: fixed; inset: 0; background: transparent url(https://s3-us-west-2.amazonaws.com/s.cdpn.io/1231630/stars.png) repeat top center; z-index: 0; animation: move-twinkle-back 300s linear infinite; opacity: 0.4; }
+    @keyframes move-twinkle-back { from { background-position: 0 0; } to { background-position: -10000px 5000px; } }
+
+    /* --- Glassmorphism Style --- */
+    .glass-box {
+        background: linear-gradient(145deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
+        backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px);
+        border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 24px;
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+    }
+    .text-glow { text-shadow: 0 0 20px rgba(255, 255, 255, 0.5), 0 0 40px rgba(167, 139, 250, 0.3); }
+
+    /* --- Shuffling & Dealing Animation --- */
+    #pre-selection-animation {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    .deck {
+        width: 100px;
+        height: 150px;
+        position: relative;
+        transform-style: preserve-3d;
+        animation: shuffle 1.5s ease-in-out 2;
+    }
+    .deck .card-face {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        border-radius: 8px;
+        background-image: url(/icon/backcard.png);
+        background-size: cover;
+        border: 1px solid rgba(255,255,255,0.2);
+    }
+    .deck .card-face:nth-child(1) { transform: translateZ(1px); }
+    .deck .card-face:nth-child(2) { transform: translateZ(-1px); }
+    .deck .card-face:nth-child(3) { transform: translateZ(-3px); }
+    @keyframes shuffle {
+        0%, 100% { transform: rotateY(0deg) rotateZ(0deg); }
+        25% { transform: translateX(-20px) rotateY(10deg) rotateZ(-5deg); }
+        75% { transform: translateX(20px) rotateY(-10deg) rotateZ(5deg); }
+    }
+
+    /* --- Overlapping Card Layout --- */
+    .card-row {
+        position: relative;
+        height: 14vh; 
+        margin-bottom: -9vh; 
+    }
+    .card-container {
+        position: absolute;
+        width: 7vh; 
+        height: 10.5vh;
+        max-width: 80px;
+        max-height: 120px;
+        transition: all 0.3s ease;
+        opacity: 0;
+    }
+    .card-container.dealt {
+        opacity: 1;
+    }
+    .card-container:hover {
+        transform: translateY(-15px) scale(1.05);
+        z-index: 100;
+    }
+    .card.selected {
+        transform: translateY(-15px) scale(1.05);
+    }
+    .card-inner {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        transform-style: preserve-3d;
+        transition: transform 0.8s cubic-bezier(0.6, 0.02, 0.4, 1);
+    }
+    .card.flipped .card-inner {
+        transform: rotateY(180deg);
+    }
+    .card-face {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        backface-visibility: hidden;
+        border-radius: 8px;
+        background-size: cover;
+        background-position: center;
+    }
+    .card-back {
+        background-image: url(/icon/backcard.png);
+        border: 1px solid rgba(255,255,255,0.2);
+    }
+    .card-front {
+        transform: rotateY(180deg);
+        background-color: #4a3d8f;
+        border: 1px solid rgba(255,255,255,0.4);
+    }
+    .card.selected .card-back, .card.selected .card-front {
+        box-shadow: 0 0 15px #f093fb, 0 0 25px #9E63BF;
+        border-color: #f093fb;
+    }
+    .card.disabled {
+        cursor: default;
+        opacity: 0.7;
+    }
+  </style>
 </head>
-<body class="space-bg">
+<body class="antialiased">
+  <div class="space-bg"></div>
+  <div class="stars"></div>
+  <div class="twinkling"></div>
 
-    <!-- Google Tag Manager (noscript) -->
-<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-PLWVCJN8"
-height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
-<!-- End Google Tag Manager (noscript) -->
-    <div class="stars"></div>
-    <div class="twinkling"></div>
-    <div class="planet"></div>
-    
-    <audio id="mystic-bgm" loop>
-        <source src="1.mp3" type="audio/mpeg">
-        <source src="1.ogg" type="audio/ogg">
-        Your browser does not support the audio element.
-    </audio>
+  <main class="relative z-10 w-full h-screen flex flex-col p-4 md:p-6">
+    <header class="text-center mb-4 flex-shrink-0">
+      <a href="/" class="inline-block">
+        <img src="/icon/main.png" alt="โลโก้ ดูดวงกับเรฟ REFFORTUNE" class="w-full max-w-[200px] md:max-w-xs mx-auto">
+      </a>
+      <div id="instruction-panel" class="glass-box p-3 md:p-4 max-w-2xl mx-auto mt-2 min-h-[80px] md:min-h-[100px]">
+        <h1 id="instruction-title" class="text-xl md:text-3xl font-bold text-glow">กำลังสับไพ่...</h1>
+        <p id="instruction-subtitle" class="text-sm md:text-base text-white/80 mt-1"></p>
+        
+      </div>
+       <div><a href="/" class="text-purple-300 hover:text-white mb-4 inline-block">← กลับหน้าหลัก</a></div>
+    </header>
 
-    <audio id="typewriter-sound">
-        <source src="typewriter-click.mp3" type="audio/mpeg">
-        <source src="typewriter-click.ogg" type="audio/ogg">
-        Your browser does not support the audio element.
-    </audio>
-
-    <audio id="card-select-sound">
-        <source src="pick.mp3" type="audio/mpeg">
-        <source src="pick.ogg" type="audio/ogg">
-        Your browser does not support the audio element.
-    </audio>
-
-    <div id="selection-screen" class="main-container">
-        <header class="text-center mb-4">
-            <a href="index.html" class="text-purple-300 hover:text-white mb-4 inline-block">&larr; กลับหน้าหลัก</a>
-            <h1 id="page-title" class="text-3xl md:text-4xl font-bold text-glow">กำลังโหลด...</h1>
-            <p id="typewriter-text" class="text-white/80 mt-2"></p>
-        </header>
-
-        <div id="controls" class="controls-container glass-box">
-            <div id="selection-tray" class="selection-tray-container">
-            </div>
-            <div class="flex items-center gap-4">
-                <button id="shuffle-button" class="shuffle-btn" title="สับไพ่">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
-                        <path fill-rule="evenodd" d="M0 3.5A.5.5 0 0 1 .5 3H1c2.202 0 3.827 1.24 4.874 2.418C6.92 6.588 8 7.582 8 9.5s-1.08 2.912-2.126 4.082C4.827 14.76 3.202 16 1 16H.5a.5.5 0 0 1-.5-.5v-12zm2.291 1.672c.626-.956 1.6-1.587 2.755-1.587H6.5a.5.5 0 0 1 .5.5v12a.5.5 0 0 1-.5.5H5.045c-1.155 0-2.129-.631-2.755-1.587C1.69 11.231 1 10.12 1 8.5c0-1.62.69-2.73 1.291-3.828z"/>
-                        <path d="M16 3.5a.5.5 0 0 1-.5.5h-.793c-1.155 0-2.129.631-2.755 1.587C11.31 6.769 11 7.88 11 9.5c0 1.62.69 2.73 1.291 3.828.626.956 1.6 1.587 2.755 1.587h.793a.5.5 0 0 1 .5.5v-12a.5.5 0 0 1-.5-.5zM15 5.172c-.626.956-1.6 1.587-2.755 1.587h-.793c-1.155 0-2.129-.631-2.755-1.587C8.08 4.231 7.5 3.12 7.5 1.5a.5.5 0 0 1 .5-.5h6.5a.5.5 0 0 1 .5.5v3.672z"/>
-                    </svg>
-                </button>
-                <div id="counter" class="counter-text">เลือกแล้ว 0/10 ใบ</div>
-                <button id="confirm-button" class="confirm-btn" disabled>ยืนยันการเลือก</button>
-            </div>
-        </div>
-
-        <div id="card-grid" class="card-grid-container">
+    <div id="pre-selection-animation" class="flex-grow flex justify-center items-center">
+        <div class="deck">
+            <div class="card-face"></div>
+            <div class="card-face"></div>
+            <div class="card-face"></div>
         </div>
     </div>
 
-    <div id="results-screen" class="main-container hidden">
-        <header class="text-center mb-6">
-            <h1 id="result-title" class="text-3xl md:text-4xl font-bold text-glow">ไพ่ที่คุณเลือก</h1>
-            <p class="text-white/80 mt-2">นี่คือไพ่ที่สะท้อนถึงสถานการณ์ของคุณ</p>
-        </header>
-        <div id="results-grid" class="results-grid-container">
-        </div>
-        <div class="text-center mt-8 flex flex-col sm:flex-row gap-4 justify-center">
-            <button id="save-image-btn" class="save-btn">บันทึกผลเป็นรูปภาพ</button>
-            <button id="reset-button" class="confirm-btn">เลือกใหม่อีกครั้ง</button>
-        </div>
+    <div id="card-selection-area" class="flex flex-col justify-center hidden">
+        <!-- Rows will be generated by JavaScript -->
     </div>
+  </main>
 
-    <div id="card-modal-container" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black bg-opacity-80 backdrop-blur-sm opacity-0 pointer-events-none transition-opacity duration-300">
-        <div id="card-modal-panel" class="w-full max-w-xs md:max-w-sm transform scale-95 transition-transform duration-300 text-center">
-            <img id="modal-card-img" src="" alt="" class="w-full rounded-2xl shadow-2xl shadow-purple-500/50">
-            <h2 id="modal-card-name" class="text-2xl font-bold text-white mt-4 text-glow"></h2>
-            <button id="modal-close-btn" class="mt-4 text-gray-300 hover:text-white transition-colors">ปิด</button>
-        </div>
-    </div>
+  <script>
+    const fullTarotDeck = [
+        { id: 'maj00', name: 'The Fool', img: 'card/00.png' }, { id: 'maj01', name: 'The Magician', img: 'card/01.png' }, { id: 'maj02', name: 'The High Priestess', img: 'card/02.png' }, { id: 'maj03', name: 'The Empress', img: 'card/03.png' }, { id: 'maj04', name: 'The Emperor', img: 'card/04.png' }, { id: 'maj05', name: 'The Hierophant', img: 'card/05.png' }, { id: 'maj06', name: 'The Lovers', img: 'card/06.png' }, { id: 'maj07', name: 'The Chariot', img: 'card/07.png' }, { id: 'maj08', name: 'Strength', img: 'card/08.png' }, { id: 'maj09', name: 'The Hermit', img: 'card/09.png' }, { id: 'maj10', name: 'Wheel of Fortune', img: 'card/10.png' }, { id: 'maj11', name: 'Justice', img: 'card/11.png' }, { id: 'maj12', name: 'The Hanged Man', img: 'card/12.png' }, { id: 'maj13', name: 'Death', img: 'card/13.png' }, { id: 'maj14', name: 'Temperance', img: 'card/14.png' }, { id: 'maj15', name: 'The Devil', img: 'card/15.png' }, { id: 'maj16', name: 'The Tower', img: 'card/16.png' }, { id: 'maj17', name: 'The Star', img: 'card/17.png' }, { id: 'maj18', name: 'The Moon', img: 'card/18.png' }, { id: 'maj19', name: 'The Sun', img: 'card/19.png' }, { id: 'maj20', name: 'Judgement', img: 'card/20.png' }, { id: 'maj21', name: 'The World', img: 'card/21.png' },
+        { id: 'wan01', name: 'Ace of Wands', img: 'card/w1.png' }, { id: 'wan02', name: 'Two of Wands', img: 'card/w2.png' }, { id: 'wan03', name: 'Three of Wands', img: 'card/w3.png' }, { id: 'wan04', name: 'Four of Wands', img: 'card/w4.png' }, { id: 'wan05', name: 'Five of Wands', img: 'card/w5.png' }, { id: 'wan06', name: 'Six of Wands', img: 'card/w6.png' }, { id: 'wan07', name: 'Seven of Wands', img: 'card/w7.png' }, { id: 'wan08', name: 'Eight of Wands', img: 'card/w8.png' }, { id: 'wan09', name: 'Nine of Wands', img: 'card/w9.png' }, { id: 'wan10', name: 'Ten of Wands', img: 'card/w10.png' }, { id: 'wan_p', name: 'Page of Wands', img: 'card/w11.png' }, { id: 'wan_k', name: 'Knight of Wands', img: 'card/w12.png' }, { id: 'wan_q', name: 'Queen of Wands', img: 'card/w13.png' }, { id: 'wan_K', name: 'King of Wands', img: 'card/w14.png' },
+        { id: 'cup01', name: 'Ace of Cups', img: 'card/c1.png' }, { id: 'cup02', name: 'Two of Cups', img: 'card/c2.png' }, { id: 'cup03', name: 'Three of Cups', img: 'card/c3.png' }, { id: 'cup04', name: 'Four of Cups', img: 'card/c4.png' }, { id: 'cup05', name: 'Five of Cups', img: 'card/c5.png' }, { id: 'cup06', name: 'Six of Cups', img: 'card/c6.png' }, { id: 'cup07', name: 'Seven of Cups', img: 'card/c7.png' }, { id: 'cup08', name: 'Eight of Cups', img: 'card/c8.png' }, { id: 'cup09', name: 'Nine of Cups', img: 'card/c9.png' }, { id: 'cup10', name: 'Ten of Cups', img: 'card/c10.png' }, { id: 'cup_p', name: 'Page of Cups', img: 'card/c11.png' }, { id: 'cup_k', name: 'Knight of Cups', img: 'card/c12.png' }, { id: 'cup_q', name: 'Queen of Cups', img: 'card/c13.png' }, { id: 'cup_K', name: 'King of Cups', img: 'card/c14.png' },
+        { id: 'swo01', name: 'Ace of Swords', img: 'card/s1.png' }, { id: 'swo02', name: 'Two of Swords', img: 'card/s2.png' }, { id: 'swo03', name: 'Three of Swords', img: 'card/s3.png' }, { id: 'swo04', name: 'Four of Swords', img: 'card/s4.png' }, { id: 'swo05', name: 'Five of Swords', img: 'card/s5.png' }, { id: 'swo06', name: 'Six of Swords', img: 'card/s6.png' }, { id: 'swo07', name: 'Seven of Swords', img: 'card/s7.png' }, { id: 'swo08', name: 'Eight of Swords', img: 'card/s8.png' }, { id: 'swo09', name: 'Nine of Swords', img: 'card/s9.png' }, { id: 'swo10', name: 'Ten of Swords', img: 'card/s10.png' }, { id: 'swo_p', name: 'Page of Swords', img: 'card/s11.png' }, { id: 'swo_k', name: 'Knight of Swords', img: 'card/s12.png' }, { id: 'swo_q', name: 'Queen of Swords', img: 'card/s13.png' }, { id: 'swo_K', name: 'King of Swords', img: 'card/s14.png' },
+        { id: 'pen01', name: 'Ace of Pentacles', img: 'card/p1.png' }, { id: 'pen02', name: 'Two of Pentacles', img: 'card/p2.png' }, { id: 'pen03', name: 'Three of Pentacles', img: 'card/p3.png' }, { id: 'pen04', name: 'Four of Pentacles', img: 'card/p4.png' }, { id: 'pen05', name: 'Five of Pentacles', img: 'card/p5.png' }, { id: 'pen06', name: 'Six of Pentacles', img: 'card/p6.png' }, { id: 'pen07', name: 'Seven of Pentacles', img: 'card/p7.png' }, { id: 'pen08', name: 'Eight of Pentacles', img: 'card/p8.png' }, { id: 'pen09', name: 'Nine of Pentacles', img: 'card/p9.png' }, { id: 'pen10', name: 'Ten of Pentacles', img: 'card/p10.png' }, { id: 'pen_p', name: 'Page of Pentacles', img: 'card/p11.png' }, { id: 'pen_k', name: 'Knight of Pentacles', img: 'card/p12.png' }, { id: 'pen_q', name: 'Queen of Pentacles', img: 'card/p13.png' }, { id: 'pen_K', name: 'King of Pentacles', img: 'card/p14.png' }
+    ];
 
-    <script src="tarot-data.js"></script>
-    <script src="pick.js"></script>
+    let cardCount = 0;
+    let selectedCards = [];
+    let shuffledDeck = [];
 
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // Get references to DOM elements
-            const textElement = document.getElementById('typewriter-text');
-            const pageTitle = document.getElementById('page-title');
-            const cardGrid = document.getElementById('card-grid');
+    const instructionTitle = document.getElementById('instruction-title');
+    const instructionSubtitle = document.getElementById('instruction-subtitle');
+    const selectionArea = document.getElementById('card-selection-area');
+    const preSelectionAnimation = document.getElementById('pre-selection-animation');
 
-            // Define the text for the typewriter effect
-            const instructionsText = "โปรดตั้งสมาธิไปที่คำถามที่คุณมีอยู่ในใจ เมื่อคุณพร้อมแล้ว ให้ใช้มือซ้ายเลือกไพ่ที่คุณรู้สึกถึงแรงดึงดูดที่สุด";
-            let charIndex = 0;
-            const typingSpeed = 50; // Speed of typing in milliseconds per character
+    function shuffleDeck(array) {
+        for (let i = array.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [array[i], array[j]] = [array[j], array[i]];
+        }
+    }
 
-            // Get references to audio elements
-            const typewriterSound = document.getElementById('typewriter-sound');
-            const mysticBGM = document.getElementById('mystic-bgm');
-            const cardSelectSound = document.getElementById('card-select-sound'); 
-
-            /**
-             * Implements the typewriter effect for displaying text.
-             * Plays a typewriter sound for each character.
-             */
-            function typeWriterEffect() {
-                if (charIndex < instructionsText.length) {
-                    textElement.innerHTML += instructionsText.charAt(charIndex);
-                    // Play typewriter sound for each character
-                    if (typewriterSound) {
-                        typewriterSound.currentTime = 0; // Reset sound to play from beginning
-                        typewriterSound.play().catch(e => console.error("Error playing typewriter sound:", e));
-                    }
-                    charIndex++;
-                    setTimeout(typeWriterEffect, typingSpeed);
-                } else {
-                    // Once typing is complete, attempt to play background music.
-                    // Browsers often require user interaction before playing audio automatically.
-                    if (mysticBGM) {
-                        mysticBGM.play().catch(e => console.log("Background music blocked by browser (user interaction may be required):", e));
-                    }
-                    // Change page title after typing is complete
-                    pageTitle.textContent = "เลือกไพ่ของคุณ"; // Update title
-                }
+    function typeWriterEffect(element, text, speed, callback) {
+        let i = 0;
+        element.innerHTML = ''; // Clear existing text
+        function type() {
+            if (i < text.length) {
+                element.innerHTML += text.charAt(i);
+                i++;
+                setTimeout(type, speed);
+            } else {
+                if (callback) callback();
             }
+        }
+        type();
+    }
 
-            // Start the typewriter effect when the DOM is fully loaded
-            typeWriterEffect();
+    function dealCards() {
+        selectionArea.innerHTML = '';
+        const cardsPerRow = [13, 13, 13, 13, 13, 13]; // 6 rows of 13
+        let cardIndex = 0;
 
-            /**
-             * Adds an event listener to the card grid to play a sound when a card is selected.
-             * Uses event delegation for efficiency.
-             */
-            if (cardGrid) {
-                cardGrid.addEventListener('click', function(event) {
-                    // Check if the clicked element (or its closest ancestor) is a card item
-                    const cardElement = event.target.closest('.card-item'); // Assuming your card elements have the class 'card-item'
-                    if (cardElement && cardSelectSound) {
-                        cardSelectSound.currentTime = 0; // Reset sound to play from beginning
-                        cardSelectSound.play().catch(e => console.error("Error playing card select sound:", e));
-                    }
-                });
+        cardsPerRow.forEach((count) => {
+            const row = document.createElement('div');
+            row.className = 'card-row flex justify-center';
+            selectionArea.appendChild(row);
+
+            for (let i = 0; i < count; i++) {
+                if(cardIndex >= shuffledDeck.length) break;
+
+                const cardData = shuffledDeck[cardIndex];
+                const cardElement = document.createElement('div');
+                cardElement.classList.add('card-container', 'card');
+                cardElement.dataset.cardId = cardData.id;
+
+                // UPDATED: Use a fixed overlap value for consistent look
+                const overlapFactor = window.innerWidth < 768 ? 20 : 30; // pixels
+                const cardWidth = cardElement.getBoundingClientRect().width || (7 * window.innerHeight / 100);
+                
+                const totalWidth = (count - 1) * overlapFactor + cardWidth;
+                const startPosition = (selectionArea.clientWidth - totalWidth) / 2;
+                
+                cardElement.style.left = `${startPosition + (i * overlapFactor)}px`;
+                cardElement.style.transitionDelay = `${cardIndex * 20}ms`;
+
+                cardElement.innerHTML = `
+                    <div class="card-inner">
+                        <div class="card-face card-back"></div>
+                        <div class="card-face card-front" style="background-image: url('${cardData.img}')"></div>
+                    </div>
+                `;
+                cardElement.addEventListener('click', () => handleCardClick(cardElement, cardData.id));
+                row.appendChild(cardElement);
+                cardIndex++;
             }
         });
-    </script>
+        
+        setTimeout(() => {
+            document.querySelectorAll('.card-container').forEach(c => c.classList.add('dealt'));
+        }, 100);
+    }
+
+    function handleCardClick(cardElement, cardId) {
+        if (cardElement.classList.contains('selected') || selectedCards.length >= cardCount) {
+            return;
+        }
+
+        cardElement.classList.add('selected');
+        selectedCards.push(cardId);
+        updateInstructions();
+
+        if (selectedCards.length === cardCount) {
+            instructionTitle.textContent = 'กำลังเปิดผลคำทำนาย...';
+            instructionSubtitle.textContent = 'คุณเลือกไพ่ครบแล้ว';
+            
+            document.querySelectorAll('.card').forEach(card => {
+                card.style.pointerEvents = 'none';
+            });
+
+            setTimeout(() => {
+                const cardIdsString = selectedCards.join(',');
+                window.location.href = `results.html?count=${cardCount}&cards=${cardIdsString}`;
+            }, 1500);
+        }
+    }
+    
+    function updateInstructions() {
+        const remaining = cardCount - selectedCards.length;
+        if (remaining > 0) {
+            instructionTitle.textContent = `กรุณาเลือกไพ่ ${cardCount} ใบ`;
+            instructionSubtitle.textContent = `คุณเลือกแล้ว ${selectedCards.length} ใบ (ขาดอีก ${remaining} ใบ)`;
+        }
+    }
+
+    function initializePage() {
+        const urlParams = new URLSearchParams(window.location.search);
+        const count = parseInt(urlParams.get('count'));
+
+        if (count && count > 0 && count <= fullTarotDeck.length) {
+            cardCount = count;
+            
+            setTimeout(() => {
+                preSelectionAnimation.style.display = 'none';
+                selectionArea.classList.remove('hidden');
+                
+                shuffledDeck = [...fullTarotDeck];
+                shuffleDeck(shuffledDeck);
+                
+                dealCards();
+                
+                instructionTitle.textContent = 'เลือกไพ่ของคุณ';
+                const longInstruction = 'โปรดตั้งสมาธิไปที่คำถามที่คุณมีอยู่ในใจ เมื่อคุณพร้อมแล้ว ให้ใช้มือซ้ายเลือกไพ่ที่คุณรู้สึกถึงแรงดึงดูดที่สุด';
+                typeWriterEffect(instructionSubtitle, longInstruction, 50);
+
+                window.addEventListener('resize', dealCards);
+            }, 3000);
+
+        } else {
+            instructionTitle.textContent = 'เกิดข้อผิดพลาด';
+            instructionSubtitle.textContent = 'ไม่พบจำนวนไพ่ที่ถูกต้อง กรุณากลับไปหน้าหลัก';
+            preSelectionAnimation.style.display = 'none';
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', initializePage);
+  </script>
 </body>
 </html>
