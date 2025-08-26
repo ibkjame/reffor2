@@ -313,8 +313,7 @@
 
     function getTodayString(){
       const d = new Date();
-      const tzOffset = d.getTimezoneOffset();
-      // Normalize to local date (already local), but ensure YYYY-MM-DD
+      // Returns date in YYYY-MM-DD format for the local timezone
       return new Date(d.getFullYear(), d.getMonth(), d.getDate()).toLocaleDateString('en-CA');
     }
     const todayKey = () => `dailyCard_${getTodayString()}`;
@@ -398,7 +397,7 @@
           <p class="text-white/80 mt-2">${cardData.daily_advice}</p>
         </div>
         <div class="mt-6 flex items-center justify-center gap-3">
-          <button id="btnSaveToday" class="px-4 py-2 rounded-xl bg-white/15 hover:bg-white/25 font-semibold">บันทึกวันนี้</button>
+          <button id="btnSaveToday" class="px-4 py-2 rounded-xl bg-white/15 hover:bg-white/25 font-semibold">บันทึกเป็นรูป</button>
           <button id="btnShareStory" class="px-4 py-2 rounded-xl bg-fuchsia-500/90 hover:bg-fuchsia-500 text-white font-semibold">แชร์สตอรี่</button>
         </div>`;
       setTimeout(()=>{
@@ -422,7 +421,6 @@
 
     function truncate(str, n){ return (str.length>n) ? (str.slice(0,n-1)+'…') : str; }
 
-    // Show/Hide on scroll into view of daily tile
     const observeTarget = document.getElementById('daily-card-button-container');
     const io = new IntersectionObserver((entries)=>{
       entries.forEach(e=>{
@@ -432,7 +430,6 @@
     },{threshold: .25});
     if(observeTarget) io.observe(observeTarget);
 
-    // Daily bar actions
     dailyBarOpen.addEventListener('click', ()=>{
       const stored = getStoredToday();
       if(stored){ showDrawnCard(tarotDeck[stored.cardIndex], true); dailyCardModal.style.display='flex'; setTimeout(()=>dailyCardModal.style.opacity=1, 10); }
@@ -451,44 +448,94 @@
       shareStory(card);
     });
 
-    // --- SAVE TODAY (history) ---
-    function saveToday(card){
-      const key = 'dailyHistory';
-      const list = JSON.parse(localStorage.getItem(key) || '[]');
-      const date = getTodayString();
-      const exists = list.find(x=>x.date===date);
-      const item = { date, id: card.id, name: card.name, advice: card.daily_advice, img: card.img };
-      if(exists){ Object.assign(exists, item); }
-      else{ list.unshift(item); if(list.length>30) list.pop(); }
-      localStorage.setItem(key, JSON.stringify(list));
-      window.plausible && plausible('daily_card_saved',{props:{ card: card.id }});
-      Swal.fire({ icon:'success', title:'บันทึกแล้ว', text:'บันทึกไพ่ประจำวันของคุณเรียบร้อย', timer:1600, showConfirmButton:false });
-    }
+    // --- IMAGE GENERATION & ACTIONS (NEW) ---
 
-    // --- SHARE STORY (1080x1920) ---
-    async function shareStory(card){
-      // Fill template
+    /**
+     * Fills the hidden story template with card data and renders it to a File object.
+     * @param {object} card - The tarot card data object.
+     * @returns {Promise<File>} A promise that resolves with the generated image File.
+     */
+    async function generateStoryFile(card) {
+      // 1. Fill the hidden template with data
       const dateStr = new Date().toLocaleDateString('th-TH', { year:'numeric', month:'long', day:'numeric' });
       document.getElementById('storyDate').textContent = dateStr;
       document.getElementById('storyCardImg').src = card.img;
       document.getElementById('storyCardName').textContent = card.name;
       document.getElementById('storyAdvice').textContent = card.daily_advice;
-      // Render
+
+      // 2. Render the template element to a canvas
       const node = document.getElementById('storyTemplate');
-      const canvas = await html2canvas(node, { useCORS:true, backgroundColor:null, scale:2 });
-      const blob = await new Promise(res=>canvas.toBlob(res,'image/png'));
-      const file = new File([blob], `REFFORTUNE_${todayKey()}.png`, {type:'image/png'});
-      window.plausible && plausible('daily_card_shared',{props:{ card: card.id }});
-      // Web Share API (with files)
-      if(navigator.canShare && navigator.canShare({ files:[file] })){
-        try{ await navigator.share({ files:[file], title:'ไพ่ประจำวัน • REFFORTUNE', text:`${card.name} — ${card.daily_advice}` }); }
-        catch(err){ /* user cancelled */ }
-      }else{
-        // Fallback: download
-        const url = URL.createObjectURL(blob);
+      const canvas = await html2canvas(node, { useCORS: true, backgroundColor: null, scale: 2 });
+      
+      // 3. Convert canvas to a Blob, then to a File
+      const blob = await new Promise(res => canvas.toBlob(res, 'image/png'));
+      return new File([blob], `REFFORTUNE_${todayKey()}.png`, { type: 'image/png' });
+    }
+
+    /**
+     * Generates the story image and triggers a download.
+     * @param {object} card - The tarot card data object.
+     */
+    async function saveToday(card) {
+      const file = await generateStoryFile(card);
+      
+      // Create a temporary link to trigger the download
+      const url = URL.createObjectURL(file);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = file.name;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      URL.revokeObjectURL(url); // Clean up the object URL
+
+      Swal.fire({
+        icon: 'success',
+        title: 'บันทึกรูปแล้ว',
+        text: 'บันทึกภาพไพ่พร้อมคำทำนายของคุณแล้ว',
+        timer: 2000,
+        showConfirmButton: false
+      });
+      window.plausible && plausible('daily_card_saved_as_image', { props: { card: card.id } });
+    }
+
+    /**
+     * Generates the story image and shares it using the Web Share API, with a download fallback.
+     * @param {object} card - The tarot card data object.
+     */
+    async function shareStory(card) {
+      const file = await generateStoryFile(card);
+      window.plausible && plausible('daily_card_shared', { props: { card: card.id } });
+
+      // Use Web Share API if available (modern mobile browsers)
+      if (navigator.canShare && navigator.canShare({ files: [file] })) {
+        try {
+          await navigator.share({
+            files: [file],
+            title: 'ไพ่ประจำวัน • REFFORTUNE',
+            text: `${card.name} — ${card.daily_advice}`
+          });
+        } catch (err) {
+          console.log("Share was cancelled by the user.");
+        }
+      } else {
+        // Fallback for desktop or unsupported browsers
+        const url = URL.createObjectURL(file);
         const a = document.createElement('a');
-        a.href = url; a.download = `REFFORTUNE_${todayKey()}.png`; document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url);
-        Swal.fire({ icon:'info', title:'บันทึกรูปแล้ว', text:'ระบบดาวน์โหลดภาพสตอรี่ให้คุณแล้ว แชร์ต่อได้เลย', timer:2000, showConfirmButton:false });
+        a.href = url;
+        a.download = file.name;
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        URL.revokeObjectURL(url);
+        
+        Swal.fire({
+          icon: 'info',
+          title: 'ดาวน์โหลดรูปแล้ว',
+          text: 'เบราว์เซอร์ของคุณไม่รองรับการแชร์โดยตรง ระบบจึงดาวน์โหลดภาพให้แทน คุณสามารถแชร์ลง Story ได้เลย!',
+          timer: 3500,
+          showConfirmButton: false
+        });
       }
     }
 
@@ -499,13 +546,13 @@
         Swal.fire({
           title:'เลือกจำนวนไพ่',
           html:`<p class="mb-4 text-white/80">คุณต้องการเปิดไพ่เพื่อดูคำทำนายกี่ใบ?</p>
-                 <div class="flex flex-col">
-                   <a href="pick.html?count=1" class="swal-card-option">1 ใบ (Quick Insight)</a>
-                   <a href="pick.html?count=2" class="swal-card-option">2 ใบ (Choice/Duality)</a>
-                   <a href="pick.html?count=3" class="swal-card-option">3 ใบ (Past, Present, Future)</a>
-                   <a href="pick.html?count=4" class="swal-card-option">4 ใบ (Action Plan)</a>
-                   <a href="pick.html?count=10" class="swal-card-option">10 ใบ (Celtic Cross)</a>
-                 </div>`,
+                  <div class="flex flex-col">
+                    <a href="pick.html?count=1" class="swal-card-option">1 ใบ (Quick Insight)</a>
+                    <a href="pick.html?count=2" class="swal-card-option">2 ใบ (Choice/Duality)</a>
+                    <a href="pick.html?count=3" class="swal-card-option">3 ใบ (Past, Present, Future)</a>
+                    <a href="pick.html?count=4" class="swal-card-option">4 ใบ (Action Plan)</a>
+                    <a href="pick.html?count=10" class="swal-card-option">10 ใบ (Celtic Cross)</a>
+                  </div>`,
           showConfirmButton:false, showCloseButton:true, target:'body'
         });
       });
