@@ -618,6 +618,7 @@
       }
     }
 
+
     // --- DIGITAL TALISMAN FEATURE (AI GENERATED) ---
     const generateTalismanBtn = document.getElementById('generate-talisman-btn');
     const downloadTalismanBtn = document.getElementById('download-talisman-btn');
@@ -709,16 +710,12 @@
     }
 
     async function callImageGenerationAPI(prompt) {
-        const apiKey = "AIzaSyDyCUtP1ETwMLAuq7kWfpYGl0dkH1DNLjc"; 
-        const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
+        const apiKey = ""; 
+        const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/imagen-3.0-generate-002:predict?key=${apiKey}`;
         
         const payload = {
-            contents: [{
-                parts: [{ text: prompt }]
-            }],
-            generationConfig: {
-                responseModalities: ['IMAGE']
-            },
+            instances: [{ prompt: prompt }],
+            parameters: { "sampleCount": 1, "aspectRatio": "9:16" }
         };
         
         const fetchOptions = {
@@ -730,11 +727,8 @@
         const response = await robustFetchWithBackoff(apiUrl, fetchOptions);
         const result = await response.json();
         
-        const candidate = result?.candidates?.[0];
-        const base64Data = candidate?.content?.parts?.find(p => p.inlineData)?.inlineData?.data;
-
-        if (base64Data) {
-            return `data:image/png;base64,${base64Data}`;
+        if (result.predictions && result.predictions.length > 0 && result.predictions[0].bytesBase64Encoded) {
+            return `data:image/png;base64,${result.predictions[0].bytesBase64Encoded}`;
         } else {
             console.error("API Response Error:", result);
             throw new Error("No image data in API response");
@@ -852,3 +846,4 @@
   </script>
 </body>
 </html>
+
