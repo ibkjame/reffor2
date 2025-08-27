@@ -698,6 +698,23 @@
         return prompt.replace(/\s+/g, ' ').trim();
     }
 
+   async function robustFetchWithBackoff(url, options, retries = 3, delay = 1000) {
+        for (let i = 0; i < retries; i++) {
+            try {
+                const response = await fetch(url, options);
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                return response;
+            } catch (error) {
+                console.error(`Attempt ${i + 1} failed:`, error);
+                if (i === retries - 1) throw error;
+                await new Promise(resolve => setTimeout(resolve, delay));
+                delay *= 2; // Exponential backoff
+            }
+        }
+    }
+
     async function callImageGenerationAPI(prompt) {
         const apiKey = "AIzaSyCt__0FsqCF0GsXUREpp0dtg4kyKOfMnGc"; 
         const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/imagen-3.0-generate-002:predict?key=${apiKey}`;
@@ -706,29 +723,21 @@
             instances: [{ prompt: prompt }],
             parameters: { "sampleCount": 1, "aspectRatio": "9:16" }
         };
+        
+        const fetchOptions = {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+        };
 
-        try {
-            const response = await fetch(apiUrl, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(payload)
-            });
+        const response = await robustFetchWithBackoff(apiUrl, fetchOptions);
+        const result = await response.json();
 
-            if (!response.ok) {
-                const error = await response.json();
-                console.error("API Error:", error);
-                throw new Error("API request failed");
-            }
-
-            const result = await response.json();
-            if (result.predictions && result.predictions.length > 0 && result.predictions[0].bytesBase64Encoded) {
-                return `data:image/png;base64,${result.predictions[0].bytesBase64Encoded}`;
-            } else {
-                throw new Error("No image data in API response");
-            }
-        } catch (error) {
-            console.error("Fetch Error:", error);
-            throw error;
+        if (result.predictions && result.predictions.length > 0 && result.predictions[0].bytesBase64Encoded) {
+            return `data:image/png;base64,${result.predictions[0].bytesBase64Encoded}`;
+        } else {
+            console.error("API Response Error:", result);
+            throw new Error("No image data in API response");
         }
     }
 
@@ -843,4 +852,3 @@
   </script>
 </body>
 </html>
-
