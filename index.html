@@ -687,9 +687,27 @@
         const num1Text = auspiciousNumberOptions[num1] || "";
         const num2Text = auspiciousNumberOptions[num2] || "";
         
-        let prompt = `A divine phone wallpaper for a person named ${firstName}. The central theme is a beautiful, photorealistic depiction of the Hindu deity ${deityInfo.name}, representing ${deityInfo.theme}. The deity is depicted in a traditional, serene pose, adorned with intricate golden jewelry. The background is an ornate golden temple interior with floral garlands and a grand archway showing a glowing symbol of ${element.symbol}. Subtly incorporate the auspicious numbers ${num1} (meaning "${num1Text}") and ${num2} (meaning "${num2Text}") into the intricate patterns of the temple or jewelry. The style is cinematic, majestic, with warm, divine lighting and sparkling bokeh effects. The dominant color is a magical ${element.color}. 3D rendering in a photorealistic style, highly detailed, rich in color and texture, opulent and traditional. Spiritual, serene, reverent, and peaceful mood. Slightly low angle camera, looking up at the statue. 9:16 aspect ratio, ultra high quality, no text.`;
-        return prompt.replace(/\s+/g, ' ').trim();
-    }
+     let prompt = `
+
+            **Subject:** A beautiful, minimal statue of the Hindu deity
+
+            **Composition:** The deity is depicted in a traditional, serene pose, adorned with intricate golden jewelry. The background is an ornate golden temple interior with floral garlands and a grand archway showing a glowing symbol of ${element.symbol}. Subtly incorporate the auspicious numbers ${num1} and ${num2} into the intricate patterns of the temple or jewelry.
+
+            **Style:** 3D rendering in a photorealistic style, highly detailed, rich in color and texture, opulent and traditional.
+
+            **Mood:** Spiritual, serene, reverent, and peaceful, evoking a sense of devotion.
+
+            **Lighting:** Warm, golden divine light emanating from the surroundings, highlighting the statue. Sparkling bokeh effects and a soft glow from the background symbol. The dominant color is a magical ${element.color}.
+
+            **Camera:** Slightly low angle, looking up at the statue. 9:16 aspect ratio, ultra high quality.
+
+            **Negative Prompt --no text
+
+        `;
+
+        return prompt.replace(/\s+/g, ' ').trim();
+
+    }
     
     async function robustFetchWithBackoff(url, options, retries = 3, delay = 1000) {
         for (let i = 0; i < retries; i++) {
