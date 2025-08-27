@@ -398,7 +398,6 @@
       { id:'pen_q', name:'Queen of Pentacles', img:'card/p13.png', daily_advice:'วันนี้คุณจะสามารถจัดการเรื่องงานและเรื่องส่วนตัวได้อย่างลงตัวและอบอุ่น' },
       { id:'pen_K', name:'King of Pentacles', img:'card/p14.png', daily_advice:'คุณคือสัญลักษณ์ของความสำเร็จและความมั่งคั่งที่มาจากการทำงานหนักและมั่นคง' }
     ];
-
  // --- DIGITAL TALISMAN DATA (AI GENERATED) ---
     const luckyElements = [
         { day: 'วันอาทิตย์', color: 'vibrant red', colorName: 'สีแดง', symbol: 'a radiant sun', blessing: 'พลังแห่งพระอาทิตย์นำทางให้ชีวิตรุ่งโรจน์' }, // Sunday
@@ -686,23 +685,17 @@
         const num1Text = auspiciousNumberOptions[num1] || "";
         const num2Text = auspiciousNumberOptions[num2] || "";
         
-        let prompt = `
-            **Subject:** A beautiful, photorealistic statue of the Hindu deity
-            **Composition:** The deity is depicted in a traditional, serene pose, adorned with intricate golden jewelry. The background is an ornate golden temple interior with floral garlands and a grand archway showing a glowing symbol of ${element.symbol}. Subtly incorporate the auspicious numbers ${num1} and ${num2} into the intricate patterns of the temple or jewelry.
-            **Style:** 3D rendering in a photorealistic style, highly detailed, rich in color and texture, opulent and traditional.
-            **Mood:** Spiritual, serene, reverent, and peaceful, evoking a sense of devotion.
-            **Lighting:** Warm, golden divine light emanating from the surroundings, highlighting the statue. Sparkling bokeh effects and a soft glow from the background symbol. The dominant color is a magical ${element.color}.
-            **Camera:** Slightly low angle, looking up at the statue. 9:16 aspect ratio, ultra high quality.
-            **Negative Prompt --no text
-        `;
+        let prompt = `A divine phone wallpaper for a person named ${firstName}. The central theme is a beautiful, photorealistic depiction of the Hindu deity ${deityInfo.name}, representing ${deityInfo.theme}. The deity is depicted in a traditional, serene pose, adorned with intricate golden jewelry. The background is an ornate golden temple interior with floral garlands and a grand archway showing a glowing symbol of ${element.symbol}. Subtly incorporate the auspicious numbers ${num1} (meaning "${num1Text}") and ${num2} (meaning "${num2Text}") into the intricate patterns of the temple or jewelry. The style is cinematic, majestic, with warm, divine lighting and sparkling bokeh effects. The dominant color is a magical ${element.color}. 3D rendering in a photorealistic style, highly detailed, rich in color and texture, opulent and traditional. Spiritual, serene, reverent, and peaceful mood. Slightly low angle camera, looking up at the statue. 9:16 aspect ratio, ultra high quality, no text.`;
         return prompt.replace(/\s+/g, ' ').trim();
     }
-
-   async function robustFetchWithBackoff(url, options, retries = 3, delay = 1000) {
+    
+    async function robustFetchWithBackoff(url, options, retries = 3, delay = 1000) {
         for (let i = 0; i < retries; i++) {
             try {
                 const response = await fetch(url, options);
                 if (!response.ok) {
+                    const errorBody = await response.json();
+                    console.error(`HTTP error! status: ${response.status}`, errorBody);
                     throw new Error(`HTTP error! status: ${response.status}`);
                 }
                 return response;
@@ -716,12 +709,16 @@
     }
 
     async function callImageGenerationAPI(prompt) {
-        const apiKey = "AIzaSyCt__0FsqCF0GsXUREpp0dtg4kyKOfMnGc"; 
+        const apiKey = ""; 
         const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-image-preview:generateContent?key=${apiKey}`;
         
         const payload = {
-            instances: [{ prompt: prompt }],
-            parameters: { "sampleCount": 1, "aspectRatio": "9:16" }
+            contents: [{
+                parts: [{ text: prompt }]
+            }],
+            generationConfig: {
+                responseModalities: ['IMAGE']
+            },
         };
         
         const fetchOptions = {
@@ -732,9 +729,12 @@
 
         const response = await robustFetchWithBackoff(apiUrl, fetchOptions);
         const result = await response.json();
+        
+        const candidate = result?.candidates?.[0];
+        const base64Data = candidate?.content?.parts?.find(p => p.inlineData)?.inlineData?.data;
 
-        if (result.predictions && result.predictions.length > 0 && result.predictions[0].bytesBase64Encoded) {
-            return `data:image/png;base64,${result.predictions[0].bytesBase64Encoded}`;
+        if (base64Data) {
+            return `data:image/png;base64,${base64Data}`;
         } else {
             console.error("API Response Error:", result);
             throw new Error("No image data in API response");
