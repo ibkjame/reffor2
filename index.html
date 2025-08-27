@@ -711,7 +711,7 @@
 
     async function callImageGenerationAPI(prompt) {
         const apiKey = "AIzaSyDyCUtP1ETwMLAuq7kWfpYGl0dkH1DNLjc"; 
-        const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-image-preview:generateContent?key=${apiKey}`;
+        const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-image-preview?key=${apiKey}`;
         
         const payload = {
             instances: [{ prompt: prompt }],
