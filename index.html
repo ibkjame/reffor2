@@ -618,7 +618,7 @@
       }
     }
 
-  // --- DIGITAL TALISMAN FEATURE (AI GENERATED) ---
+   // --- DIGITAL TALISMAN FEATURE (AI GENERATED) ---
     const generateTalismanBtn = document.getElementById('generate-talisman-btn');
     const downloadTalismanBtn = document.getElementById('download-talisman-btn');
     const talismanResultArea = document.getElementById('talisman-result-area');
@@ -626,7 +626,237 @@
     const talismanPlaceholderText = document.getElementById('talisman-placeholder-text');
     const talismanImage = document.getElementById('talisman-image');
     const talismanContent = document.getElementById('talisman-content');
-…    document.addEventListener('DOMContentLoaded', ()=>{
+    const talismanName = document.getElementById('talisman-name');
+    const talismanBlessing = document.getElementById('talisman-blessing');
+    let currentTalismanData = null;
+
+    // Populate Form Selectors
+    function populateSelect(selectElement, options, placeholder, isAssoc = false) {
+        selectElement.innerHTML = `<option value="">${placeholder}</option>`;
+        if (isAssoc) {
+            for (const [value, obj] of Object.entries(options)) {
+                const option = document.createElement('option');
+                option.value = value;
+                option.textContent = obj.th;
+                selectElement.appendChild(option);
+            }
+        } else {
+            for (const [value, text] of Object.entries(options)) {
+                const option = document.createElement('option');
+                option.value = value;
+                option.textContent = text;
+                selectElement.appendChild(option);
+            }
+        }
+    }
+    
+    const focusSelect = document.getElementById('customer-focus');
+    const num1Select = document.getElementById('auspicious-number-1');
+    const num2Select = document.getElementById('auspicious-number-2');
+    populateSelect(focusSelect, focusOptions, 'โปรดเลือกการเสริมดวง', true);
+    populateSelect(num1Select, auspiciousNumberOptions, 'โปรดเลือกเลขมงคล');
+    populateSelect(num2Select, auspiciousNumberOptions, 'โปรดเลือกเลขมงคล');
+
+    const daySelect = document.getElementById('dob-day');
+    const monthSelect = document.getElementById('dob-month');
+    const yearInput = document.getElementById('dob-year');
+    const timeSelect = document.getElementById('time-of-birth');
+
+    daySelect.innerHTML = '<option value="">วันที่</option>';
+    for (let i = 1; i <= 31; i++) {
+        daySelect.innerHTML += `<option value="${i}">${i}</option>`;
+    }
+
+    const months = ["มกราคม", "กุมภาพันธ์", "มีนาคม", "เมษายน", "พฤษภาคม", "มิถุนายน", "กรกฎาคม", "สิงหาคม", "กันยายน", "ตุลาคม", "พฤศจิกายน", "ธันวาคม"];
+    monthSelect.innerHTML = '<option value="">เดือน</option>';
+    months.forEach((month, index) => {
+        monthSelect.innerHTML += `<option value="${index + 1}">${month}</option>`;
+    });
+
+    timeSelect.innerHTML = '<option value="">เลือกเวลาเกิด</option>';
+    for (let i = 0; i < 24; i++) {
+        const timeString = `${String(i).padStart(2, '0')}.00 - ${String(i).padStart(2, '0')}.59`;
+        timeSelect.innerHTML += `<option value="${i}">${timeString}</option>`;
+    }
+    timeSelect.innerHTML += '<option value="25">ไม่รู้เวลาเกิด</option>';
+    
+    function createAdvancedWallpaperPrompt(element, focusKey, num1, num2, firstName) {
+        const deityInfo = focusOptions[focusKey];
+        const num1Text = auspiciousNumberOptions[num1] || "";
+        const num2Text = auspiciousNumberOptions[num2] || "";
+        
+        let prompt = `A divine phone wallpaper for a person named ${firstName}. The central theme is a beautiful, photorealistic depiction of the Hindu deity ${deityInfo.name}, representing ${deityInfo.theme}. The deity is depicted in a traditional, serene pose, adorned with intricate golden jewelry. The background is an ornate golden temple interior with floral garlands and a grand archway showing a glowing symbol of ${element.symbol}. Subtly incorporate the auspicious numbers ${num1} (meaning "${num1Text}") and ${num2} (meaning "${num2Text}") into the intricate patterns of the temple or jewelry. The style is cinematic, majestic, with warm, divine lighting and sparkling bokeh effects. The dominant color is a magical ${element.color}. 3D rendering in a photorealistic style, highly detailed, rich in color and texture, opulent and traditional. Spiritual, serene, reverent, and peaceful mood. Slightly low angle camera, looking up at the statue. 9:16 aspect ratio, ultra high quality, no text.`;
+        return prompt.replace(/\s+/g, ' ').trim();
+    }
+    
+    async function robustFetchWithBackoff(url, options, retries = 3, delay = 1000) {
+        for (let i = 0; i < retries; i++) {
+            try {
+                const response = await fetch(url, options);
+                if (!response.ok) {
+                    const errorBody = await response.json();
+                    console.error(`HTTP error! status: ${response.status}`, errorBody);
+                    const error = new Error(`HTTP error! status: ${response.status}`);
+                    error.status = response.status;
+                    error.body = errorBody;
+                    throw error;
+                }
+                return response;
+            } catch (error) {
+                console.error(`Attempt ${i + 1} failed:`, error);
+                if (i === retries - 1) throw error;
+                await new Promise(resolve => setTimeout(resolve, delay));
+                delay *= 2; // Exponential backoff
+            }
+        }
+    }
+
+    async function callImageGenerationAPI(prompt) {
+        const apiKey = "AIzaSyCen3mQP8GUgFG6n1wg5v1n9pkTpKMOGto"; 
+        const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-image-preview:generateContent?key=${apiKey}`;
+        
+        const payload = {
+            contents: [{
+                parts: [{ text: prompt }]
+            }],
+            generationConfig: {
+                responseModalities: ['IMAGE']
+            },
+        };
+        
+        const fetchOptions = {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+        };
+
+        const response = await robustFetchWithBackoff(apiUrl, fetchOptions);
+        const result = await response.json();
+        
+        const candidate = result?.candidates?.[0];
+        const base64Data = candidate?.content?.parts?.find(p => p.inlineData)?.inlineData?.data;
+
+        if (base64Data) {
+            return `data:image/png;base64,${base64Data}`;
+        } else {
+            console.error("API Response Error:", result);
+            throw new Error("No image data in API response");
+        }
+    }
+
+    generateTalismanBtn.addEventListener('click', async () => {
+        const form = document.getElementById('wallpaper-form');
+        const formData = new FormData(form);
+        const focus = formData.get('customer-focus');
+        const num1 = formData.get('auspicious-number-1');
+        const num2 = formData.get('auspicious-number-2');
+        const firstName = formData.get('first-name');
+        const lastName = formData.get('last-name');
+        const day = parseInt(formData.get('day'));
+        const month = parseInt(formData.get('month'));
+        const yearBE = parseInt(formData.get('year'));
+        const time = formData.get('time-of-birth');
+
+        if (!focus || !num1 || !num2 || !firstName || !lastName || !day || !month || !yearBE || !time || yearBE < 2480 || yearBE > new Date().getFullYear() + 543) {
+            Swal.fire({ icon: 'error', title: 'ข้อมูลไม่ครบถ้วน', text: 'กรุณากรอกข้อมูลให้ครบทุกช่อง' });
+            return;
+        }
+
+        const yearCE = yearBE - 543;
+        const birthDate = new Date(yearCE, month - 1, day);
+        
+        if (birthDate.getDate() !== day || birthDate.getMonth() !== month - 1 || birthDate.getFullYear() !== yearCE) {
+             Swal.fire({ icon: 'error', title: 'วันที่ไม่ถูกต้อง', text: 'วันที่คุณกรอกไม่มีอยู่จริง (เช่น 31 กุมภาพันธ์)' });
+            return;
+        }
+        
+        // --- Show result area and Start Loading State ---
+        talismanResultArea.classList.remove('hidden');
+        generateTalismanBtn.disabled = true;
+        downloadTalismanBtn.classList.add('opacity-0', 'pointer-events-none');
+        talismanImage.style.opacity = '0';
+        talismanContent.style.opacity = '0';
+        talismanLoader.classList.remove('hidden');
+        talismanPlaceholderText.textContent = 'กำลังรังสรรค์พลังงานมงคล...';
+
+        try {
+            const dayOfWeek = birthDate.getDay();
+            const luckyElement = luckyElements[dayOfWeek];
+            const prompt = createAdvancedWallpaperPrompt(luckyElement, focus, num1, num2, firstName);
+            
+            const imageUrl = await callImageGenerationAPI(prompt);
+
+            currentTalismanData = {
+                element: luckyElement,
+                imageUrl: imageUrl
+            };
+
+            talismanImage.src = imageUrl;
+            talismanName.textContent = `สีมงคล: ${luckyElement.colorName}`;
+            talismanBlessing.textContent = luckyElement.blessing;
+            
+            talismanImage.onload = () => {
+                talismanLoader.classList.add('hidden');
+                talismanPlaceholderText.textContent = '';
+                talismanImage.style.opacity = '1';
+                talismanContent.style.opacity = '1';
+                downloadTalismanBtn.classList.remove('opacity-0', 'pointer-events-none');
+                window.plausible && plausible('talisman_generated_by_dob', { props: { day: luckyElement.day, focus: focus } });
+            };
+
+        } catch (error) {
+            talismanLoader.classList.add('hidden');
+            talismanPlaceholderText.textContent = 'เกิดข้อผิดพลาด โปรดลองอีกครั้ง';
+            
+            let errorTitle = 'สร้างภาพไม่สำเร็จ';
+            let errorText = 'เกิดข้อผิดพลาดในการเชื่อมต่อกับ AI โปรดลองใหม่อีกครั้งในภายหลัง';
+
+            if (error.status === 429) {
+                errorTitle = 'ใช้งานเกินโควต้า';
+                errorText = 'คุณได้ใช้งานสร้างภาพเกินโควต้าสำหรับวันนี้แล้ว กรุณาลองใหม่อีกครั้งในวันถัดไป';
+            }
+            
+            Swal.fire({ icon: 'error', title: errorTitle, text: errorText });
+        } finally {
+            generateTalismanBtn.disabled = false;
+        }
+    });
+
+    downloadTalismanBtn.addEventListener('click', () => {
+        if (!currentTalismanData) return;
+        
+        const a = document.createElement('a');
+        a.href = currentTalismanData.imageUrl;
+        a.download = `reffortune_wallpaper_${currentTalismanData.element.day}.png`;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+
+        Swal.fire({ icon: 'success', title: 'ดาวน์โหลดสำเร็จ!', text: 'บันทึก Wallpaper ของคุณแล้ว', timer: 2000, showConfirmButton: false });
+        window.plausible && plausible('talisman_downloaded', { props: { name: currentTalismanData.element.day } });
+    });
+
+    // --- PICKER MODAL (existing) ---
+    const openPickModalBtn = document.getElementById('open-pick-modal-btn');
+    if(openPickModalBtn){
+      openPickModalBtn.addEventListener('click',()=>{
+        Swal.fire({
+          title:'เลือกจำนวนไพ่',
+          html:`<p class="mb-4 text-white/80">คุณต้องการเปิดไพ่เพื่อดูคำทำนายกี่ใบ?</p>
+                  <div class="flex flex-col">
+                    <a href="pick.html?count=1" class="swal-card-option">1 ใบ (Quick Insight)</a>
+                    <a href="pick.html?count=2" class="swal-card-option">2 ใบ (Choice/Duality)</a>
+                    <a href="pick.html?count=3" class="swal-card-option">3 ใบ (Past, Present, Future)</a>
+                    <a href="pick.html?count=4" class="swal-card-option">4 ใบ (Action Plan)</a>
+                    <a href="pick.html?count=10" class="swal-card-option">10 ใบ (Celtic Cross)</a>
+                  </div>`,
+          showConfirmButton:false, showCloseButton:true, target:'body'
+        });
+      });
+    }
+
+    // --- INIT & listeners ---
+    document.addEventListener('DOMContentLoaded', ()=>{
         initializeDailyCard();
     });
     document.addEventListener('keydown', (e)=>{ if(e.key==='Escape') closeDailyCardModal(); });
