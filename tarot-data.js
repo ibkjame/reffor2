@@ -83,6 +83,8 @@ const tarotDeck = [
     { id: 'pen_q', name: 'Queen of Pentacles', img: 'card/p13.png' },
     { id: 'pen_K', name: 'King of Pentacles', img: 'card/p14.png' }
 ];
+
+
 export const tarotMeanings = [
   {
     "id": "maj00",
@@ -439,7 +441,7 @@ export const tarotMeanings = [
   {
     "id": "wan01",
     "name": "Ace of Wands",
-    "img": "/card2/nw1.png",
+    "img": "/card2/nw01.png",
     "suit": "wands",
     "upright_general": "การเริ่มต้นใหม่, แรงบันดาลใจ, ความคิดสร้างสรรค์, พลังงาน, การเติบโต, โอกาส",
     "reversed_general": "ขาดแรงจูงใจ, ความล่าช้า, การเริ่มต้นที่ผิดพลาด, ไม่มีไอเดียใหม่ๆ, หมดไฟ",
@@ -455,7 +457,7 @@ export const tarotMeanings = [
   {
     "id": "wan02",
     "name": "Two of Wands",
-    "img": "/card2/nw2.png",
+    "img": "/card2/nw02.png",
     "suit": "wands",
     "upright_general": "การวางแผนอนาคต, การตัดสินใจ, การมองการณ์ไกล, การขยายตัว, การรอคอย",
     "reversed_general": "การวางแผนที่ไม่ดี, การกลัวการเปลี่ยนแปลง, การจำกัดตัวเอง, การตัดสินใจที่ผิดพลาด",
@@ -471,7 +473,7 @@ export const tarotMeanings = [
   {
     "id": "wan03",
     "name": "Three of Wands",
-    "img": "/card2/nw3.png",
+    "img": "/card2/nw03.png",
     "suit": "wands",
     "upright_general": "การขยายตัว, การรอคอยผลลัพธ์, ความก้าวหน้า, การมองการณ์ไกล, การค้าขายระหว่างประเทศ",
     "reversed_general": "ความล่าช้า, อุปสรรค, การขาดการวางแผน, การพลาดโอกาส, การกลับมาที่จุดเริ่มต้น",
@@ -487,7 +489,7 @@ export const tarotMeanings = [
   {
     "id": "wan04",
     "name": "Four of Wands",
-    "img": "/card2/nw4.png",
+    "img": "/card2/nw04.png",
     "suit": "wands",
     "upright_general": "การเฉลิมฉลอง, ความสุข, ความสามัคคี, บ้าน, ครอบครัว, ความมั่นคง, งานแต่งงาน",
     "reversed_general": "ความไม่ลงรอยกันในครอบครัว, การเฉลิมฉลองที่ถูกยกเลิก, ความรู้สึกไม่มั่นคง",
@@ -503,7 +505,7 @@ export const tarotMeanings = [
   {
     "id": "wan05",
     "name": "Five of Wands",
-    "img": "/card2/nw5.png",
+    "img": "/card2/nw05.png",
     "suit": "wands",
     "upright_general": "ความขัดแย้ง, การแข่งขัน, การทะเลาะเบาะแว้ง, การไม่มีใครยอมใคร, ความคิดเห็นที่แตกต่าง",
     "reversed_general": "การหลีกเลี่ยงความขัดแย้ง, การหาทางออก, การประนีประนอม, ความขัดแย้งภายในใจ",
@@ -519,7 +521,7 @@ export const tarotMeanings = [
   {
     "id": "wan06",
     "name": "Six of Wands",
-    "img": "/card2/nw6.png",
+    "img": "/card2/nw06.png",
     "suit": "wands",
     "upright_general": "ชัยชนะ, ความสำเร็จ, การได้รับการยอมรับ, การเป็นจุดสนใจ, ความภาคภูมิใจ",
     "reversed_general": "ความพ่ายแพ้, การขาดการยอมรับ, ความอวดดี, ความสำเร็จที่ไม่ยั่งยืน",
@@ -535,7 +537,7 @@ export const tarotMeanings = [
   {
     "id": "wan07",
     "name": "Seven of Wands",
-    "img": "/card2/nw7.png",
+    "img": "/card2/nw07.png",
     "suit": "wands",
     "upright_general": "การปกป้อง, การต่อสู้เพื่อจุดยืน, ความกล้าหาญ, การท้าทาย, การรักษาความได้เปรียบ",
     "reversed_general": "การยอมแพ้, การถูกครอบงำ, การหลีกเลี่ยงการต่อสู้, การสูญเสียความมั่นใจ",
@@ -551,7 +553,7 @@ export const tarotMeanings = [
   {
     "id": "wan08",
     "name": "Eight of Wands",
-    "img": "/card2/nw8.png",
+    "img": "/card2/nw08.png",
     "suit": "wands",
     "upright_general": "ความรวดเร็ว, การเคลื่อนไหว, ข่าวสาร, การเดินทาง, การเปลี่ยนแปลงที่ฉับพลัน, ความคืบหน้า",
     "reversed_general": "ความล่าช้า, อุปสรรค, การหยุดนิ่ง, ข่าวร้าย, การตัดสินใจที่หุนหันพลันแล่น",
@@ -567,7 +569,7 @@ export const tarotMeanings = [
   {
     "id": "wan09",
     "name": "Nine of Wands",
-    "img": "/card2/nw9.png",
+    "img": "/card2/nw09.png",
     "suit": "wands",
     "upright_general": "ความอดทน, ความไม่ยอมแพ้, ความแข็งแกร่ง, การป้องกัน, การใกล้ถึงเส้นชัย, ความระแวง",
     "reversed_general": "การยอมแพ้, การหมดแรง, การไม่กล้าเผชิญหน้า, การดื้อรั้น, การหวาดระแวงเกินเหตุ",
@@ -839,7 +841,7 @@ export const tarotMeanings = [
   {
     "id": "cup_k",
     "name": "Knight of Cups",
-    "img": "/card2/nc12.png",
+    "img": "/card2/nc012.png",
     "suit": "cups",
     "upright_general": "ความโรแมนติก, เสน่ห์, จินตนาการ, การทำตามหัวใจ, ข้อเสนอ, การมาถึงของคนรัก",
     "reversed_general": "ความไม่สมจริง, การหลอกลวง, อารมณ์แปรปรวน, การผิดหวัง, ข้อเสนอที่ไม่น่าไว้ใจ",
@@ -855,7 +857,7 @@ export const tarotMeanings = [
   {
     "id": "cup_q",
     "name": "Queen of Cups",
-    "img": "/card2/nc13.png",
+    "img": "/card2/nc013.png",
     "suit": "cups",
     "upright_general": "ความเห็นอกเห็นใจ, สัญชาตญาณ, การดูแล, ความอ่อนโยน, ความสงบทางอารมณ์",
     "reversed_general": "อารมณ์อ่อนไหวเกินไป, การพึ่งพาผู้อื่น, การเก็บกดความรู้สึก, ความไม่มั่นคงทางอารมณ์",
@@ -1334,4 +1336,3 @@ export const tarotMeanings = [
   }
 
 ];
-
