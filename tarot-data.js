@@ -83,13 +83,11 @@ const tarotDeck = [
     { id: 'pen_q', name: 'Queen of Pentacles', img: 'card/p13.png' },
     { id: 'pen_K', name: 'King of Pentacles', img: 'card/p14.png' }
 ];
-
-
 export const tarotMeanings = [
   {
     "id": "maj00",
     "name": "The Fool",
-    "img": "https://www.reffortune.com/card/00.png",
+    "img": "/card2/n00.png",
     "suit": "major",
     "upright_general": "การเริ่มต้นใหม่, อิสระ, การผจญภัย, ความไร้เดียงสา, การเสี่ยง, การมองโลกในแง่ดี",
     "reversed_general": "ความประมาท, การตัดสินใจที่โง่เขลา, ความลังเล, การถูกหลอกลวง, ความกลัวที่จะเริ่มต้น",
@@ -105,7 +103,7 @@ export const tarotMeanings = [
   {
     "id": "maj01",
     "name": "The Magician",
-    "img": "https://www.reffortune.com/card/01.png",
+    "img": "/card2/n01.png",
     "suit": "major",
     "upright_general": "พลัง, ทักษะ, สมาธิ, การลงมือทำ, การประจักษ์ผล, ความสามารถรอบด้าน",
     "reversed_general": "การหลอกลวง, การใช้พลังในทางที่ผิด, ขาดการวางแผน, พรสวรรค์ที่ไม่ได้ใช้, ขาดความมั่นใจ",
@@ -121,7 +119,7 @@ export const tarotMeanings = [
   {
     "id": "maj02",
     "name": "The High Priestess",
-    "img": "https://www.reffortune.com/card/02.png",
+    "img": "/card2/n02.png",
     "suit": "major",
     "upright_general": "สัญชาตญาณ, ความลับ, จิตใต้สำนึก, ปัญญา, ความสงบนิ่ง",
     "reversed_general": "การเพิกเฉยต่อสัญชาตญาณ, ข้อมูลที่ถูกปิดบัง, ความสับสน, ความไม่เข้าใจตัวเอง",
@@ -137,7 +135,7 @@ export const tarotMeanings = [
   {
     "id": "maj03",
     "name": "The Empress",
-    "img": "https://www.reffortune.com/card/03.png",
+    "img": "/card2/n03.png",
     "suit": "major",
     "upright_general": "ความอุดมสมบูรณ์, ความเป็นผู้หญิง, ความงาม, ธรรมชาติ, การเลี้ยงดู, การตั้งครรภ์",
     "reversed_general": "การพึ่งพาผู้อื่นมากเกินไป, ความคิดสร้างสรรค์ที่ติดขัด, การละเลยตัวเอง, ความสัมพันธ์ที่อึดอัด",
@@ -153,7 +151,7 @@ export const tarotMeanings = [
   {
     "id": "maj04",
     "name": "The Emperor",
-    "img": "https://www.reffortune.com/card/04.png",
+    "img": "/card2/n04.png",
     "suit": "major",
     "upright_general": "อำนาจ, โครงสร้าง, การควบคุม, ความเป็นผู้นำ, ความมั่นคง, ความเป็นพ่อ",
     "reversed_general": "การใช้อำนาจในทางที่ผิด, เผด็จการ, การขาดระเบียบวินัย, ความไม่มั่นคง, การไม่รับผิดชอบ",
@@ -169,7 +167,7 @@ export const tarotMeanings = [
   {
     "id": "maj05",
     "name": "The Hierophant",
-    "img": "https://www.reffortune.com/card/05.png",
+    "img": "/card2/n05.png",
     "suit": "major",
     "upright_general": "ประเพณี, ความเชื่อ, สถาบัน, การเรียนรู้, การชี้นำทางจิตวิญญาณ, การทำตามกฎเกณฑ์",
     "reversed_general": "การท้าทายกฎเกณฑ์, การคิดนอกกรอบ, การไม่เชื่อฟัง, การถูกจำกัดความคิด",
@@ -185,7 +183,7 @@ export const tarotMeanings = [
   {
     "id": "maj06",
     "name": "The Lovers",
-    "img": "https://www.reffortune.com/card/06.png",
+    "img": "/card2/n06.png",
     "suit": "major",
     "upright_general": "ความรัก, ความสามัคคี, ความสัมพันธ์, การเลือก, การตัดสินใจครั้งสำคัญ",
     "reversed_general": "ความขัดแย้ง, ความสัมพันธ์ที่ไม่ลงรอย, การตัดสินใจที่ผิดพลาด, การนอกใจ, ความไม่ซื่อสัตย์",
@@ -201,7 +199,7 @@ export const tarotMeanings = [
   {
     "id": "maj07",
     "name": "The Chariot",
-    "img": "https://www.reffortune.com/card/07.png",
+    "img": "/card2/n07.png",
     "suit": "major",
     "upright_general": "การควบคุม, ความมุ่งมั่น, ชัยชนะ, ความสำเร็จ, การเดินทาง, การเอาชนะอุปสรรค",
     "reversed_general": "ขาดการควบคุม, การยอมแพ้, การเดินทางที่ติดขัด, ความก้าวร้าว, ทิศทางที่ไม่ชัดเจน",
@@ -217,7 +215,7 @@ export const tarotMeanings = [
   {
     "id": "maj08",
     "name": "Strength",
-    "img": "https://www.reffortune.com/card/08.png",
+    "img": "/card2/n08.png",
     "suit": "major",
     "upright_general": "ความกล้าหาญ, ความเมตตา, ความอดทน, การควบคุมจากภายใน, ความแข็งแกร่งทางจิตใจ",
     "reversed_general": "ความอ่อนแอ, ความกลัว, การขาดความมั่นใจ, การใช้อารมณ์มากกว่าเหตุผล",
@@ -233,7 +231,7 @@ export const tarotMeanings = [
   {
     "id": "maj09",
     "name": "The Hermit",
-    "img": "https://www.reffortune.com/card/09.png",
+    "img": "/card2/n09.png",
     "suit": "major",
     "upright_general": "การค้นหาตัวเอง, การอยู่คนเดียว, การทบทวน, การแสวงหาความจริง, การนำทางจากภายใน",
     "reversed_general": "การแยกตัวออกจากสังคม, ความโดดเดี่ยว, การปฏิเสธคำแนะนำ, การหลงทาง",
@@ -249,7 +247,7 @@ export const tarotMeanings = [
   {
     "id": "maj10",
     "name": "Wheel of Fortune",
-    "img": "https://www.reffortune.com/card/10.png",
+    "img": "/card2/n10.png",
     "suit": "major",
     "upright_general": "โชคชะตา, การเปลี่ยนแปลง, จุดเปลี่ยน, โชคดี, วัฏจักรของชีวิต",
     "reversed_general": "โชคร้าย, การเปลี่ยนแปลงที่ไม่คาดคิดในทางลบ, การฝืนโชคชะตา, สถานการณ์ที่หยุดนิ่ง",
@@ -265,7 +263,7 @@ export const tarotMeanings = [
   {
     "id": "maj11",
     "name": "Justice",
-    "img": "https://www.reffortune.com/card/11.png",
+    "img": "/card2/n11.png",
     "suit": "major",
     "upright_general": "ความยุติธรรม, ความจริง, เหตุและผล, กฎหมาย, ความสมดุล, การตัดสินใจที่ถูกต้อง",
     "reversed_general": "ความไม่ยุติธรรม, การโกหก, ความไม่รับผิดชอบ, การตัดสินที่ไม่เป็นธรรม, การหลีกเลี่ยงความจริง",
@@ -281,7 +279,7 @@ export const tarotMeanings = [
   {
     "id": "maj12",
     "name": "The Hanged Man",
-    "img": "https://www.reffortune.com/card/12.png",
+    "img": "/card2/n12.png",
     "suit": "major",
     "upright_general": "การรอคอย, การเสียสละ, การมองมุมกลับ, การปล่อยวาง, การหยุดนิ่งเพื่อทบทวน",
     "reversed_general": "การดื้อรั้น, การตัดสินใจที่ล่าช้าโดยไม่จำเป็น, การเสียสละที่สูญเปล่า, การมองไม่เห็นทางออก",
@@ -297,7 +295,7 @@ export const tarotMeanings = [
   {
     "id": "maj13",
     "name": "Death",
-    "img": "https://www.reffortune.com/card/13.png",
+    "img": "/card2/n13.png",
     "suit": "major",
     "upright_general": "การสิ้นสุด, การเปลี่ยนแปลงครั้งใหญ่, การเปลี่ยนผ่าน, การปล่อยวางอดีต, การเริ่มต้นใหม่",
     "reversed_general": "การต่อต้านการเปลี่ยนแปลง, การยึดติดกับอดีต, การกลัวการเริ่มต้นใหม่, การเปลี่ยนแปลงที่เจ็บปวด",
@@ -313,7 +311,7 @@ export const tarotMeanings = [
   {
     "id": "maj14",
     "name": "Temperance",
-    "img": "https://www.reffortune.com/card/14.png",
+    "img": "/card2/n14.png",
     "suit": "major",
     "upright_general": "ความสมดุล, การประนีประนอม, ความอดทน, การผสมผสาน, การมองหาทางสายกลาง",
     "reversed_general": "ความไม่สมดุล, ความสุดโต่ง, การขาดความอดทน, ความขัดแย้ง, การกระทำที่เกินพอดี",
@@ -329,7 +327,7 @@ export const tarotMeanings = [
   {
     "id": "maj15",
     "name": "The Devil",
-    "img": "https://www.reffortune.com/card/15.png",
+    "img": "/card2/n15.png",
     "suit": "major",
     "upright_general": "การผูกมัด, กิเลส, การเสพติด, ความคิดแง่ลบ, การถูกครอบงำ, การยึดติดกับวัตถุ",
     "reversed_general": "การปลดปล่อย, การเอาชนะกิเลส, การตระหนักรู้, การทำลายโซ่ตรวน, การหลุดพ้นจากพันธนาการ",
@@ -345,7 +343,7 @@ export const tarotMeanings = [
   {
     "id": "maj16",
     "name": "The Tower",
-    "img": "https://www.reffortune.com/card/16.png",
+    "img": "/card2/n16.png",
     "suit": "major",
     "upright_general": "การเปลี่ยนแปลงที่ฉับพลัน, หายนะ, การพังทลาย, การเปิดเผยความจริง, การล่มสลายของสิ่งเก่า",
     "reversed_general": "การหลีกเลี่ยงหายนะ, การกลัวการเปลี่ยนแปลง, การยื้อสิ่งที่กำลังจะพัง, การเปลี่ยนแปลงที่ล่าช้า",
@@ -361,7 +359,7 @@ export const tarotMeanings = [
   {
     "id": "maj17",
     "name": "The Star",
-    "img": "https://www.reffortune.com/card/17.png",
+    "img": "/card2/n17.png",
     "suit": "major",
     "upright_general": "ความหวัง, แรงบันดาลใจ, การเยียวยา, การมองโลกในแง่ดี, การฟื้นฟูจิตใจ, ความสงบสุข",
     "reversed_general": "ความสิ้นหวัง, การขาดศรัทธา, การมองโลกในแง่ร้าย, ความรู้สึกว่างเปล่า, การหลงทาง",
@@ -377,7 +375,7 @@ export const tarotMeanings = [
   {
     "id": "maj18",
     "name": "The Moon",
-    "img": "https://www.reffortune.com/card/18.png",
+    "img": "/card2/n18.png",
     "suit": "major",
     "upright_general": "ภาพลวงตา, ความกลัว, ความวิตกกังวล, จิตใต้สำนึก, ความไม่ชัดเจน, สัญชาตญาณ",
     "reversed_general": "การเปิดเผยความจริง, การเอาชนะความกลัว, ความสับสนที่ลดลง, การมองเห็นความจริง",
@@ -393,7 +391,7 @@ export const tarotMeanings = [
   {
     "id": "maj19",
     "name": "The Sun",
-    "img": "https://www.reffortune.com/card/19.png",
+    "img": "/card2/n19.png",
     "suit": "major",
     "upright_general": "ความสุข, ความสำเร็จ, การมองโลกในแง่ดี, ความมีชีวิตชีวา, ความชัดเจน, ความสำเร็จ",
     "reversed_general": "ความสุขที่ลดลง, การมองโลกในแง่ร้ายชั่วคราว, ความสำเร็จที่ล่าช้า, การขาดความกระตือรือร้น",
@@ -409,7 +407,7 @@ export const tarotMeanings = [
   {
     "id": "maj20",
     "name": "Judgement",
-    "img": "https://www.reffortune.com/card/20.png",
+    "img": "/card2/n20.png",
     "suit": "major",
     "upright_general": "การตัดสินใจครั้งสำคัญ, การตื่นรู้, การเกิดใหม่, การให้อภัย, การประเมินผล, การได้รับโอกาสครั้งที่สอง",
     "reversed_general": "การวิจารณ์ตัวเอง, การตัดสินใจที่ผิดพลาด, การหลีกเลี่ยงการตัดสินใจ, การไม่เรียนรู้จากอดีต",
@@ -425,7 +423,7 @@ export const tarotMeanings = [
   {
     "id": "maj21",
     "name": "The World",
-    "img": "https://www.reffortune.com/card/21.png",
+    "img": "/card2/n21.png",
     "suit": "major",
     "upright_general": "ความสำเร็จ, การบรรลุเป้าหมาย, การสิ้นสุดอย่างสมบูรณ์, การเดินทาง, การเฉลิมฉลอง",
     "reversed_general": "การขาดความสำเร็จ, การไปไม่ถึงเป้าหมาย, การมีเรื่องที่ยังค้างคา, การเดินทางที่ถูกยกเลิก",
@@ -441,7 +439,7 @@ export const tarotMeanings = [
   {
     "id": "wan01",
     "name": "Ace of Wands",
-    "img": "https://www.reffortune.com/card/w1.png",
+    "img": "/card2/nw1.png",
     "suit": "wands",
     "upright_general": "การเริ่มต้นใหม่, แรงบันดาลใจ, ความคิดสร้างสรรค์, พลังงาน, การเติบโต, โอกาส",
     "reversed_general": "ขาดแรงจูงใจ, ความล่าช้า, การเริ่มต้นที่ผิดพลาด, ไม่มีไอเดียใหม่ๆ, หมดไฟ",
@@ -457,7 +455,7 @@ export const tarotMeanings = [
   {
     "id": "wan02",
     "name": "Two of Wands",
-    "img": "https://www.reffortune.com/card/w2.png",
+    "img": "/card2/nw2.png",
     "suit": "wands",
     "upright_general": "การวางแผนอนาคต, การตัดสินใจ, การมองการณ์ไกล, การขยายตัว, การรอคอย",
     "reversed_general": "การวางแผนที่ไม่ดี, การกลัวการเปลี่ยนแปลง, การจำกัดตัวเอง, การตัดสินใจที่ผิดพลาด",
@@ -473,7 +471,7 @@ export const tarotMeanings = [
   {
     "id": "wan03",
     "name": "Three of Wands",
-    "img": "https://www.reffortune.com/card/w3.png",
+    "img": "/card2/nw3.png",
     "suit": "wands",
     "upright_general": "การขยายตัว, การรอคอยผลลัพธ์, ความก้าวหน้า, การมองการณ์ไกล, การค้าขายระหว่างประเทศ",
     "reversed_general": "ความล่าช้า, อุปสรรค, การขาดการวางแผน, การพลาดโอกาส, การกลับมาที่จุดเริ่มต้น",
@@ -489,7 +487,7 @@ export const tarotMeanings = [
   {
     "id": "wan04",
     "name": "Four of Wands",
-    "img": "https://www.reffortune.com/card/w4.png",
+    "img": "/card2/nw4.png",
     "suit": "wands",
     "upright_general": "การเฉลิมฉลอง, ความสุข, ความสามัคคี, บ้าน, ครอบครัว, ความมั่นคง, งานแต่งงาน",
     "reversed_general": "ความไม่ลงรอยกันในครอบครัว, การเฉลิมฉลองที่ถูกยกเลิก, ความรู้สึกไม่มั่นคง",
@@ -505,7 +503,7 @@ export const tarotMeanings = [
   {
     "id": "wan05",
     "name": "Five of Wands",
-    "img": "https://www.reffortune.com/card/w5.png",
+    "img": "/card2/nw5.png",
     "suit": "wands",
     "upright_general": "ความขัดแย้ง, การแข่งขัน, การทะเลาะเบาะแว้ง, การไม่มีใครยอมใคร, ความคิดเห็นที่แตกต่าง",
     "reversed_general": "การหลีกเลี่ยงความขัดแย้ง, การหาทางออก, การประนีประนอม, ความขัดแย้งภายในใจ",
@@ -521,7 +519,7 @@ export const tarotMeanings = [
   {
     "id": "wan06",
     "name": "Six of Wands",
-    "img": "https://www.reffortune.com/card/w6.png",
+    "img": "/card2/nw6.png",
     "suit": "wands",
     "upright_general": "ชัยชนะ, ความสำเร็จ, การได้รับการยอมรับ, การเป็นจุดสนใจ, ความภาคภูมิใจ",
     "reversed_general": "ความพ่ายแพ้, การขาดการยอมรับ, ความอวดดี, ความสำเร็จที่ไม่ยั่งยืน",
@@ -537,7 +535,7 @@ export const tarotMeanings = [
   {
     "id": "wan07",
     "name": "Seven of Wands",
-    "img": "https://www.reffortune.com/card/w7.png",
+    "img": "/card2/nw7.png",
     "suit": "wands",
     "upright_general": "การปกป้อง, การต่อสู้เพื่อจุดยืน, ความกล้าหาญ, การท้าทาย, การรักษาความได้เปรียบ",
     "reversed_general": "การยอมแพ้, การถูกครอบงำ, การหลีกเลี่ยงการต่อสู้, การสูญเสียความมั่นใจ",
@@ -553,7 +551,7 @@ export const tarotMeanings = [
   {
     "id": "wan08",
     "name": "Eight of Wands",
-    "img": "https://www.reffortune.com/card/w8.png",
+    "img": "/card2/nw8.png",
     "suit": "wands",
     "upright_general": "ความรวดเร็ว, การเคลื่อนไหว, ข่าวสาร, การเดินทาง, การเปลี่ยนแปลงที่ฉับพลัน, ความคืบหน้า",
     "reversed_general": "ความล่าช้า, อุปสรรค, การหยุดนิ่ง, ข่าวร้าย, การตัดสินใจที่หุนหันพลันแล่น",
@@ -569,7 +567,7 @@ export const tarotMeanings = [
   {
     "id": "wan09",
     "name": "Nine of Wands",
-    "img": "https://www.reffortune.com/card/w9.png",
+    "img": "/card2/nw9.png",
     "suit": "wands",
     "upright_general": "ความอดทน, ความไม่ยอมแพ้, ความแข็งแกร่ง, การป้องกัน, การใกล้ถึงเส้นชัย, ความระแวง",
     "reversed_general": "การยอมแพ้, การหมดแรง, การไม่กล้าเผชิญหน้า, การดื้อรั้น, การหวาดระแวงเกินเหตุ",
@@ -585,7 +583,7 @@ export const tarotMeanings = [
   {
     "id": "wan10",
     "name": "Ten of Wands",
-    "img": "https://www.reffortune.com/card/w10.png",
+    "img": "/card2/nw10.png",
     "suit": "wands",
     "upright_general": "ภาระหนัก, ความรับผิดชอบ, ความเครียด, การทำงานหนักเกินไป, การแบกรับทุกอย่างไว้คนเดียว",
     "reversed_general": "การปล่อยวางภาระ, การแบ่งปันความรับผิดชอบ, การตระหนักว่าแบกรับไม่ไหว, การหลีกเลี่ยงความรับผิดชอบ",
@@ -601,7 +599,7 @@ export const tarotMeanings = [
   {
     "id": "wan_p",
     "name": "Page of Wands",
-    "img": "https://www.reffortune.com/card/w11.png",
+    "img": "/card2/nw11.png",
     "suit": "wands",
     "upright_general": "แรงบันดาลใจ, ความกระตือรือร้น, การค้นพบ, การเริ่มต้น, ข่าวสาร, การผจญภัย",
     "reversed_general": "การขาดทิศทาง, การเริ่มต้นที่ยังไม่พร้อม, ข่าวร้าย, ความไม่แน่นอน",
@@ -617,7 +615,7 @@ export const tarotMeanings = [
   {
     "id": "wan_k",
     "name": "Knight of Wands",
-    "img": "https://www.reffortune.com/card/w12.png",
+    "img": "/card2/nw12.png",
     "suit": "wands",
     "upright_general": "พลังงาน, ความมุ่งมั่น, การผจญภัย, ความใจร้อน, การลงมือทำ, การเดินทาง",
     "reversed_general": "ความหุนหันพลันแล่น, การขาดทิศทาง, ความล่าช้า, การกระทำที่ไร้การไตร่ตรอง",
@@ -633,7 +631,7 @@ export const tarotMeanings = [
   {
     "id": "wan_q",
     "name": "Queen of Wands",
-    "img": "https://www.reffortune.com/card/w13.png",
+    "img": "/card2/nw13.png",
     "suit": "wands",
     "upright_general": "ความมั่นใจ, ความอบอุ่น, ความเป็นอิสระ, ความมีเสน่ห์, ความคิดสร้างสรรค์, การมองโลกในแง่ดี",
     "reversed_general": "ความอิจฉาริษยา, การควบคุม, ความเห็นแก่ตัว, ความไม่มั่นใจในตัวเอง",
@@ -649,7 +647,7 @@ export const tarotMeanings = [
   {
     "id": "wan_K",
     "name": "King of Wands",
-    "img": "https://www.reffortune.com/card/w14.png",
+    "img": "/card2/nw14.png",
     "suit": "wands",
     "upright_general": "ความเป็นผู้นำ, วิสัยทัศน์, การควบคุม, ความสำเร็จ, การสร้างแรงบันดาลใจ",
     "reversed_general": "การใช้อำนาจในทางที่ผิด, ความใจร้อน, การไม่รับฟังผู้อื่น, ความเผด็จการ",
@@ -665,7 +663,7 @@ export const tarotMeanings = [
   {
     "id": "cup01",
     "name": "Ace of Cups",
-    "img": "https://www.reffortune.com/card/c1.png",
+    "img": "/card2/nc01.png",
     "suit": "cups",
     "upright_general": "ความรัก, อารมณ์ความรู้สึก, ความสัมพันธ์ใหม่, ความสุข, การเยียวยา, ความคิดสร้างสรรค์",
     "reversed_general": "การปิดกั้นอารมณ์, ความสัมพันธ์ที่เจ็บปวด, ความรู้สึกว่างเปล่า, ความคิดสร้างสรรค์ที่ถูกบดบัง",
@@ -681,7 +679,7 @@ export const tarotMeanings = [
   {
     "id": "cup02",
     "name": "Two of Cups",
-    "img": "https://www.reffortune.com/card/c2.png",
+    "img": "/card2/nc02.png",
     "suit": "cups",
     "upright_general": "การเป็นหุ้นส่วน, ความรัก, การดึงดูด, ความสามัคคี, การสร้างความสัมพันธ์",
     "reversed_general": "ความไม่ลงรอย, การเลิกรา, ความไม่เท่าเทียม, การไม่ไว้วางใจ",
@@ -697,7 +695,7 @@ export const tarotMeanings = [
   {
     "id": "cup03",
     "name": "Three of Cups",
-    "img": "https://www.reffortune.com/card/c3.png",
+    "img": "/card2/nc03.png",
     "suit": "cups",
     "upright_general": "การเฉลิมฉลอง, มิตรภาพ, การสังสรรค์, ชุมชน, ความสุข, การทำงานเป็นทีม",
     "reversed_general": "การนินทา, การถูกโดดเดี่ยว, รักสามเส้า, การเฉลิมฉลองที่มากเกินไป, การยกเลิกงานเลี้ยง",
@@ -713,7 +711,7 @@ export const tarotMeanings = [
   {
     "id": "cup04",
     "name": "Four of Cups",
-    "img": "https://www.reffortune.com/card/c4.png",
+    "img": "/card2/nc04.png",
     "suit": "cups",
     "upright_general": "ความเบื่อหน่าย, การครุ่นคิด, การไม่พอใจ, การมองข้ามโอกาส, การแยกตัว",
     "reversed_general": "การมองเห็นโอกาส, การหลุดพ้นจากความเบื่อหน่าย, การกลับมามีความกระตือรือร้น, การยอมรับความช่วยเหลือ",
@@ -729,7 +727,7 @@ export const tarotMeanings = [
   {
     "id": "cup05",
     "name": "Five of Cups",
-    "img": "https://www.reffortune.com/card/c5.png",
+    "img": "/card2/nc05.png",
     "suit": "cups",
     "upright_general": "การสูญเสีย, ความผิดหวัง, ความเสียใจ, การจมอยู่กับอดีต, การมองโลกในแง่ร้าย",
     "reversed_general": "การยอมรับ, การให้อภัย, การก้าวต่อไป, การมองเห็นสิ่งดีๆ ที่ยังเหลืออยู่, การเยียวยา",
@@ -745,7 +743,7 @@ export const tarotMeanings = [
   {
     "id": "cup06",
     "name": "Six of Cups",
-    "img": "https://www.reffortune.com/card/c6.png",
+    "img": "/card2/nc06.png",
     "suit": "cups",
     "upright_general": "ความคิดถึงอดีต, ความทรงจำในวัยเด็ก, ความไร้เดียงสา, การกลับมาของเพื่อนเก่า, ของขวัญ",
     "reversed_general": "การยึดติดกับอดีต, การไม่ยอมเติบโต, การมองอดีตที่ดีเกินจริง, การเผชิญหน้ากับความจริง",
@@ -761,7 +759,7 @@ export const tarotMeanings = [
   {
     "id": "cup07",
     "name": "Seven of Cups",
-    "img": "https://www.reffortune.com/card/c7.png",
+    "img": "/card2/nc07.png",
     "suit": "cups",
     "upright_general": "ทางเลือก, ภาพลวงตา, จินตนาการ, ความฝัน, การตัดสินใจ, การมีตัวเลือกมากเกินไป",
     "reversed_general": "ความชัดเจน, การตัดสินใจได้, การมองเห็นความจริง, การเลือกทางที่ถูกต้อง",
@@ -777,7 +775,7 @@ export const tarotMeanings = [
   {
     "id": "cup08",
     "name": "Eight of Cups",
-    "img": "https://www.reffortune.com/card/c8.png",
+    "img": "/card2/nc08.png",
     "suit": "cups",
     "upright_general": "การเดินจากไป, การละทิ้ง, การค้นหาสิ่งที่ดีกว่า, การเดินทางทางจิตวิญญาณ, ความผิดหวัง",
     "reversed_general": "การกลับมา, การลังเลที่จะจากไป, การกลัวการเปลี่ยนแปลง, การยอมอยู่ในสถานการณ์เดิม",
@@ -793,7 +791,7 @@ export const tarotMeanings = [
   {
     "id": "cup09",
     "name": "Nine of Cups",
-    "img": "https://www.reffortune.com/card/c9.png",
+    "img": "/card2/nc09.png",
     "suit": "cups",
     "upright_general": "ความสมหวัง, ความพึงพอใจ, ความสุข, ความสำเร็จ, การได้รับในสิ่งที่ปรารถนา (The Wish Card)",
     "reversed_general": "ความไม่สมหวัง, ความไม่พอใจ, การมองไม่เห็นคุณค่าในสิ่งที่มี, ความโลภ, ความผิดหวัง",
@@ -809,7 +807,7 @@ export const tarotMeanings = [
   {
     "id": "cup10",
     "name": "Ten of Cups",
-    "img": "https://www.reffortune.com/card/c10.png",
+    "img": "/card2/nc10.png",
     "suit": "cups",
     "upright_general": "ความสุขในครอบครัว, ความสมบูรณ์, ความสามัคคี, ความรักที่ยั่งยืน, การบรรลุเป้าหมายทางอารมณ์",
     "reversed_general": "ความขัดแย้งในครอบครัว, ความสัมพันธ์ที่แตกสลาย, การไม่ให้ความสำคัญกับครอบครัว, ความฝันที่ไม่เป็นจริง",
@@ -825,7 +823,7 @@ export const tarotMeanings = [
   {
     "id": "cup_p",
     "name": "Page of Cups",
-    "img": "https://www.reffortune.com/card/c11.png",
+    "img": "/card2/nc11.png",
     "suit": "cups",
     "upright_general": "ความคิดสร้างสรรค์, ข้อความทางอารมณ์, สัญชาตญาณ, ความอ่อนไหว, การเปิดใจ",
     "reversed_general": "การปิดกั้นอารมณ์, ความไม่มั่นคงทางอารมณ์, การขาดความคิดสร้างสรรค์, ความขี้อาย",
@@ -841,7 +839,7 @@ export const tarotMeanings = [
   {
     "id": "cup_k",
     "name": "Knight of Cups",
-    "img": "https://www.reffortune.com/card/c12.png",
+    "img": "/card2/nc12.png",
     "suit": "cups",
     "upright_general": "ความโรแมนติก, เสน่ห์, จินตนาการ, การทำตามหัวใจ, ข้อเสนอ, การมาถึงของคนรัก",
     "reversed_general": "ความไม่สมจริง, การหลอกลวง, อารมณ์แปรปรวน, การผิดหวัง, ข้อเสนอที่ไม่น่าไว้ใจ",
@@ -857,7 +855,7 @@ export const tarotMeanings = [
   {
     "id": "cup_q",
     "name": "Queen of Cups",
-    "img": "https://www.reffortune.com/card/c13.png",
+    "img": "/card2/nc13.png",
     "suit": "cups",
     "upright_general": "ความเห็นอกเห็นใจ, สัญชาตญาณ, การดูแล, ความอ่อนโยน, ความสงบทางอารมณ์",
     "reversed_general": "อารมณ์อ่อนไหวเกินไป, การพึ่งพาผู้อื่น, การเก็บกดความรู้สึก, ความไม่มั่นคงทางอารมณ์",
@@ -873,7 +871,7 @@ export const tarotMeanings = [
   {
     "id": "cup_K",
     "name": "King of Cups",
-    "img": "https://www.reffortune.com/card/c14.png",
+    "img": "/card2/nc14.png",
     "suit": "cups",
     "upright_general": "การควบคุมอารมณ์, ความเมตตา, การทูต, ความสมดุล, ความเป็นผู้ใหญ่, การเป็นที่ปรึกษา",
     "reversed_general": "อารมณ์แปรปรวน, การเก็บกด, การหลอกลวง, การใช้อารมณ์ในการตัดสินใจ, การเสพติด",
@@ -889,7 +887,7 @@ export const tarotMeanings = [
   {
     "id": "swo01",
     "name": "Ace of Swords",
-    "img": "https://www.reffortune.com/card/s1.png",
+    "img": "/card2/ns01.png",
     "suit": "swords",
     "upright_general": "ความคิดใหม่, ความชัดเจน, สัจธรรม, การตัดสินใจ, ชัยชนะทางความคิด, การเริ่มต้นที่ต้องใช้เหตุผล",
     "reversed_general": "ความสับสน, การตัดสินใจที่ผิดพลาด, ข้อมูลที่ไม่ถูกต้อง, ความคิดแง่ลบ, การสื่อสารที่ล้มเหลว",
@@ -905,7 +903,7 @@ export const tarotMeanings = [
   {
     "id": "swo02",
     "name": "Two of Swords",
-    "img": "https://www.reffortune.com/card/s2.png",
+    "img": "/card2/ns02.png",
     "suit": "swords",
     "upright_general": "การตัดสินใจไม่ได้, ทางสองแพร่ง, การปิดกั้น, การรักษาสมดุล, การรอคอย, การปฏิเสธที่จะมองความจริง",
     "reversed_general": "การตัดสินใจได้, การเผชิญหน้ากับความจริง, ความสับสนอย่างหนัก, การตัดสินใจที่ผิดพลาด",
@@ -921,7 +919,7 @@ export const tarotMeanings = [
   {
     "id": "swo03",
     "name": "Three of Swords",
-    "img": "https://www.reffortune.com/card/s3.png",
+    "img": "/card2/ns03.png",
     "suit": "swords",
     "upright_general": "ความเจ็บปวด, การอกหัก, ความเศร้า, การสูญเสีย, ความจริงที่โหดร้าย, การพลัดพราก",
     "reversed_general": "การเยียวยา, การให้อภัย, การปล่อยวางความเจ็บปวด, การมองโลกในแง่ดีขึ้น, การปฏิเสธความเจ็บปวด",
@@ -937,7 +935,7 @@ export const tarotMeanings = [
   {
     "id": "swo04",
     "name": "Four of Swords",
-    "img": "https://www.reffortune.com/card/s4.png",
+    "img": "/card2/ns04.png",
     "suit": "swords",
     "upright_general": "การพักผ่อน, การฟื้นฟู, การไตร่ตรอง, การหยุดนิ่ง, การทำสมาธิ, การวางแผนอย่างเงียบๆ",
     "reversed_general": "การกลับมาลงมือทำ, การหมดเวลาพัก, ความเครียด, การไม่ยอมพักผ่อน, การ Burnout",
@@ -953,7 +951,7 @@ export const tarotMeanings = [
   {
     "id": "swo05",
     "name": "Five of Swords",
-    "img": "https://www.reffortune.com/card/s5.png",
+    "img": "/card2/ns05.png",
     "suit": "swords",
     "upright_general": "ความขัดแย้ง, การพ่ายแพ้, การเอาชนะโดยไม่สนวิธีการ, การทรยศ, ความอัปยศ, การสูญเสีย",
     "reversed_general": "การประนีประนอม, การให้อภัย, การยุติความขัดแย้ง, การตระหนักถึงความผิดพลาด",
@@ -969,7 +967,7 @@ export const tarotMeanings = [
   {
     "id": "swo06",
     "name": "Six of Swords",
-    "img": "https://www.reffortune.com/card/s6.png",
+    "img": "/card2/ns06.png",
     "suit": "swords",
     "upright_general": "การเปลี่ยนผ่าน, การเดินทาง, การก้าวข้ามปัญหา, การมุ่งหน้าสู่สิ่งที่ดีกว่า, การเยียวยา",
     "reversed_general": "การติดอยู่กับปัญหา, การไม่ยอมเปลี่ยนแปลง, การเดินทางที่ติดขัด, การกลับไปสู่ปัญหาเดิม",
@@ -985,7 +983,7 @@ export const tarotMeanings = [
   {
     "id": "swo07",
     "name": "Seven of Swords",
-    "img": "https://www.reffortune.com/card/s7.png",
+    "img": "/card2/ns07.png",
     "suit": "swords",
     "upright_general": "การหลอกลวง, การทรยศ, การทำอะไรลับหลัง, การหนีปัญหา, การใช้ไหวพริบ, การลักขโมย",
     "reversed_general": "การเปิดเผยความจริง, การสารภาพผิด, การเผชิญหน้ากับความจริง, การกลับใจ",
@@ -1001,7 +999,7 @@ export const tarotMeanings = [
   {
     "id": "swo08",
     "name": "Eight of Swords",
-    "img": "https://www.reffortune.com/card/s8.png",
+    "img": "/card2/ns08.png",
     "suit": "swords",
     "upright_general": "การจำกัดตัวเอง, การรู้สึกติดกับ, การเป็นเหยื่อ, การมองไม่เห็นทางออก, ความกลัว",
     "reversed_general": "การปลดปล่อย, การมองเห็นทางออก, การเอาชนะความกลัว, การได้รับอิสระ",
@@ -1017,7 +1015,7 @@ export const tarotMeanings = [
   {
     "id": "swo09",
     "name": "Nine of Swords",
-    "img": "https://www.reffortune.com/card/s9.png",
+    "img": "/card2/ns09.png",
     "suit": "swords",
     "upright_general": "ความวิตกกังวล, ความกลัว, ความสิ้นหวัง, การนอนไม่หลับ, ความเครียด, ฝันร้าย",
     "reversed_general": "การฟื้นตัวจากความเครียด, การเผชิญหน้ากับความกลัว, การมองโลกในแง่ดีขึ้น, การขอความช่วยเหลือ",
@@ -1033,7 +1031,7 @@ export const tarotMeanings = [
   {
     "id": "swo10",
     "name": "Ten of Swords",
-    "img": "https://www.reffortune.com/card/s10.png",
+    "img": "/card2/ns10.png",
     "suit": "swords",
     "upright_general": "การสิ้นสุดที่เจ็บปวด, การถูกหักหลัง, ความพ่ายแพ้, การเป็นเหยื่อ, การถึงจุดต่ำสุด",
     "reversed_general": "การฟื้นตัว, การรอดพ้นจากหายนะ, การเริ่มต้นใหม่หลังความเจ็บปวด, การมองเห็นบทเรียน",
@@ -1049,7 +1047,7 @@ export const tarotMeanings = [
   {
     "id": "swo_p",
     "name": "Page of Swords",
-    "img": "https://www.reffortune.com/card/s11.png",
+    "img": "/card2/ns11.png",
     "suit": "swords",
     "upright_general": "ความอยากรู้อยากเห็น, การสื่อสาร, การเรียนรู้, ความคิดใหม่ๆ, การพูดความจริง, พลังงานที่ไม่อยู่นิ่ง",
     "reversed_general": "การนินทา, การโกหก, การสื่อสารที่ทำร้ายจิตใจ, การขาดการไตร่ตรอง, ข่าวลือ",
@@ -1065,7 +1063,7 @@ export const tarotMeanings = [
   {
     "id": "swo_k",
     "name": "Knight of Swords",
-    "img": "https://www.reffortune.com/card/s12.png",
+    "img": "/card2/ns12.png",
     "suit": "swords",
     "upright_general": "ความทะเยอทะยาน, การลงมือทำอย่างรวดเร็ว, การตัดสินใจที่เด็ดเดี่ยว, การมุ่งสู่เป้าหมาย, ความฉลาด",
     "reversed_general": "ความก้าวร้าว, การกระทำที่หุนหันพลันแล่น, การตัดสินใจที่ผิดพลาด, การไม่สนใจความรู้สึกผู้อื่น",
@@ -1081,7 +1079,7 @@ export const tarotMeanings = [
   {
     "id": "swo_q",
     "name": "Queen of Swords",
-    "img": "https://www.reffortune.com/card/s13.png",
+    "img": "/card2/ns13.png",
     "suit": "swords",
     "upright_general": "ความเป็นอิสระ, ความฉลาด, ความยุติธรรม, การสื่อสารที่ชัดเจน, การใช้เหตุผล, การตัดสิ่งที่ไม่จำเป็น",
     "reversed_general": "ความเย็นชา, การวิจารณ์ที่รุนแรง, ความขมขื่น, การแยกตัว, ความลำเอียง",
@@ -1097,7 +1095,7 @@ export const tarotMeanings = [
   {
     "id": "swo_K",
     "name": "King of Swords",
-    "img": "https://www.reffortune.com/card/s14.png",
+    "img": "/card2/ns14.png",
     "suit": "swords",
     "upright_general": "สติปัญญา, อำนาจ, ความจริง, ความยุติธรรม, การเป็นผู้นำทางความคิด, การตัดสินที่เด็ดขาด",
     "reversed_general": "การใช้อำนาจในทางที่ผิด, ความเผด็จการ, การหลอกลวง, การตัดสินที่ไม่ยุติธรรม, ความโหดร้าย",
@@ -1113,7 +1111,7 @@ export const tarotMeanings = [
   {
     "id": "pen01",
     "name": "Ace of Pentacles",
-    "img": "https://www.reffortune.com/card/p1.png",
+    "img": "/card2/np01.png",
     "suit": "pentacles",
     "upright_general": "โอกาสใหม่, ความมั่งคั่ง, ความมั่นคง, การเริ่มต้นที่จับต้องได้, การลงทุน, สุขภาพที่ดี",
     "reversed_general": "การพลาดโอกาส, การวางแผนทางการเงินที่ไม่ดี, การลงทุนที่สูญเปล่า, การขาดความรอบคอบ",
@@ -1129,7 +1127,7 @@ export const tarotMeanings = [
   {
     "id": "pen02",
     "name": "Two of Pentacles",
-    "img": "https://www.reffortune.com/card/p2.png",
+    "img": "/card2/np02.png",
     "suit": "pentacles",
     "upright_general": "การปรับตัว, การจัดการ, การรักษาสมดุล, การ juggling, การตัดสินใจ, การรับมือกับหลายสิ่งพร้อมกัน",
     "reversed_general": "การขาดสมดุล, การจัดการที่ผิดพลาด, การรับภาระมากเกินไป, การตัดสินใจทางการเงินที่ไม่ดี",
@@ -1145,7 +1143,7 @@ export const tarotMeanings = [
   {
     "id": "pen03",
     "name": "Three of Pentacles",
-    "img": "https://www.reffortune.com/card/p3.png",
+    "img": "/card2/np03.png",
     "suit": "pentacles",
     "upright_general": "การทำงานเป็นทีม, ความร่วมมือ, การเรียนรู้, การวางแผน, การสร้างสรรค์, การได้รับการยอมรับในฝีมือ",
     "reversed_general": "การทำงานคนเดียว, การขาดความร่วมมือ, การไม่ได้รับการยอมรับ, ผลงานที่ไม่มีคุณภาพ",
@@ -1161,7 +1159,7 @@ export const tarotMeanings = [
   {
     "id": "pen04",
     "name": "Four of Pentacles",
-    "img": "https://www.reffortune.com/card/p4.png",
+    "img": "/card2/np04.png",
     "suit": "pentacles",
     "upright_general": "การเก็บออม, ความมั่นคง, การควบคุม, การยึดติด, ความตระหนี่, การปกป้องทรัพย์สิน",
     "reversed_general": "การปล่อยวาง, การให้, การใช้จ่ายฟุ่มเฟือย, การสูญเสียการควบคุม, ความเสี่ยงทางการเงิน",
@@ -1177,7 +1175,7 @@ export const tarotMeanings = [
   {
     "id": "pen05",
     "name": "Five of Pentacles",
-    "img": "https://www.reffortune.com/card/p5.png",
+    "img": "/card2/np05.png",
     "suit": "pentacles",
     "upright_general": "การสูญเสียทางการเงิน, ความยากจน, ความรู้สึกโดดเดี่ยว, ความเจ็บป่วย, การถูกทอดทิ้ง",
     "reversed_general": "การฟื้นตัว, การมองเห็นทางออก, การได้รับความช่วยเหลือ, การสิ้นสุดของความยากลำบาก",
@@ -1193,7 +1191,7 @@ export const tarotMeanings = [
   {
     "id": "pen06",
     "name": "Six of Pentacles",
-    "img": "https://www.reffortune.com/card/p6.png",
+    "img": "/card2/np06.png",
     "suit": "pentacles",
     "upright_general": "การให้, การรับ, ความเมตตา, ความช่วยเหลือ, ความยุติธรรมทางการเงิน, การแบ่งปัน",
     "reversed_general": "การเป็นหนี้, การถูกเอาเปรียบ, การให้ที่หวังผลตอบแทน, ความไม่เท่าเทียม",
@@ -1209,7 +1207,7 @@ export const tarotMeanings = [
   {
     "id": "pen07",
     "name": "Seven of Pentacles",
-    "img": "https://www.reffortune.com/card/p7.png",
+    "img": "/card2/np07.png",
     "suit": "pentacles",
     "upright_general": "ความอดทน, การรอคอย, การลงทุนระยะยาว, การประเมินผล, การเติบโตอย่างช้าๆ",
     "reversed_general": "การขาดความอดทน, การลงทุนที่สูญเปล่า, การทำงานที่ไม่เกิดผล, ความผิดหวัง",
@@ -1225,7 +1223,7 @@ export const tarotMeanings = [
   {
     "id": "pen08",
     "name": "Eight of Pentacles",
-    "img": "https://www.reffortune.com/card/p8.png",
+    "img": "/card2/np08.png",
     "suit": "pentacles",
     "upright_general": "การทำงานหนัก, การฝึกฝน, การพัฒนาทักษะ, ความขยัน, การใส่ใจในรายละเอียด, การเรียนรู้",
     "reversed_general": "การทำงานที่ไม่มีคุณภาพ, การขาดสมาธิ, ความขี้เกียจ, การทำงานเพื่อเงินอย่างเดียว",
@@ -1241,7 +1239,7 @@ export const tarotMeanings = [
   {
     "id": "pen09",
     "name": "Nine of Pentacles",
-    "img": "https://www.reffortune.com/card/p9.png",
+    "img": "/card2/np09.png",
     "suit": "pentacles",
     "upright_general": "ความสำเร็จ, ความเป็นอิสระ, ความมั่งคั่ง, การพึ่งพาตัวเอง, การมีความสุขกับสิ่งที่สร้างมา, ความหรูหรา",
     "reversed_general": "การสูญเสียทางการเงิน, การพึ่งพาผู้อื่น, การทำงานหนักแต่ไม่รวย, การใช้จ่ายเกินตัว",
@@ -1257,7 +1255,7 @@ export const tarotMeanings = [
   {
     "id": "pen10",
     "name": "Ten of Pentacles",
-    "img": "https://www.reffortune.com/card/p10.png",
+    "img": "/card2/np10.png",
     "suit": "pentacles",
     "upright_general": "ความมั่งคั่ง, มรดก, ครอบครัว, ความมั่นคงระยะยาว, การสร้างรากฐาน, การเกษียณ",
     "reversed_general": "ปัญหาการเงินในครอบครัว, การทะเลาะเรื่องมรดก, ความไม่มั่นคง, การล้มละลาย, การสูญเสีย",
@@ -1273,7 +1271,7 @@ export const tarotMeanings = [
   {
     "id": "pen_p",
     "name": "Page of Pentacles",
-    "img": "https://www.reffortune.com/card/p11.png",
+    "img": "/card2/np11.png",
     "suit": "pentacles",
     "upright_general": "โอกาสใหม่ๆ, การเรียนรู้, การวางแผน, การลงมือทำ, ข่าวดีเรื่องเงินหรืองาน, ความฝันที่เป็นจริงได้",
     "reversed_general": "การขาดการวางแผน, การผัดวันประกันพรุ่ง, การพลาดโอกาส, ข่าวร้าย, ความฝันที่เลื่อนลอย",
@@ -1289,7 +1287,7 @@ export const tarotMeanings = [
   {
     "id": "pen_k",
     "name": "Knight of Pentacles",
-    "img": "https://www.reffortune.com/card/p12.png",
+    "img": "/card2/np12.png",
     "suit": "pentacles",
     "upright_general": "ความรับผิดชอบ, ความขยัน, ความน่าเชื่อถือ, การทำงานหนัก, ความสม่ำเสมอ, การทำตามแผน",
     "reversed_general": "ความขี้เกียจ, ความน่าเบื่อ, การยึดติดกับวิธีการเดิมๆ, การขาดความรับผิดชอบ, การหยุดนิ่ง",
@@ -1305,7 +1303,7 @@ export const tarotMeanings = [
   {
     "id": "pen_q",
     "name": "Queen of Pentacles",
-    "img": "https://www.reffortune.com/card/p13.png",
+    "img": "/card2/np13.png",
     "suit": "pentacles",
     "upright_general": "การดูแล, ความอบอุ่น, ความมั่นคง, การจัดการที่ดี, การรักธรรมชาติ, การเป็นแม่บ้านแม่เรือน",
     "reversed_general": "การให้ความสำคัญกับวัตถุมากเกินไป, การควบคุม, การไม่ดูแลตัวเอง, ความไม่มั่นคง",
@@ -1321,7 +1319,7 @@ export const tarotMeanings = [
   {
     "id": "pen_K",
     "name": "King of Pentacles",
-    "img": "https://www.reffortune.com/card/p14.png",
+    "img": "/card2/np14.png",
     "suit": "pentacles",
     "upright_general": "ความสำเร็จ, ความมั่งคั่ง, ความเป็นผู้นำ, ความมั่นคง, การเป็นนักธุรกิจ, ความน่าเชื่อถือ",
     "reversed_general": "การยึดติดกับวัตถุ, ความโลภ, การทุจริต, ความดื้อรั้น, การตัดสินใจที่ผิดพลาด",
@@ -1336,3 +1334,4 @@ export const tarotMeanings = [
   }
 
 ];
+
